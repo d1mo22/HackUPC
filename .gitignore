@@ -7,7 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 bun-debug.log*
-
+bun.lock
 # Dependencies
 node_modules
 dist
