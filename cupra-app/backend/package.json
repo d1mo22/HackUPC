@@ -1,0 +1,32 @@
+{
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "Backend para CUPRA App",
+	"main": "server.js",
+	"scripts": {
+		"test": "jest --detectOpenHandles"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "commonjs",
+	"dependencies": {
+		"bcryptjs": "^3.0.2",
+		"compression": "^1.8.0",
+		"cors": "^2.8.5",
+		"dotenv": "^16.5.0",
+		"express": "^5.1.0",
+		"express-rate-limit": "^7.5.0",
+		"express-validator": "^7.2.1",
+		"jsonwebtoken": "^9.0.2",
+		"mongoose": "^8.14.1",
+		"rate-limit-redis": "^4.2.0",
+		"redis": "^5.0.0",
+		"winston": "^3.17.0"
+	},
+	"devDependencies": {
+		"jest": "^29.7.0",
+		"mongodb-memory-server": "^10.1.4",
+		"supertest": "^7.1.0"
+	}
+}
