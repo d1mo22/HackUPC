@@ -9,12 +9,12 @@ import {
 	ScrollView,
 	StyleSheet,
 	Text,
-	TouchableOpacity,
 	View,
 	useWindowDimensions
 } from "react-native";
 import FeatureCard from "../components/FeatureCard";
 import ProgressSection from "../components/ProgressSection";
+import TaskCard from "../components/TaskCard";
 import { Typography } from "../constants/Typography";
 import tasks from "../data/tasks.json"; // Import tasks from tasks.json
 import { useThemeColor } from "../hooks/useThemeColor";
@@ -245,67 +245,15 @@ export default function HomeScreen() {
 				</View>
 
 				{todaysTasks.map((task) => (
-									<TouchableOpacity
-										key={task.id}
-										style={[
-											styles.taskCard,
-											task.completed ? styles.taskCardCompleted : styles.taskCardDefault,
-										]}
-										onPress={() => console.log(`Task ${task.id} pressed`)}
-										activeOpacity={0.7}
-									>
-										{/* Task Icon */}
-										<View style={styles.taskIconContainer}>
-											<Text style={styles.taskIconText}>{task.icon}</Text>
-											<View
-												style={[
-													styles.taskCompletionIndicator,
-													task.completed
-														? styles.taskCompletionIndicatorCompleted
-														: styles.taskCompletionIndicatorDefault,
-												]}
-											/>
-										</View>
-				
-										{/* Task Details */}
-										<View style={styles.taskDetails}>
-											<Text
-												style={[
-													styles.taskTitle,
-													task.completed ? styles.taskTitleCompleted : styles.taskTitleDefault,
-												]}
-											>
-												{task.title}
-											</Text>
-											<View style={styles.taskMeta}>
-												<View style={styles.taskPointsContainer}>
-													<Text style={styles.taskPointsValue}>+{task.points}</Text>
-													<Text style={styles.taskPointsLabel}>puntos</Text>
-												</View>
-											</View>
-										</View>
-				
-										{/* Completion Status */}
-										<View style={styles.taskStatus}>
-											{task.completed ? (
-												<View style={styles.taskStatusBadgeCompleted}>
-													<Text style={styles.taskStatusTextCompleted}>COMPLETADO</Text>
-												</View>
-											) : (
-												<View style={styles.taskStatusBadgeDefault}>
-													<Text style={styles.taskStatusTextDefault}>TODO</Text>
-												</View>
-											)}
-										</View>
-				
-										{/* Completion Icon */}
-										<Ionicons
-											name={task.completed ? "checkmark-circle" : "ellipse-outline"}
-											size={20}
-											color={task.completed ? "#dbd3cb" : "#666"}
-											style={styles.taskCompletionIcon}
-										/>
-									</TouchableOpacity>
+									<TaskCard
+									id = {task.id}
+									title={task.title}
+									points={task.points}
+									completed={task.completed}
+									icon={task.icon}
+									day={task.day}
+									currentDay={currentDay}
+								/>
 								))}
 			</View>
 
@@ -465,10 +413,6 @@ const styles = StyleSheet.create({
 	headerTexts: {
 		flex: 1,
 	},
-	userIconContainer: {
-		marginLeft: 12,
-		padding: 4,
-	},
 	greeting: {
 		fontSize: 28,
 		fontWeight: "bold",
@@ -478,7 +422,6 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		opacity: 0.8,
 	},
-	// Estilos modificados para el contador de entrega
 	deliveryCountdownContainer: {
 		marginBottom: 20,
 		alignItems: "center",
@@ -512,16 +455,14 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontFamily: Typography.fonts.title,
 	},
-	// Nuevo contenedor para la imagen del coche
 	carImageWrapper: {
-		marginTop: 10, // Separación de 20px del contador
+		marginTop: 10,
 		alignItems: "center",
 		width: "100%",
 	},
 	carImage: {
 		width: 240,
 		height: 110,
-		// Eliminado el tintColor para mostrar la imagen con sus colores originales
 	},
 	modelName: {
 		fontSize: 18,
@@ -536,9 +477,9 @@ const styles = StyleSheet.create({
 		marginBottom: 16,
 	},
 	dailyFeatureContainer: {
-		marginBottom: 5, // Aumentar el margen inferior
-		paddingVertical: 20, // Añadir padding vertical
-		alignItems: "center", // Centrar el contenido
+		marginBottom: 5,
+		paddingVertical: 20,
+		alignItems: "center",
 		width: "100%",
 	},
 	otherFeaturesContainer: {
@@ -548,7 +489,7 @@ const styles = StyleSheet.create({
 	tasksContainer: {
 		padding: 16,
 		marginBottom: 20,
-		borderRadius: 12, // Opcional: añadir bordes redondeados
+		borderRadius: 12,
 	},
 	tasksHeader: {
 		flexDirection: "row",
@@ -574,104 +515,12 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		marginRight: 4,
 	},
-	taskCard: {
-        flexDirection: "row",
-        alignItems: "center",
-        padding: 16,
-        borderRadius: 12,
-        borderWidth: 1,
-        marginBottom: 12,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-	taskCardCompleted: {
-		borderLeftWidth: 4,
-	},
-	taskIcon: {
-		width: 40,
-		height: 40,
-		borderRadius: 20,
-		justifyContent: "center",
-		alignItems: "center",
-		marginRight: 16,
-	},
-	taskIconText: {
-		fontSize: 18,
-	},
-	taskDetails: {
-		flex: 1,
-	},
-	taskTitle: {
-		fontSize: 16,
-		marginBottom: 4,
-		fontFamily: Typography.fonts.regular,
-	},
-	taskPoints: {
-		flexDirection: "row",
-		alignItems: "center",
-	},
-	taskPointsText: {
-		fontSize: 12,
-		marginRight: 8,
-	},
-	taskCompletedBadge: {
-		flexDirection: "row",
-		alignItems: "center",
-		borderRadius: 12,
-		paddingHorizontal: 8,
-		paddingVertical: 2,
-	},
-	taskCompletedText: {
-		color: "#fff", // Este color se mantiene blanco para contrastar con el fondo del badge
-		fontSize: 12,
-		marginLeft: 4,
-	},
-	progressContainer: {
-		marginTop: 20,
-		marginBottom: 20,
-		padding: 16,
-		borderRadius: 12, // Opcional: añadir bordes redondeados
-	},
-	progressTitle: {
-		fontSize: 18,
-		fontWeight: "bold",
-		marginBottom: 10,
-		fontFamily: Typography.fonts.title,
-	},
-	progressBarWrapper: {
-		position: "relative",
-		marginBottom: 8,
-	},
-	progressBar: {
-		height: 10,
-		borderRadius: 5,
-		overflow: "hidden",
-	},
-	progressFill: {
-		height: "100%",
-	},
-	progressPercentage: {
-		position: "absolute",
-		top: -30,
-		left: "100%",
-		transform: [{ translateX: -50 }],
-		fontSize: 24,
-		fontWeight: "bold",
-		fontFamily: Typography.fonts.title,
-	},
-	progressText: {
-		fontSize: 14,
-		fontFamily: Typography.fonts.regular,
-	},
 	streakContainer: {
 		marginTop: 30,
 		alignItems: "center",
 		marginBottom: 20,
 		padding: 16,
-		borderRadius: 12, // Opcional: añadir bordes redondeados
+		borderRadius: 12,
 	},
 	streakText: {
 		marginTop: 10,
@@ -684,115 +533,4 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 		textDecorationLine: "underline",
 	},
-	streakBadge: {
-		flexDirection: "row",
-		alignItems: "center",
-		backgroundColor: "#333",
-		borderRadius: 8,
-		padding: 16,
-		marginBottom: 12,
-	},
-	taskMeta: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginTop: 4,
-    },
-    taskDueDay: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    taskDueDayBadge: {
-        backgroundColor: "#dbd3cb",
-        borderRadius: 12,
-        width: 24,
-        height: 24,
-        justifyContent: "center",
-        alignItems: "center",
-        marginRight: 4,
-    },
-    taskDueDayText: {
-        color: "#1e1e1e",
-        fontSize: 12,
-        fontWeight: "bold",
-    },
-    taskDueDayLabel: {
-        color: "#888",
-        fontSize: 12,
-    },
-    taskPointsContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    taskPointsValue: {
-        color: "#dbd3cb",
-        fontSize: 14,
-        fontWeight: "bold",
-        marginRight: 4,
-    },
-    taskPointsLabel: {
-        color: "#888",
-        fontSize: 12,
-    },
-    taskStatus: {
-        marginLeft: 12,
-    },
-    taskStatusBadgeDefault: {
-        backgroundColor: "#444",
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 8,
-    },
-    taskStatusBadgeCompleted: {
-        backgroundColor: "#dbd3cb",
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 8,
-    },
-    taskStatusTextDefault: {
-        color: "#888",
-        fontSize: 12,
-        fontWeight: "bold",
-    },
-    taskStatusTextCompleted: {
-        color: "#1e1e1e",
-        fontSize: 12,
-        fontWeight: "bold",
-    },
-    taskCompletionIcon: {
-        marginLeft: 12,
-    },
-	taskIconContainer: {
-        position: "relative",
-        marginRight: 16,
-    },
-    taskCompletionIndicator: {
-        position: "absolute",
-        bottom: -2,
-        right: -2,
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        borderWidth: 2,
-        borderColor: "#1e1e1e",
-    },
-    taskCompletionIndicatorDefault: {
-        backgroundColor: "#666",
-    },
-    taskCompletionIndicatorCompleted: {
-        backgroundColor: "#dbd3cb",
-    },
-    taskCompletionIndicatorLocked: {
-        backgroundColor: "#444", // Gray indicator for locked tasks
-    },
-	taskTitleDefault: {
-        color: "#fff",
-    },
-    taskTitleCompleted: {
-        color: "#dbd3cb",
-    },
-	taskCardDefault: {
-        backgroundColor: "#1e1e1e",
-        borderColor: "#444",
-    },
 });

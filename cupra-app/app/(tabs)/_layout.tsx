@@ -83,6 +83,27 @@ export default function TabLayout() {
 					}}
 				/>
 				<Stack.Screen
+					name="task-list"
+					options={{
+						headerTitle: () => (
+							<CupraLogo width={80} height={30} color={textColor} />
+						),
+						headerBackVisible: false,
+						headerLeft: () => null,
+						headerRight: () => (
+							<TouchableOpacity
+								style={styles.userIconContainer}
+								onPress={handleUserPress}
+							>
+								<Image
+									source={{ uri: userData.profileImage }}
+									style={styles.userProfileImage}
+								/>
+							</TouchableOpacity>
+						),
+					}}
+				/>
+				<Stack.Screen
 					name="profile"
 					options={{
 						title: "Mi Perfil",
