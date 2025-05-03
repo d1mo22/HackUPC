@@ -1,5 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
 	ActivityIndicator,
@@ -8,16 +10,27 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	useWindowDimensions
+	useWindowDimensions,
 } from "react-native";
 import FeatureCard from "../components/FeatureCard";
 import { Typography } from "../constants/Typography";
 import { useThemeColor } from "../hooks/useThemeColor";
 
+// Define el tipo de navegación
+type NavigationProps = StackNavigationProp<{
+	Home: undefined;
+	FeatureDetail: { featureId: string };
+	Profile: undefined;
+	TaskScreen: undefined;
+}>;
+
 // Importar los datos de características
 import features from "../data/features.json";
 
 export default function HomeScreen() {
+	// Especifica el tipo genérico en useNavigation
+	const navigation = useNavigation<NavigationProps>();
+
 	const [loading, setLoading] = useState(true);
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const [dailyFeature, setDailyFeature] = useState<any>(null);
@@ -36,10 +49,13 @@ export default function HomeScreen() {
 	const { width } = useWindowDimensions();
 	const isMobile = width <= 850; // Consideramos móvil cuando es menor o igual a 768px
 
-	const navigation = useNavigation();
+	// Agrupa todos los colores del tema al inicio del componente
 	const backgroundColor = useThemeColor({}, "background");
 	const textColor = useThemeColor({}, "text");
 	const accentColor = useThemeColor({}, "tint");
+	const cardColor = useThemeColor({}, "card");
+	const cardBackgroundColor = useThemeColor({}, "cardBackground");
+	const cardAccentColor = useThemeColor({}, "cardAccent");
 
 	const getItemWidth = (screenWidth: number) => {
 		if (screenWidth <= 650) return "100%";
@@ -67,7 +83,11 @@ export default function HomeScreen() {
 	}, []);
 
 	const handleFeaturePress = (id: string) => {
-		navigation.navigate("FeatureDetail", { featureId: id });
+		// Usar el router de Expo en lugar de React Navigation
+		router.push({
+			pathname: "/(tabs)/feature-detail",
+			params: { featureId: id },
+		});
 	};
 
 	const handleUserPress = () => {
@@ -84,9 +104,10 @@ export default function HomeScreen() {
 		setData((prevData) => ({
 			...prevData,
 			todaysTasks: prevData.todaysTasks.map((task) =>
-				task.id === taskId ? { ...task, completed: true } : task
+				task.id === taskId ? { ...task, completed: true } : task,
 			),
-			completedTasks: prevData.todaysTasks.find((t) => t.id === taskId)?.completed
+			completedTasks: prevData.todaysTasks.find((t) => t.id === taskId)
+				?.completed
 				? prevData.completedTasks
 				: prevData.completedTasks + 1,
 		}));
@@ -137,7 +158,7 @@ export default function HomeScreen() {
 						styles.deliveryCountdownBadge,
 						{
 							backgroundColor: accentColor,
-							width: isMobile ? "80%" : "40%", // Ancho dinámico según el dispositivo
+							width: isMobile ? "80%" : "40%",
 						},
 					]}
 				>
@@ -169,81 +190,177 @@ export default function HomeScreen() {
 			</View>
 
 			{/* TODAY'S TASKS Section */}
-			<View style={styles.tasksContainer}>
-                <View style={styles.tasksHeader}>
-                    <View style={styles.tasksTitle}>
-                        <Ionicons name="calendar-outline" size={20} color="#CFA56C" />
-                        <Text style={styles.tasksTitleText}>TODAY'S TASKS</Text>
-                    </View>
-                    <View style={styles.tasksSeeAll}>
-						<Text style={styles.tasksSeeAllText} onPress={handleSeeAllPress}>See All</Text>
-						<Ionicons name="chevron-forward-outline" size={16} color="#CFA56C" />
-					</View>	
-                </View>
+			<View
+				style={[
+					styles.tasksContainer,
+					{ backgroundColor: cardColor }, // Usar la variable en lugar de la función
+				]}
+			>
+				<View style={styles.tasksHeader}>
+					<View style={styles.tasksTitle}>
+						<Ionicons name="calendar-outline" size={20} color={accentColor} />
+						<Text
+							style={[
+								styles.tasksTitleText,
+								{ color: textColor }, // Usar el color de texto del tema
+							]}
+						>
+							TODAY'S TASKS
+						</Text>
+					</View>
+					<View style={styles.tasksSeeAll}>
+						<Text
+							style={[
+								styles.tasksSeeAllText,
+								{ color: accentColor }, // Usar el color de acento del tema
+							]}
+							onPress={handleSeeAllPress}
+						>
+							See All
+						</Text>
+						<Ionicons
+							name="chevron-forward-outline"
+							size={16}
+							color={accentColor}
+						/>
+					</View>
+				</View>
 
-                {data.todaysTasks.map((task) => (
-                    <View
-                        key={task.id}
-                        style={[
-                            styles.taskCard,
-                            task.completed && styles.taskCardCompleted,
-                        ]}
-                        onTouchEnd={() => completeTask(task.id)} // Handle task completion
-                    >
-                        <View style={styles.taskIcon}>
-                            <Text style={styles.taskIconText}>{task.icon}</Text>
-                        </View>
-                        <View style={styles.taskDetails}>
-                            <Text style={styles.taskTitle}>{task.title}</Text>
-                            <View style={styles.taskPoints}>
-                                <Text style={styles.taskPointsText}>+{task.points} points</Text>
-                                {task.completed && (
-                                    <View style={styles.taskCompletedBadge}>
-                                        <Ionicons name="checkmark-circle-outline" size={12} color="#fff" />
-                                        <Text style={styles.taskCompletedText}>Completed</Text>
-                                    </View>
-                                )}
-                            </View>
-                        </View>
-                        <Ionicons name="chevron-forward-outline" size={20} color="#999" />
-                    </View>
-                ))}
-            </View>
+				{data.todaysTasks.map((task) => (
+					<View
+						key={task.id}
+						style={[
+							styles.taskCard,
+							{ backgroundColor: cardBackgroundColor }, // Usar la variable en lugar de la función
+						]}
+						onTouchEnd={() => completeTask(task.id)}
+					>
+						<View
+							style={[
+								styles.taskIcon,
+								{ backgroundColor: cardAccentColor }, // Usar la variable en lugar de la función
+							]}
+						>
+							<Text style={styles.taskIconText}>{task.icon}</Text>
+						</View>
+						<View style={styles.taskDetails}>
+							<Text
+								style={[
+									styles.taskTitle,
+									{ color: textColor }, // Usar color de texto del tema
+								]}
+							>
+								{task.title}
+							</Text>
+							<View style={styles.taskPoints}>
+								<Text
+									style={[
+										styles.taskPointsText,
+										{ color: accentColor }, // Usar color de acento del tema
+									]}
+								>
+									+{task.points} points
+								</Text>
+								{task.completed && (
+									<View
+										style={[
+											styles.taskCompletedBadge,
+											{ backgroundColor: accentColor }, // Usar color de acento para el badge
+										]}
+									>
+										<Ionicons
+											name="checkmark-circle-outline"
+											size={12}
+											color="#fff"
+										/>
+										<Text style={styles.taskCompletedText}>Completed</Text>
+									</View>
+								)}
+							</View>
+						</View>
+						<Ionicons
+							name="chevron-forward-outline"
+							size={20}
+							color={textColor}
+						/>
+					</View>
+				))}
+			</View>
 
-			<View style={styles.streakContainer}>
-                <Ionicons name="flame-outline" size={24} color="#CFA56C" />
-                <Text style={styles.streakText}>
-                    You’re on a <Text style={styles.streakHighlight}>5-day streak</Text>!
-                </Text>
-            </View>
+			<View
+				style={[
+					styles.streakContainer,
+					{ backgroundColor: cardColor }, // Opcional: añadir fondo a la sección de racha
+				]}
+			>
+				<Ionicons name="flame-outline" size={24} color={accentColor} />
+				<Text
+					style={[
+						styles.streakText,
+						{ color: textColor }, // Usar color de texto del tema
+					]}
+				>
+					You're on a{" "}
+					<Text style={[styles.streakHighlight, { color: accentColor }]}>
+						5-day streak
+					</Text>
+					!
+				</Text>
+			</View>
 
 			{/* Progress Bar and Daily Streak */}
-            <View style={styles.progressContainer}>
-                <Text style={styles.progressTitle}>Task Progress</Text>
-                <View style={styles.progressBarWrapper}>
-                    <Text style={styles.progressPercentage}>
-                        {Math.round(
-                            (data.completedTasks / data.todaysTasks.length) * 100
-                        )}%
-                    </Text>
-                    <View style={styles.progressBar}>
-                        <View
-                            style={[
-                                styles.progressFill,
-                                {
-                                    width: `${
-                                        (data.completedTasks / data.todaysTasks.length) * 100
-                                    }%`,
-                                },
-                            ]}
-                        />
-                    </View>
-                </View>
-                <Text style={styles.progressText}>
-                    {data.completedTasks}/{data.todaysTasks.length} tasks completed
-                </Text>
-            </View>
-					
+			<View
+				style={[
+					styles.progressContainer,
+					{ backgroundColor: cardColor }, // Opcional: añadir fondo a la sección de progreso
+				]}
+			>
+				<Text
+					style={[
+						styles.progressTitle,
+						{ color: textColor }, // Usar color de texto del tema
+					]}
+				>
+					Task Progress
+				</Text>
+				<View style={styles.progressBarWrapper}>
+					<Text
+						style={[
+							styles.progressPercentage,
+							{ color: textColor }, // Usar color de texto del tema
+						]}
+					>
+						{Math.round((data.completedTasks / data.todaysTasks.length) * 100)}%
+					</Text>
+					<View
+						style={[
+							styles.progressBar,
+							{ backgroundColor: cardAccentColor }, // Color de fondo para la barra de progreso
+						]}
+					>
+						<View
+							style={[
+								styles.progressFill,
+								{
+									width: `${
+										(data.completedTasks / data.todaysTasks.length) * 100
+									}%`,
+									backgroundColor: accentColor, // Usar color de acento para el relleno
+								},
+							]}
+						/>
+					</View>
+				</View>
+				<Text
+					style={[
+						styles.progressText,
+						{ color: textColor }, // Usar color de texto del tema
+					]}
+				>
+					{data.completedTasks}/{data.todaysTasks.length} tasks completed
+				</Text>
+			</View>
+
 			{/* Daily Feature en la parte superior */}
 			<View
 				style={[
@@ -449,151 +566,138 @@ const styles = StyleSheet.create({
 		flexGrow: 1,
 	},
 	tasksContainer: {
-        padding: 16,
-    },
-    tasksHeader: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: 16,
-    },
-    tasksTitle: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    tasksTitleText: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: "bold",
-        marginLeft: 8,
-    },
-    tasksSeeAll: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    tasksSeeAllText: {
-        color: "#CFA56C",
-        fontSize: 14,
-        marginRight: 4,
-    },
-    taskCard: {
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#333",
-        borderRadius: 8,
-        padding: 16,
-        marginBottom: 12,
-    },
-    taskCardCompleted: {
-        borderLeftWidth: 4,
-        borderLeftColor: "#CFA56C",
-    },
-    taskIcon: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: "#444",
-        justifyContent: "center",
-        alignItems: "center",
-        marginRight: 16,
-    },
-    taskIconText: {
-        fontSize: 18,
-    },
-    taskDetails: {
-        flex: 1,
-    },
-    taskTitle: {
-        color: "#fff",
-        fontSize: 16,
-        marginBottom: 4,
-    },
-    taskPoints: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    taskPointsText: {
-        color: "#CFA56C",
-        fontSize: 12,
-        marginRight: 8,
-    },
-    taskCompletedBadge: {
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#008000",
-        borderRadius: 12,
-        paddingHorizontal: 8,
-        paddingVertical: 2,
-    },
-    taskCompletedText: {
-        color: "#fff",
-        fontSize: 12,
-        marginLeft: 4,
-    },
+		padding: 16,
+		marginBottom: 20,
+		borderRadius: 12, // Opcional: añadir bordes redondeados
+	},
+	tasksHeader: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		marginBottom: 16,
+	},
+	tasksTitle: {
+		flexDirection: "row",
+		alignItems: "center",
+	},
+	tasksTitleText: {
+		fontSize: 16,
+		fontWeight: "bold",
+		marginLeft: 8,
+		fontFamily: Typography.fonts.title,
+	},
+	tasksSeeAll: {
+		flexDirection: "row",
+		alignItems: "center",
+	},
+	tasksSeeAllText: {
+		fontSize: 14,
+		marginRight: 4,
+	},
+	taskCard: {
+		flexDirection: "row",
+		alignItems: "center",
+		borderRadius: 8,
+		padding: 16,
+		marginBottom: 12,
+	},
+	taskCardCompleted: {
+		borderLeftWidth: 4,
+	},
+	taskIcon: {
+		width: 40,
+		height: 40,
+		borderRadius: 20,
+		justifyContent: "center",
+		alignItems: "center",
+		marginRight: 16,
+	},
+	taskIconText: {
+		fontSize: 18,
+	},
+	taskDetails: {
+		flex: 1,
+	},
+	taskTitle: {
+		fontSize: 16,
+		marginBottom: 4,
+		fontFamily: Typography.fonts.regular,
+	},
+	taskPoints: {
+		flexDirection: "row",
+		alignItems: "center",
+	},
+	taskPointsText: {
+		fontSize: 12,
+		marginRight: 8,
+	},
+	taskCompletedBadge: {
+		flexDirection: "row",
+		alignItems: "center",
+		borderRadius: 12,
+		paddingHorizontal: 8,
+		paddingVertical: 2,
+	},
+	taskCompletedText: {
+		color: "#fff", // Este color se mantiene blanco para contrastar con el fondo del badge
+		fontSize: 12,
+		marginLeft: 4,
+	},
 	progressContainer: {
 		marginTop: 20,
 		marginBottom: 20,
+		padding: 16,
+		borderRadius: 12, // Opcional: añadir bordes redondeados
 	},
 	progressTitle: {
 		fontSize: 18,
 		fontWeight: "bold",
 		marginBottom: 10,
-		color: "#fff",
+		fontFamily: Typography.fonts.title,
 	},
 	progressBarWrapper: {
-        position: "relative",
-        marginBottom: 8,
-    },
-    progressBar: {
-        height: 10,
-        backgroundColor: "#444",
-        borderRadius: 5,
-        overflow: "hidden",
-    },
-    progressFill: {
-        height: "100%",
-        backgroundColor: "#CFA56C",
-    },
-    progressPercentage: {
-        position: "absolute",
-        top: -30, // Move the percentage above the progress bar
-        left: "100%",
-        transform: [{ translateX: -50 }], // Center the text horizontally
-        color: "#fff",
-        fontSize: 24, // Make the text bigger
-        fontWeight: "bold",
-    },
+		position: "relative",
+		marginBottom: 8,
+	},
+	progressBar: {
+		height: 10,
+		borderRadius: 5,
+		overflow: "hidden",
+	},
+	progressFill: {
+		height: "100%",
+	},
+	progressPercentage: {
+		position: "absolute",
+		top: -30,
+		left: "100%",
+		transform: [{ translateX: -50 }],
+		fontSize: 24,
+		fontWeight: "bold",
+		fontFamily: Typography.fonts.title,
+	},
 	progressText: {
-		color: "#fff",
 		fontSize: 14,
+		fontFamily: Typography.fonts.regular,
 	},
 	streakContainer: {
-        marginTop: 30,
-        alignItems: "center",
-    },
-    streakBadge: {
-        backgroundColor: "#CFA56C",
-        padding: 20,
-        borderRadius: 12,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 6,
-    },
-    streakText: {
-        marginTop: 10,
-        color: "#fff",
-        fontSize: 20,
-        fontWeight: "bold",
-        textAlign: "center",
-    },
-    streakHighlight: {
-        color: "#fff",
-        fontWeight: "bold",
-        textDecorationLine: "underline",
-    },
+		marginTop: 30,
+		alignItems: "center",
+		marginBottom: 20,
+		padding: 16,
+		borderRadius: 12, // Opcional: añadir bordes redondeados
+	},
+	streakText: {
+		marginTop: 10,
+		fontSize: 20,
+		fontWeight: "bold",
+		textAlign: "center",
+		fontFamily: Typography.fonts.title,
+	},
+	streakHighlight: {
+		fontWeight: "bold",
+		textDecorationLine: "underline",
+	},
 	streakBadge: {
 		flexDirection: "row",
 		alignItems: "center",

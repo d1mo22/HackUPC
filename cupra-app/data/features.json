@@ -65,10 +65,15 @@
 	{
 		"id": "f8",
 		"title": "Faros Matrix LED",
-		"description": "Iluminación inteligente que se adapta automáticamente a las condiciones de la carretera y otros vehículos.",
-		"image": "https://placehold.co/800x600.png",
+		"description": "Sistema de iluminación avanzado con control adaptativo",
+		"fullDescription": "Los faros Matrix LED proporcionan una iluminación superior sin deslumbrar a otros conductores. La tecnología adaptativa ajusta automáticamente el haz de luz según las condiciones de la carretera, otros vehículos y peatones, ofreciendo máxima visibilidad en todo momento.",
+		"image": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//LED.webp",
 		"category": "Iluminación",
-		"isFeatured": false,
-		"details": "Los faros Matrix LED adaptan automáticamente el patrón de luz para maximizar la visibilidad sin deslumbrar a otros conductores. Incluyen secuencia de bienvenida con animación dinámica y firma lumínica CUPRA distintiva."
+		"specs": [
+			{ "name": "Potencia", "value": "150W" },
+			{ "name": "Alcance", "value": "500m" },
+			{ "name": "Control", "value": "Automático" }
+		],
+		"isFeatured": true
 	}
 ]
