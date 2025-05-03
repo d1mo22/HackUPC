@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
@@ -69,6 +68,11 @@ export default function FeatureDetailScreen({
 		}, 500);
 	}, [featureId]);
 
+	if (feature) {
+	navigation.setOptions({ title: `${feature?.category}` });
+	}
+	else navigation.setOptions({ title: "Cargando..." });
+	
 	const handleGoBack = () => {
 		navigation.goBack();
 	};
@@ -98,35 +102,10 @@ export default function FeatureDetailScreen({
 	}
 
 	return (
-		<View style={[
-			{
-			paddingTop: top,
-			paddingBottom: bottom,
-			paddingLeft: left,
-			paddingRight: right,
-			},
-			]}>
 			<ScrollView
 				style={[styles.container, { backgroundColor }]}
 				contentContainerStyle={styles.contentContainer}
 			>
-				{/* Header con botón de retroceso */}
-				<View style={styles.header}>
-					<TouchableOpacity
-						onPress={handleGoBack}
-						style={styles.backButtonContainer}
-					>
-						<Ionicons name="arrow-back" size={24} color={textColor} />
-					</TouchableOpacity>
-					<Text
-						style={[
-							styles.headerTitle,
-							{ color: textColor, fontFamily: Typography.fonts.title },
-						]}
-					>
-						{feature.category}
-					</Text>
-				</View>
 
 				{/* Imagen principal */}
 				<View
@@ -204,13 +183,13 @@ export default function FeatureDetailScreen({
 					)}
 				</View>
 			</ScrollView>
-		</View>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		padding: 16,
 	},
 	contentContainer: {
 		paddingBottom: 40,
@@ -236,7 +215,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		paddingHorizontal: 16,
-		paddingVertical: 12,
+		paddingVertical: 0,
 	},
 	backButtonContainer: {
 		padding: 8,

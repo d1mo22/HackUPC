@@ -51,6 +51,7 @@ export default function TabLayout() {
 			<Stack
 				screenOptions={{
 					headerStyle: {
+						height: 80, // Default header height
 						backgroundColor: backgroundColor,
 					},
 					headerTintColor: textColor,
@@ -118,7 +119,13 @@ export default function TabLayout() {
 				<Stack.Screen
 					name="feature-detail"
 					options={{
-						headerShown: false,
+						title: "",
+						headerBackTitle: "Atrás",
+						headerBackVisible: true,
+						headerLeft: undefined,
+						headerTitleStyle: {
+							fontFamily: "CupraBook",
+						},
 					}}
 				/>
 			</Stack>
@@ -270,4 +277,7 @@ const styles = StyleSheet.create({
 	activeButton: {
 		backgroundColor: "rgba(0,0,0,0.05)",
 	},
+	headerStyle: {
+		height: 80, // Specify the height of your custom header
+	  },
 });
