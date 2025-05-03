@@ -11,6 +11,7 @@ import GlossaryScreen from "../screens/GlossaryScreen";
 import HomeScreen from "../screens/HomeScreen";
 import POIScreen from "../screens/POIScreen";
 import SearchScreen from "../screens/SearchScreen";
+import TaskScreen from "../screens/TaskScreen";
 
 // Importar tema
 import { useThemeColor } from "../hooks/useThemeColor";
@@ -40,6 +41,11 @@ function HomeStack() {
 				name="FeatureDetail"
 				component={FeatureDetailScreen}
 				options={{ title: "Detalle" }}
+			/>
+			<Stack.Screen
+				name="TaskScreen"
+				component={TaskScreen}
+				options={{ title: "Tasks" }}
 			/>
 		</Stack.Navigator>
 	);
@@ -107,6 +113,7 @@ export default function AppNavigator() {
 						),
 					}}
 				/>
+				
 			</Tab.Navigator>
 		</NavigationContainer>
 	);

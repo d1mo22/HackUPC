@@ -8,7 +8,7 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	useWindowDimensions,
+	useWindowDimensions
 } from "react-native";
 import FeatureCard from "../components/FeatureCard";
 import { Typography } from "../constants/Typography";
@@ -24,6 +24,13 @@ export default function HomeScreen() {
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const [otherFeatures, setOtherFeatures] = useState<any[]>([]);
 	const [daysRemaining] = useState(30); // Número fijo de días restantes para recibir el coche
+	const [data, setData] = useState({
+		todaysTasks: [
+			{ id: 1, title: "Task 1", points: 10, completed: false, icon: "📌" },
+			{ id: 2, title: "Task 2", points: 20, completed: true, icon: "✅" },
+		],
+		completedTasks: 1,
+	});
 
 	// Obtenemos las dimensiones de la pantalla
 	const { width } = useWindowDimensions();
@@ -66,6 +73,23 @@ export default function HomeScreen() {
 	const handleUserPress = () => {
 		// Navegación al perfil de usuario
 		navigation.navigate("Profile");
+	};
+
+	const handleSeeAllPress = () => {
+		console.log("Navigating to TaskScreen");
+		navigation.navigate("TaskScreen");
+	};
+
+	const completeTask = (taskId) => {
+		setData((prevData) => ({
+			...prevData,
+			todaysTasks: prevData.todaysTasks.map((task) =>
+				task.id === taskId ? { ...task, completed: true } : task
+			),
+			completedTasks: prevData.todaysTasks.find((t) => t.id === taskId)?.completed
+				? prevData.completedTasks
+				: prevData.completedTasks + 1,
+		}));
 	};
 
 	if (loading) {
@@ -144,6 +168,82 @@ export default function HomeScreen() {
 				</View>
 			</View>
 
+			{/* TODAY'S TASKS Section */}
+			<View style={styles.tasksContainer}>
+                <View style={styles.tasksHeader}>
+                    <View style={styles.tasksTitle}>
+                        <Ionicons name="calendar-outline" size={20} color="#CFA56C" />
+                        <Text style={styles.tasksTitleText}>TODAY'S TASKS</Text>
+                    </View>
+                    <View style={styles.tasksSeeAll}>
+						<Text style={styles.tasksSeeAllText} onPress={handleSeeAllPress}>See All</Text>
+						<Ionicons name="chevron-forward-outline" size={16} color="#CFA56C" />
+					</View>	
+                </View>
+
+                {data.todaysTasks.map((task) => (
+                    <View
+                        key={task.id}
+                        style={[
+                            styles.taskCard,
+                            task.completed && styles.taskCardCompleted,
+                        ]}
+                        onTouchEnd={() => completeTask(task.id)} // Handle task completion
+                    >
+                        <View style={styles.taskIcon}>
+                            <Text style={styles.taskIconText}>{task.icon}</Text>
+                        </View>
+                        <View style={styles.taskDetails}>
+                            <Text style={styles.taskTitle}>{task.title}</Text>
+                            <View style={styles.taskPoints}>
+                                <Text style={styles.taskPointsText}>+{task.points} points</Text>
+                                {task.completed && (
+                                    <View style={styles.taskCompletedBadge}>
+                                        <Ionicons name="checkmark-circle-outline" size={12} color="#fff" />
+                                        <Text style={styles.taskCompletedText}>Completed</Text>
+                                    </View>
+                                )}
+                            </View>
+                        </View>
+                        <Ionicons name="chevron-forward-outline" size={20} color="#999" />
+                    </View>
+                ))}
+            </View>
+
+			<View style={styles.streakContainer}>
+                <Ionicons name="flame-outline" size={24} color="#CFA56C" />
+                <Text style={styles.streakText}>
+                    You’re on a <Text style={styles.streakHighlight}>5-day streak</Text>!
+                </Text>
+            </View>
+
+			{/* Progress Bar and Daily Streak */}
+            <View style={styles.progressContainer}>
+                <Text style={styles.progressTitle}>Task Progress</Text>
+                <View style={styles.progressBarWrapper}>
+                    <Text style={styles.progressPercentage}>
+                        {Math.round(
+                            (data.completedTasks / data.todaysTasks.length) * 100
+                        )}%
+                    </Text>
+                    <View style={styles.progressBar}>
+                        <View
+                            style={[
+                                styles.progressFill,
+                                {
+                                    width: `${
+                                        (data.completedTasks / data.todaysTasks.length) * 100
+                                    }%`,
+                                },
+                            ]}
+                        />
+                    </View>
+                </View>
+                <Text style={styles.progressText}>
+                    {data.completedTasks}/{data.todaysTasks.length} tasks completed
+                </Text>
+            </View>
+					
 			{/* Daily Feature en la parte superior */}
 			<View
 				style={[
@@ -347,5 +447,159 @@ const styles = StyleSheet.create({
 	otherFeaturesContainer: {
 		marginBottom: 16,
 		flexGrow: 1,
+	},
+	tasksContainer: {
+        padding: 16,
+    },
+    tasksHeader: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 16,
+    },
+    tasksTitle: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    tasksTitleText: {
+        color: "#fff",
+        fontSize: 16,
+        fontWeight: "bold",
+        marginLeft: 8,
+    },
+    tasksSeeAll: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    tasksSeeAllText: {
+        color: "#CFA56C",
+        fontSize: 14,
+        marginRight: 4,
+    },
+    taskCard: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#333",
+        borderRadius: 8,
+        padding: 16,
+        marginBottom: 12,
+    },
+    taskCardCompleted: {
+        borderLeftWidth: 4,
+        borderLeftColor: "#CFA56C",
+    },
+    taskIcon: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: "#444",
+        justifyContent: "center",
+        alignItems: "center",
+        marginRight: 16,
+    },
+    taskIconText: {
+        fontSize: 18,
+    },
+    taskDetails: {
+        flex: 1,
+    },
+    taskTitle: {
+        color: "#fff",
+        fontSize: 16,
+        marginBottom: 4,
+    },
+    taskPoints: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    taskPointsText: {
+        color: "#CFA56C",
+        fontSize: 12,
+        marginRight: 8,
+    },
+    taskCompletedBadge: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#008000",
+        borderRadius: 12,
+        paddingHorizontal: 8,
+        paddingVertical: 2,
+    },
+    taskCompletedText: {
+        color: "#fff",
+        fontSize: 12,
+        marginLeft: 4,
+    },
+	progressContainer: {
+		marginTop: 20,
+		marginBottom: 20,
+	},
+	progressTitle: {
+		fontSize: 18,
+		fontWeight: "bold",
+		marginBottom: 10,
+		color: "#fff",
+	},
+	progressBarWrapper: {
+        position: "relative",
+        marginBottom: 8,
+    },
+    progressBar: {
+        height: 10,
+        backgroundColor: "#444",
+        borderRadius: 5,
+        overflow: "hidden",
+    },
+    progressFill: {
+        height: "100%",
+        backgroundColor: "#CFA56C",
+    },
+    progressPercentage: {
+        position: "absolute",
+        top: -30, // Move the percentage above the progress bar
+        left: "100%",
+        transform: [{ translateX: -50 }], // Center the text horizontally
+        color: "#fff",
+        fontSize: 24, // Make the text bigger
+        fontWeight: "bold",
+    },
+	progressText: {
+		color: "#fff",
+		fontSize: 14,
+	},
+	streakContainer: {
+        marginTop: 30,
+        alignItems: "center",
+    },
+    streakBadge: {
+        backgroundColor: "#CFA56C",
+        padding: 20,
+        borderRadius: 12,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: 6,
+    },
+    streakText: {
+        marginTop: 10,
+        color: "#fff",
+        fontSize: 20,
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    streakHighlight: {
+        color: "#fff",
+        fontWeight: "bold",
+        textDecorationLine: "underline",
+    },
+	streakBadge: {
+		flexDirection: "row",
+		alignItems: "center",
+		backgroundColor: "#333",
+		borderRadius: 8,
+		padding: 16,
+		marginBottom: 12,
 	},
 });
