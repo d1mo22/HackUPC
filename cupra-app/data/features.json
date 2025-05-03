@@ -1,0 +1,42 @@
+[
+	{
+		"id": "1",
+		"title": "Modo Sport",
+		"description": "Mejora la respuesta del acelerador y endurece la dirección para una experiencia de conducción más deportiva.",
+		"image": "https://example.com/sport-mode.jpg",
+		"category": "Conducción",
+		"isFeatured": true
+	},
+	{
+		"id": "2",
+		"title": "Sistema de infoentretenimiento",
+		"description": "Pantalla táctil de alta resolución con conectividad Apple CarPlay y Android Auto.",
+		"image": "https://example.com/infotainment.jpg",
+		"category": "Tecnología",
+		"isFeatured": false
+	},
+	{
+		"id": "3",
+		"title": "Asistente de aparcamiento",
+		"description": "Aparca tu Cupra automáticamente mediante sensores y cámaras de visión 360°.",
+		"image": "https://example.com/parking-assist.jpg",
+		"category": "Asistencia",
+		"isFeatured": false
+	},
+	{
+		"id": "4",
+		"title": "Faros LED adaptativos",
+		"description": "Iluminación inteligente que se adapta a las condiciones de la carretera y otros vehículos.",
+		"image": "https://example.com/adaptive-lights.jpg",
+		"category": "Seguridad",
+		"isFeatured": true
+	},
+	{
+		"id": "5",
+		"title": "Sistema de sonido premium",
+		"description": "Disfruta de una experiencia auditiva excepcional con 12 altavoces estratégicamente ubicados.",
+		"image": "https://example.com/sound-system.jpg",
+		"category": "Confort",
+		"isFeatured": false
+	}
+]

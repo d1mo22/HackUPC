@@ -1,0 +1,42 @@
+[
+	{
+		"id": "1",
+		"name": "Selector de modo de conducción",
+		"description": "Botón ubicado en la consola central que permite cambiar entre modos de conducción.",
+		"coordinates": { "x": 150, "y": 200 },
+		"category": "Controles",
+		"image": "interior_dashboard.jpg"
+	},
+	{
+		"id": "2",
+		"name": "Paletas de cambio",
+		"description": "Ubicadas detrás del volante, permiten cambiar de marcha manualmente sin quitar las manos del volante.",
+		"coordinates": { "x": 320, "y": 180 },
+		"category": "Conducción",
+		"image": "steering_wheel.jpg"
+	},
+	{
+		"id": "3",
+		"name": "Control de climatización",
+		"description": "Panel táctil para ajustar la temperatura y flujo de aire en el habitáculo.",
+		"coordinates": { "x": 240, "y": 280 },
+		"category": "Confort",
+		"image": "climate_control.jpg"
+	},
+	{
+		"id": "4",
+		"name": "Botón de arranque",
+		"description": "Inicia el motor con solo presionar, sin necesidad de llave.",
+		"coordinates": { "x": 380, "y": 230 },
+		"category": "Controles",
+		"image": "start_button.jpg"
+	},
+	{
+		"id": "5",
+		"name": "Pantalla multifunción",
+		"description": "Display central con información del sistema de infoentretenimiento y navegación.",
+		"coordinates": { "x": 240, "y": 150 },
+		"category": "Tecnología",
+		"image": "infotainment_screen.jpg"
+	}
+]

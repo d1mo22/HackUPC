@@ -1,0 +1,44 @@
+[
+	{
+		"id": "1",
+		"term": "DCC",
+		"definition": "Dynamic Chassis Control - Sistema que ajusta la suspensión en tiempo real para adaptarse a las condiciones de la carretera y al estilo de conducción.",
+		"category": "Tecnología"
+	},
+	{
+		"id": "2",
+		"term": "DSG",
+		"definition": "Direct Shift Gearbox - Caja de cambios automatizada de doble embrague que ofrece cambios rápidos y suaves.",
+		"category": "Transmisión"
+	},
+	{
+		"id": "3",
+		"term": "4Drive",
+		"definition": "Sistema de tracción integral a las cuatro ruedas que distribuye la potencia según sea necesario para una mayor estabilidad.",
+		"category": "Tracción"
+	},
+	{
+		"id": "4",
+		"term": "TSI",
+		"definition": "Turbocharged Stratified Injection - Motor de gasolina turboalimentado con inyección directa para mayor eficiencia y potencia.",
+		"category": "Motor"
+	},
+	{
+		"id": "5",
+		"term": "LED Matrix",
+		"definition": "Sistema de iluminación avanzado que ajusta automáticamente el haz de luz para evitar deslumbrar a otros conductores.",
+		"category": "Iluminación"
+	},
+	{
+		"id": "6",
+		"term": "Perfil de conducción",
+		"definition": "Configuraciones preestablecidas que modifican la respuesta del motor, la dirección y la suspensión según las preferencias del conductor.",
+		"category": "Conducción"
+	},
+	{
+		"id": "7",
+		"term": "ACC",
+		"definition": "Adaptive Cruise Control - Control de crucero que mantiene automáticamente la distancia con el vehículo de delante.",
+		"category": "Asistencia"
+	}
+]
