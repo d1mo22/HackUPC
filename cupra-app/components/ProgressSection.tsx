@@ -20,13 +20,13 @@ const ProgressSection: React.FC<ProgressSectionProps> = ({
 }) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Your Progress</Text>
+            <Text style={styles.title}>Tu Progreso</Text>
 
             <View style={styles.card}>
                 {/* Progress Section */}
                 <View style={styles.progressSection}>
                     <View style={styles.progressHeader}>
-                        <Text style={styles.label}>Tasks</Text>
+                        <Text style={styles.label}>Tareas</Text>
                         <Text style={styles.taskCount}>
                             <Text style={[styles.highlight, { color: accentColor }]}>
                                 {completedTasks}
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
     xpSection: {
-        flex: 0.33, // Occupy one-third of the parent container
+        flex: 0.1, // Occupy one-third of the parent container
         flexDirection: "row",
         alignItems: "center",
         borderLeftWidth: 1,

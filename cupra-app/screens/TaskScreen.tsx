@@ -59,7 +59,7 @@ export default function TaskScreen() {
                         { color: textColor, fontFamily: Typography.fonts.title },
                     ]}
                 >
-                    Tasks
+                    Tareas disponibles
                 </Text>
             </View>
 
@@ -76,7 +76,7 @@ export default function TaskScreen() {
             {/* Today's Tasks */}
             <View style={styles.section}>
                 <Text style={[styles.sectionTitle, { color: accentColor }]}>
-                    Today's Tasks
+                    Tareas Diarias
                 </Text>
                 {todaysTasks.map((task) => (
                     <TouchableOpacity
@@ -113,14 +113,14 @@ export default function TaskScreen() {
                             </Text>
                             <View style={styles.taskMeta}>
                                 <View style={styles.taskDueDay}>
-                                <Text style={styles.taskDueDayLabel}>DAY </Text>
+                                <Text style={styles.taskDueDayLabel}>DÍA </Text>
                                     <View style={styles.taskDueDayBadge}>
                                         <Text style={styles.taskDueDayText}>{task.day}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.taskPointsContainer}>
                                     <Text style={styles.taskPointsValue}>+{task.points}</Text>
-                                    <Text style={styles.taskPointsLabel}>points</Text>
+                                    <Text style={styles.taskPointsLabel}>puntos</Text>
                                 </View>
                             </View>
                         </View>
@@ -129,7 +129,7 @@ export default function TaskScreen() {
                         <View style={styles.taskStatus}>
                             {task.completed ? (
                                 <View style={styles.taskStatusBadgeCompleted}>
-                                    <Text style={styles.taskStatusTextCompleted}>DONE</Text>
+                                    <Text style={styles.taskStatusTextCompleted}>COMPLETADO</Text>
                                 </View>
                             ) : (
                                 <View style={styles.taskStatusBadgeDefault}>
@@ -153,7 +153,7 @@ export default function TaskScreen() {
             {Object.keys(tasksByLevel).map((level) => (
                 <View key={level} style={styles.section}>
                     <Text style={[styles.sectionTitle, { color: accentColor }]}>
-                        Level {level} Tasks
+                        Tareas de nível {level}
                     </Text>
                     {tasksByLevel[level].map((task) => (
                         <TouchableOpacity
@@ -195,7 +195,7 @@ export default function TaskScreen() {
                                 </Text>
                                 <View style={styles.taskMeta}>
                                     <View style={styles.taskDueDay}>
-                                    <Text style={styles.taskDueDayLabel}>DAY </Text>
+                                    <Text style={styles.taskDueDayLabel}>DÍA </Text>
                                         <View style={styles.taskDueDayBadge}>
                                             <Text style={styles.taskDueDayText}>
                                                 {task.day}
@@ -206,7 +206,7 @@ export default function TaskScreen() {
                                         <Text style={styles.taskPointsValue}>
                                             +{task.points}
                                         </Text>
-                                        <Text style={styles.taskPointsLabel}>points</Text>
+                                        <Text style={styles.taskPointsLabel}>puntos</Text>
                                     </View>
                                 </View>
                             </View>
@@ -216,7 +216,7 @@ export default function TaskScreen() {
                                 {task.completed ? (
                                     <View style={styles.taskStatusBadgeCompleted}>
                                         <Text style={styles.taskStatusTextCompleted}>
-                                            DONE
+                                            COMPLETADO
                                         </Text>
                                     </View>
                                 ) : (
@@ -226,7 +226,7 @@ export default function TaskScreen() {
                                             TODO
                                         </Text> :
                                         <Text style={styles.taskStatusTextDefault}>
-                                            LOCKED
+                                            BLOQUEADO
                                         </Text>}
                                     </View>
                                 )}
@@ -490,4 +490,5 @@ const styles = StyleSheet.create({
     taskCompletionIcon: {
         marginLeft: 12,
     },
+    
 });

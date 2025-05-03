@@ -9,11 +9,14 @@ import {
 	ScrollView,
 	StyleSheet,
 	Text,
+	TouchableOpacity,
 	View,
 	useWindowDimensions,
 } from "react-native";
 import FeatureCard from "../components/FeatureCard";
+import ProgressSection from "../components/ProgressSection";
 import { Typography } from "../constants/Typography";
+import tasks from "../data/tasks.json"; // Import tasks from tasks.json
 import { useThemeColor } from "../hooks/useThemeColor";
 
 // Define el tipo de navegación
@@ -49,6 +52,7 @@ export default function HomeScreen() {
 	const { width } = useWindowDimensions();
 	const isMobile = width <= 850; // Consideramos móvil cuando es menor o igual a 768px
 
+	
 	// Agrupa todos los colores del tema al inicio del componente
 	const backgroundColor = useThemeColor({}, "background");
 	const textColor = useThemeColor({}, "text");
@@ -63,6 +67,19 @@ export default function HomeScreen() {
 		if (screenWidth <= 1200) return "31%";
 		return "23%"; // 4 por fila en pantallas muy grandes
 	};
+
+	const currentDay = 3; // Arbitrary day variable
+	const todaysTasks = tasks.allTasks.filter((task) => task.day === currentDay);
+
+	// Calculate progress
+    const totalTasks = tasks.allTasks.length;
+    const completedTasks = tasks.allTasks.filter((task) => task.completed).length;
+    const progress = completedTasks / totalTasks;
+
+    // Calculate XP earned
+    const xpEarned = tasks.allTasks
+        .filter((task) => task.completed)
+        .reduce((total, task) => total + task.points, 0);
 
 	useEffect(() => {
 		// Simular carga de datos
@@ -206,7 +223,7 @@ export default function HomeScreen() {
 								{ color: textColor }, // Usar el color de texto del tema
 							]}
 						>
-							TODAY'S TASKS
+							TAREAS DIARIAS
 						</Text>
 					</View>
 					<View style={styles.tasksSeeAll}>
@@ -217,7 +234,7 @@ export default function HomeScreen() {
 							]}
 							onPress={handleSeeAllPress}
 						>
-							See All
+							Ver Todas	
 						</Text>
 						<Ionicons
 							name="chevron-forward-outline"
@@ -227,65 +244,69 @@ export default function HomeScreen() {
 					</View>
 				</View>
 
-				{data.todaysTasks.map((task) => (
-					<View
-						key={task.id}
-						style={[
-							styles.taskCard,
-							{ backgroundColor: cardBackgroundColor }, // Usar la variable en lugar de la función
-						]}
-						onTouchEnd={() => completeTask(task.id)}
-					>
-						<View
-							style={[
-								styles.taskIcon,
-								{ backgroundColor: cardAccentColor }, // Usar la variable en lugar de la función
-							]}
-						>
-							<Text style={styles.taskIconText}>{task.icon}</Text>
-						</View>
-						<View style={styles.taskDetails}>
-							<Text
-								style={[
-									styles.taskTitle,
-									{ color: textColor }, // Usar color de texto del tema
-								]}
-							>
-								{task.title}
-							</Text>
-							<View style={styles.taskPoints}>
-								<Text
-									style={[
-										styles.taskPointsText,
-										{ color: accentColor }, // Usar color de acento del tema
-									]}
-								>
-									+{task.points} points
-								</Text>
-								{task.completed && (
-									<View
+				{todaysTasks.map((task) => (
+									<TouchableOpacity
+										key={task.id}
 										style={[
-											styles.taskCompletedBadge,
-											{ backgroundColor: accentColor }, // Usar color de acento para el badge
+											styles.taskCard,
+											task.completed ? styles.taskCardCompleted : styles.taskCardDefault,
 										]}
+										onPress={() => console.log(`Task ${task.id} pressed`)}
+										activeOpacity={0.7}
 									>
+										{/* Task Icon */}
+										<View style={styles.taskIconContainer}>
+											<Text style={styles.taskIconText}>{task.icon}</Text>
+											<View
+												style={[
+													styles.taskCompletionIndicator,
+													task.completed
+														? styles.taskCompletionIndicatorCompleted
+														: styles.taskCompletionIndicatorDefault,
+												]}
+											/>
+										</View>
+				
+										{/* Task Details */}
+										<View style={styles.taskDetails}>
+											<Text
+												style={[
+													styles.taskTitle,
+													task.completed ? styles.taskTitleCompleted : styles.taskTitleDefault,
+												]}
+											>
+												{task.title}
+											</Text>
+											<View style={styles.taskMeta}>
+												<View style={styles.taskPointsContainer}>
+													<Text style={styles.taskPointsValue}>+{task.points}</Text>
+													<Text style={styles.taskPointsLabel}>puntos</Text>
+												</View>
+											</View>
+										</View>
+				
+										{/* Completion Status */}
+										<View style={styles.taskStatus}>
+											{task.completed ? (
+												<View style={styles.taskStatusBadgeCompleted}>
+													<Text style={styles.taskStatusTextCompleted}>COMPLETADO</Text>
+												</View>
+											) : (
+												<View style={styles.taskStatusBadgeDefault}>
+													<Text style={styles.taskStatusTextDefault}>TODO</Text>
+												</View>
+											)}
+										</View>
+				
+										{/* Completion Icon */}
 										<Ionicons
-											name="checkmark-circle-outline"
-											size={12}
-											color="#fff"
+											name={task.completed ? "checkmark-circle" : "ellipse-outline"}
+											size={20}
+											color={task.completed ? "#dbd3cb" : "#666"}
+											style={styles.taskCompletionIcon}
 										/>
-										<Text style={styles.taskCompletedText}>Completed</Text>
-									</View>
-								)}
-							</View>
-						</View>
-						<Ionicons
-							name="chevron-forward-outline"
-							size={20}
-							color={textColor}
-						/>
-					</View>
-				))}
+									</TouchableOpacity>
+								))}
 			</View>
 
 			<View
@@ -301,66 +322,23 @@ export default function HomeScreen() {
 						{ color: textColor }, // Usar color de texto del tema
 					]}
 				>
-					You're on a{" "}
+					Tienes una {" "}
 					<Text style={[styles.streakHighlight, { color: accentColor }]}>
-						5-day streak
+						racha de 5 días
 					</Text>
 					!
 				</Text>
 			</View>
 
-			{/* Progress Bar and Daily Streak */}
-			<View
-				style={[
-					styles.progressContainer,
-					{ backgroundColor: cardColor }, // Opcional: añadir fondo a la sección de progreso
-				]}
-			>
-				<Text
-					style={[
-						styles.progressTitle,
-						{ color: textColor }, // Usar color de texto del tema
-					]}
-				>
-					Task Progress
-				</Text>
-				<View style={styles.progressBarWrapper}>
-					<Text
-						style={[
-							styles.progressPercentage,
-							{ color: textColor }, // Usar color de texto del tema
-						]}
-					>
-						{Math.round((data.completedTasks / data.todaysTasks.length) * 100)}%
-					</Text>
-					<View
-						style={[
-							styles.progressBar,
-							{ backgroundColor: cardAccentColor }, // Color de fondo para la barra de progreso
-						]}
-					>
-						<View
-							style={[
-								styles.progressFill,
-								{
-									width: `${
-										(data.completedTasks / data.todaysTasks.length) * 100
-									}%`,
-									backgroundColor: accentColor, // Usar color de acento para el relleno
-								},
-							]}
-						/>
-					</View>
-				</View>
-				<Text
-					style={[
-						styles.progressText,
-						{ color: textColor }, // Usar color de texto del tema
-					]}
-				>
-					{data.completedTasks}/{data.todaysTasks.length} tasks completed
-				</Text>
-			</View>
+			{/* Progress Section */}
+            <ProgressSection
+                completedTasks={completedTasks}
+                totalTasks={totalTasks}
+                progress={progress}
+                xpEarned={xpEarned}
+                accentColor={accentColor}
+                textColor={textColor}
+            />
 
 			{/* Daily Feature en la parte superior */}
 			<View
@@ -595,12 +573,18 @@ const styles = StyleSheet.create({
 		marginRight: 4,
 	},
 	taskCard: {
-		flexDirection: "row",
-		alignItems: "center",
-		borderRadius: 8,
-		padding: 16,
-		marginBottom: 12,
-	},
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 16,
+        borderRadius: 12,
+        borderWidth: 1,
+        marginBottom: 12,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        elevation: 3,
+    },
 	taskCardCompleted: {
 		borderLeftWidth: 4,
 	},
@@ -706,4 +690,107 @@ const styles = StyleSheet.create({
 		padding: 16,
 		marginBottom: 12,
 	},
+	taskMeta: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginTop: 4,
+    },
+    taskDueDay: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    taskDueDayBadge: {
+        backgroundColor: "#dbd3cb",
+        borderRadius: 12,
+        width: 24,
+        height: 24,
+        justifyContent: "center",
+        alignItems: "center",
+        marginRight: 4,
+    },
+    taskDueDayText: {
+        color: "#1e1e1e",
+        fontSize: 12,
+        fontWeight: "bold",
+    },
+    taskDueDayLabel: {
+        color: "#888",
+        fontSize: 12,
+    },
+    taskPointsContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    taskPointsValue: {
+        color: "#dbd3cb",
+        fontSize: 14,
+        fontWeight: "bold",
+        marginRight: 4,
+    },
+    taskPointsLabel: {
+        color: "#888",
+        fontSize: 12,
+    },
+    taskStatus: {
+        marginLeft: 12,
+    },
+    taskStatusBadgeDefault: {
+        backgroundColor: "#444",
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: 8,
+    },
+    taskStatusBadgeCompleted: {
+        backgroundColor: "#dbd3cb",
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: 8,
+    },
+    taskStatusTextDefault: {
+        color: "#888",
+        fontSize: 12,
+        fontWeight: "bold",
+    },
+    taskStatusTextCompleted: {
+        color: "#1e1e1e",
+        fontSize: 12,
+        fontWeight: "bold",
+    },
+    taskCompletionIcon: {
+        marginLeft: 12,
+    },
+	taskIconContainer: {
+        position: "relative",
+        marginRight: 16,
+    },
+    taskCompletionIndicator: {
+        position: "absolute",
+        bottom: -2,
+        right: -2,
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        borderWidth: 2,
+        borderColor: "#1e1e1e",
+    },
+    taskCompletionIndicatorDefault: {
+        backgroundColor: "#666",
+    },
+    taskCompletionIndicatorCompleted: {
+        backgroundColor: "#dbd3cb",
+    },
+    taskCompletionIndicatorLocked: {
+        backgroundColor: "#444", // Gray indicator for locked tasks
+    },
+	taskTitleDefault: {
+        color: "#fff",
+    },
+    taskTitleCompleted: {
+        color: "#dbd3cb",
+    },
+	taskCardDefault: {
+        backgroundColor: "#1e1e1e",
+        borderColor: "#444",
+    },
 });
