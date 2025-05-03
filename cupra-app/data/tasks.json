@@ -1,0 +1,100 @@
+{
+    "allTasks": [
+      {
+        "id": 1,
+        "title": "Task 1",
+        "day": 1,
+        "points": 10,
+        "completed": true,
+        "icon": "📌"
+      },
+      {
+        "id": 2,
+        "title": "Task 2",
+        "day": 2,
+        "points": 20,
+        "completed": true,
+        "icon": "✅"
+      },
+      {
+        "id": 3,
+        "title": "Task 3",
+        "day": 2,
+        "points": 15,
+        "completed": true,
+        "icon": "✅"
+      },
+      {
+        "id": 1,
+        "title": "Task 1",
+        "day": 3,
+        "points": 10,
+        "completed": false,
+        "icon": "📌"
+      },
+      {
+        "id": 2,
+        "title": "Task 2",
+        "day": 4,
+        "points": 20,
+        "completed": false,
+        "icon": "✅"
+      },
+      {
+        "id": 3,
+        "title": "Task 3",
+        "day": 5,
+        "points": 15,
+        "completed": false,
+        "icon": "✅"
+      },
+      {
+        "id": 1,
+        "title": "Task 1",
+        "day": 6,
+        "points": 10,
+        "completed": false,
+        "icon": "📌"
+      },
+      {
+        "id": 2,
+        "title": "Task 2",
+        "day": 7,
+        "points": 20,
+        "completed": false,
+        "icon": "✅"
+      },
+      {
+        "id": 3,
+        "title": "Task 3",
+        "day": 8,
+        "points": 15,
+        "completed": false,
+        "icon": "✅"
+      },
+      {
+        "id": 1,
+        "title": "Task 1",
+        "day": 9,
+        "points": 10,
+        "completed": false,
+        "icon": "📌"
+      },
+      {
+        "id": 2,
+        "title": "Task 2",
+        "day": 10,
+        "points": 20,
+        "completed": false,
+        "icon": "✅"
+      },
+      {
+        "id": 3,
+        "title": "Task 3",
+        "day": 11,
+        "points": 15,
+        "completed": false,
+        "icon": "✅"
+      }
+    ]
+  }

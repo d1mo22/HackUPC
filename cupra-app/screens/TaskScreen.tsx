@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import tasks from "../data/tasks.json"; // Import tasks from tasks.json
 import { useThemeColor } from "../hooks/useThemeColor";
 
 export default function TaskScreen() {
@@ -8,18 +9,12 @@ export default function TaskScreen() {
     const textColor = useThemeColor({}, "text");
     const accentColor = useThemeColor({}, "tint");
 
-    // Sample task data (replace with actual data or props)
-    const data = {
-        todaysTasks: [
-            { id: 1, title: "Task 1", points: 10, completed: false, icon: "📌" },
-            { id: 2, title: "Task 2", points: 20, completed: true, icon: "✅" },
-        ],
-        completedTasks: [
-            { id: 3, title: "Task 3", points: 15, completed: true, icon: "✅" },
-        ],
-    };
+    const currentDay = 3; // Arbitrary day variable
 
-    const notCompletedTasks = data.todaysTasks.filter((task) => !task.completed);
+    // Filter tasks based on the current day
+    const todaysTasks = tasks.allTasks.filter((task) => task.day === currentDay);
+    const unlockedTasks = tasks.allTasks.filter((task) => task.day <= currentDay && !task.completed);
+    const lockedTasks = tasks.allTasks.filter((task) => task.day > currentDay);
 
     return (
         <ScrollView
@@ -28,12 +23,12 @@ export default function TaskScreen() {
         >
             <Text style={[styles.title, { color: textColor }]}>Your Tasks</Text>
 
-            {/* Daily Tasks */}
+            {/* Today's Tasks */}
             <View style={styles.section}>
                 <Text style={[styles.sectionTitle, { color: accentColor }]}>
-                    Daily Tasks
+                    Today's Tasks
                 </Text>
-                {data.todaysTasks.map((task) => (
+                {todaysTasks.map((task) => (
                     <View
                         key={task.id}
                         style={[
@@ -61,12 +56,12 @@ export default function TaskScreen() {
                 ))}
             </View>
 
-            {/* Completed Tasks */}
+            {/* Unlocked Tasks */}
             <View style={styles.section}>
                 <Text style={[styles.sectionTitle, { color: accentColor }]}>
-                    Completed Tasks
+                    Unlocked Tasks
                 </Text>
-                {data.completedTasks.map((task) => (
+                {unlockedTasks.map((task) => (
                     <View key={task.id} style={styles.taskCard}>
                         <Text style={styles.taskIcon}>{task.icon}</Text>
                         <View style={styles.taskDetails}>
@@ -77,21 +72,23 @@ export default function TaskScreen() {
                                 +{task.points} points
                             </Text>
                         </View>
-                        <Ionicons
-                            name="checkmark-circle-outline"
-                            size={20}
-                            color={accentColor}
-                        />
+                        {!task.completed && (
+                            <Ionicons
+                                name="close-circle-outline"
+                                size={20}
+                                color="red"
+                            />
+                        )}
                     </View>
                 ))}
             </View>
 
-            {/* Not Completed Tasks */}
+            {/* Locked Tasks */}
             <View style={styles.section}>
                 <Text style={[styles.sectionTitle, { color: accentColor }]}>
-                    Not Completed Tasks
+                    Locked Tasks
                 </Text>
-                {notCompletedTasks.map((task) => (
+                {lockedTasks.map((task) => (
                     <View key={task.id} style={styles.taskCard}>
                         <Text style={styles.taskIcon}>{task.icon}</Text>
                         <View style={styles.taskDetails}>
@@ -103,9 +100,9 @@ export default function TaskScreen() {
                             </Text>
                         </View>
                         <Ionicons
-                            name="close-circle-outline"
+                            name="lock-closed-outline"
                             size={20}
-                            color="red"
+                            color="gray"
                         />
                     </View>
                 ))}
