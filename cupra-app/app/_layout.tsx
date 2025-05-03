@@ -1,29 +1,48 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Stack } from "expo-router";
+import { useEffect, useState } from "react";
+import { Text, View } from "react-native";
+import "react-native-reanimated";
+import { loadFonts } from "../config/fonts";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+function LoadingView() {
+	return (
+		<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+			<Text>Cargando...</Text>
+		</View>
+	);
+}
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+	const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+	useEffect(() => {
+		async function prepare() {
+			try {
+				await loadFonts();
+				setFontsLoaded(true);
+			} catch (e) {
+				console.warn("Error al cargar recursos:", e);
+			}
+		}
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+		prepare();
+	}, []);
+
+	if (!fontsLoaded) {
+		return <LoadingView />;
+	}
+
+	return (
+		<Stack screenOptions={{ headerShown: false }}>
+			{/* Pantalla de bienvenida e inicio de sesión */}
+			<Stack.Screen name="index" options={{ headerShown: false }} />
+			<Stack.Screen
+				name="auth"
+				options={{ headerShown: false, presentation: "modal" }}
+			/>
+
+			{/* Navegación principal después de autenticación */}
+			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+		</Stack>
+	);
 }

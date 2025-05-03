@@ -1,5 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Typography } from "../constants/Typography";
 import { useThemeColor } from "../hooks/useThemeColor";
 
 interface FeatureCardProps {
@@ -24,31 +25,66 @@ export default function FeatureCard({
 	const backgroundColor = useThemeColor({}, "background");
 	const textColor = useThemeColor({}, "text");
 	const accentColor = useThemeColor({}, "tint");
+	const isDarkMode = backgroundColor === "#121212"; // Comprobamos si estamos en modo oscuro
 
 	return (
 		<TouchableOpacity
 			style={[
 				styles.container,
 				{ backgroundColor },
-				isFeatured && styles.featured,
+				isFeatured && [styles.featured, { borderColor: accentColor }],
 			]}
 			onPress={() => onPress(id)}
 		>
 			{isFeatured && (
 				<View style={[styles.featuredBadge, { backgroundColor: accentColor }]}>
-					<Text style={styles.featuredText}>Destacado</Text>
+					<Text
+						style={[
+							styles.featuredText,
+							{
+								color: "#FFFFFF",
+								fontFamily: Typography.fonts.regular,
+							},
+						]}
+					>
+						Destacado
+					</Text>
 				</View>
 			)}
 
 			<Image source={{ uri: image }} style={styles.image} resizeMode="cover" />
 
 			<View style={styles.content}>
-				<Text style={[styles.category, { color: accentColor }]}>
+				<Text
+					style={[
+						styles.category,
+						{
+							color: accentColor,
+							fontFamily: Typography.fonts.regular,
+						},
+					]}
+				>
 					{category.toUpperCase()}
 				</Text>
-				<Text style={[styles.title, { color: textColor }]}>{title}</Text>
 				<Text
-					style={[styles.description, { color: textColor }]}
+					style={[
+						styles.title,
+						{
+							color: textColor,
+							fontFamily: Typography.fonts.title,
+						},
+					]}
+				>
+					{title}
+				</Text>
+				<Text
+					style={[
+						styles.description,
+						{
+							color: textColor,
+							fontFamily: Typography.fonts.regular,
+						},
+					]}
 					numberOfLines={2}
 				>
 					{description}
@@ -71,7 +107,6 @@ const styles = StyleSheet.create({
 	},
 	featured: {
 		borderWidth: 2,
-		borderColor: "#E94560",
 	},
 	featuredBadge: {
 		position: "absolute",
@@ -83,7 +118,6 @@ const styles = StyleSheet.create({
 		zIndex: 1,
 	},
 	featuredText: {
-		color: "white",
 		fontSize: 12,
 		fontWeight: "bold",
 	},
