@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import {
 	ActivityIndicator,
 	Image,
+	Platform,
 	ScrollView,
 	StyleSheet,
 	Text,
@@ -325,28 +326,55 @@ export default function HomeScreen() {
 					Task Progress
 				</Text>
 				<View style={styles.progressBarWrapper}>
-					<Text
-						style={[
-							styles.progressPercentage,
-							{ color: textColor }, // Usar color de texto del tema
-						]}
-					>
-						{Math.round((data.completedTasks / data.todaysTasks.length) * 100)}%
-					</Text>
+					{Platform.OS === "ios" ? (
+						<View
+							style={{
+								flexDirection: "row",
+								justifyContent: "space-between",
+								marginBottom: 5,
+							}}
+						>
+							<Text
+								style={{
+									color: textColor,
+									fontFamily: Typography.fonts.title,
+									fontSize: 18,
+								}}
+							>
+								Progress:
+							</Text>
+							<Text
+								style={{
+									color: textColor,
+									fontSize: 20,
+									fontWeight: "bold",
+									fontFamily: Typography.fonts.title,
+								}}
+							>
+								{Math.round(
+									(data.completedTasks / data.todaysTasks.length) * 100,
+								)}
+								%
+							</Text>
+						</View>
+					) : (
+						<Text style={[styles.progressPercentage, { color: textColor }]}>
+							{Math.round(
+								(data.completedTasks / data.todaysTasks.length) * 100,
+							)}
+							%
+						</Text>
+					)}
+
 					<View
-						style={[
-							styles.progressBar,
-							{ backgroundColor: cardAccentColor }, // Color de fondo para la barra de progreso
-						]}
+						style={[styles.progressBar, { backgroundColor: cardAccentColor }]}
 					>
 						<View
 							style={[
 								styles.progressFill,
 								{
-									width: `${
-										(data.completedTasks / data.todaysTasks.length) * 100
-									}%`,
-									backgroundColor: accentColor, // Usar color de acento para el relleno
+									width: `${(data.completedTasks / data.todaysTasks.length) * 100}%`,
+									backgroundColor: accentColor,
 								},
 							]}
 						/>
@@ -368,7 +396,9 @@ export default function HomeScreen() {
 					styles.dailyFeatureContainer,
 					{
 						alignSelf: "center", // Centrar el contenido horizontalmente
-						width: isMobile ? "100%" : "60%",
+						width: "100%",
+						maxWidth: 750,
+						minWidth: 320,
 					},
 				]}
 			>
@@ -387,7 +417,7 @@ export default function HomeScreen() {
 				{dailyFeature && (
 					<View
 						style={{
-							width: isMobile ? "100%" : "60%", // Menos ancho en escritorio
+							width: isMobile ? "100%" : "80%", // Menos ancho en escritorio
 							overflow: "hidden", // Evitar que el contenido desborde
 						}}
 					>
