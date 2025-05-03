@@ -96,8 +96,9 @@ export default function HomeScreen() {
 	};
 
 	const handleSeeAllPress = () => {
-		console.log("Navigating to TaskScreen");
-		navigation.navigate("TaskScreen");
+		router.push({
+			pathname: "/(tabs)/task-list"
+		});
 	};
 
 	const completeTask = (taskId) => {

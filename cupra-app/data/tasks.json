@@ -6,7 +6,8 @@
         "day": 1,
         "points": 10,
         "completed": true,
-        "icon": "📌"
+        "icon": "📌",
+        "level": 1
       },
       {
         "id": 2,
@@ -14,7 +15,8 @@
         "day": 2,
         "points": 20,
         "completed": true,
-        "icon": "✅"
+        "icon": "✅",
+        "level": 1
       },
       {
         "id": 3,
@@ -22,79 +24,89 @@
         "day": 2,
         "points": 15,
         "completed": true,
-        "icon": "✅"
+        "icon": "✅",
+        "level": 1
       },
       {
-        "id": 1,
+        "id": 4,
         "title": "Task 1",
         "day": 3,
         "points": 10,
         "completed": false,
-        "icon": "📌"
+        "icon": "📌",
+        "level": 2
       },
       {
-        "id": 2,
+        "id": 5,
         "title": "Task 2",
         "day": 4,
         "points": 20,
         "completed": false,
-        "icon": "✅"
+        "icon": "✅",
+        "level": 2
       },
       {
-        "id": 3,
+        "id": 6,
         "title": "Task 3",
         "day": 5,
         "points": 15,
         "completed": false,
-        "icon": "✅"
+        "icon": "✅",
+        "level": 3
       },
-      {
-        "id": 1,
+        {
+        "id": 7,
         "title": "Task 1",
         "day": 6,
         "points": 10,
         "completed": false,
-        "icon": "📌"
+        "icon": "📌",
+        "level": 3
       },
       {
-        "id": 2,
+        "id": 8,
         "title": "Task 2",
         "day": 7,
         "points": 20,
         "completed": false,
-        "icon": "✅"
+        "icon": "✅",
+        "level": 4
       },
       {
-        "id": 3,
+        "id": 9,
         "title": "Task 3",
         "day": 8,
         "points": 15,
         "completed": false,
-        "icon": "✅"
+        "icon": "✅",
+        "level": 4
       },
       {
-        "id": 1,
+        "id": 10,
         "title": "Task 1",
         "day": 9,
         "points": 10,
         "completed": false,
-        "icon": "📌"
+        "icon": "📌",
+        "level": 5
       },
       {
-        "id": 2,
+        "id": 11,
         "title": "Task 2",
         "day": 10,
         "points": 20,
         "completed": false,
-        "icon": "✅"
+        "icon": "✅",
+        "level": 5
       },
       {
-        "id": 3,
+        "id": 12,
         "title": "Task 3",
         "day": 11,
         "points": 15,
         "completed": false,
-        "icon": "✅"
+        "icon": "✅",
+        "level": 5
       }
     ]
   }
