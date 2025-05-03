@@ -200,6 +200,7 @@ export default function AuthScreen() {
 								placeholderTextColor="#999"
 								value={name}
 								onChangeText={setName}
+								autoComplete="off"
 							/>
 						</View>
 					</View>

@@ -7,12 +7,15 @@ import { useThemeColor } from "../../hooks/useThemeColor";
 
 import CupraLogo from "../../components/CupraLogo";
 
+// Definir la altura del footer como una constante que podamos reutilizar
+const FOOTER_HEIGHT = 80;
+
 export default function TabLayout() {
 	const accentColor = useThemeColor({}, "tint");
 	const backgroundColor = useThemeColor({}, "background");
 	const textColor = useThemeColor({}, "text");
 	const path = usePathname();
-	console.log("Ruta actual:", path);
+
 	// Determinar la pestaña activa directamente
 	let activeTab = "";
 	if (path === "/") {
@@ -22,8 +25,6 @@ export default function TabLayout() {
 	} else if (path === "/search") {
 		activeTab = "search";
 	}
-
-	console.log("Pestaña activa:", activeTab, "Ruta:", path);
 
 	const handleUserPress = () => {
 		router.push("/(tabs)/profile");
@@ -46,7 +47,7 @@ export default function TabLayout() {
 	};
 
 	return (
-		<>
+		<View style={styles.container}>
 			<Stack
 				screenOptions={{
 					headerStyle: {
@@ -56,6 +57,8 @@ export default function TabLayout() {
 					headerShadowVisible: false,
 					headerBackVisible: false,
 					headerLeft: () => null,
+					// Añadir padding inferior a todo el contenido para compensar la altura del footer
+					contentStyle: { paddingBottom: FOOTER_HEIGHT },
 				}}
 			>
 				<Stack.Screen
@@ -190,11 +193,14 @@ export default function TabLayout() {
 					</TouchableOpacity>
 				</View>
 			</View>
-		</>
+		</View>
 	);
 }
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+	},
 	userIconContainer: {
 		marginRight: 15,
 		borderRadius: 20,
@@ -210,7 +216,7 @@ const styles = StyleSheet.create({
 		bottom: 0,
 		left: 0,
 		right: 0,
-		height: 80,
+		height: FOOTER_HEIGHT,
 		paddingBottom: 10,
 		borderTopWidth: 1,
 		borderTopColor: "rgba(0,0,0,0.1)",

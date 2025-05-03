@@ -11,7 +11,7 @@ import {
 	Text,
 	TouchableOpacity,
 	View,
-	useWindowDimensions,
+	useWindowDimensions
 } from "react-native";
 import FeatureCard from "../components/FeatureCard";
 import ProgressSection from "../components/ProgressSection";
@@ -346,7 +346,9 @@ export default function HomeScreen() {
 					styles.dailyFeatureContainer,
 					{
 						alignSelf: "center", // Centrar el contenido horizontalmente
-						width: isMobile ? "100%" : "60%",
+						width: "100%",
+						maxWidth: 750,
+						minWidth: 320,
 					},
 				]}
 			>
@@ -365,7 +367,7 @@ export default function HomeScreen() {
 				{dailyFeature && (
 					<View
 						style={{
-							width: isMobile ? "100%" : "60%", // Menos ancho en escritorio
+							width: isMobile ? "100%" : "80%", // Menos ancho en escritorio
 							overflow: "hidden", // Evitar que el contenido desborde
 						}}
 					>
