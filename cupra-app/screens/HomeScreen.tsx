@@ -34,6 +34,13 @@ export default function HomeScreen() {
 	const textColor = useThemeColor({}, "text");
 	const accentColor = useThemeColor({}, "tint");
 
+	const getItemWidth = (screenWidth: number) => {
+		if (screenWidth <= 650) return "100%";
+		if (screenWidth <= 900) return "48%";
+		if (screenWidth <= 1200) return "31%";
+		return "23%"; // 4 por fila en pantallas muy grandes
+	};
+
 	useEffect(() => {
 		// Simular carga de datos
 		setTimeout(() => {
@@ -71,7 +78,10 @@ export default function HomeScreen() {
 
 	return (
 		<ScrollView
-			style={[styles.container, { backgroundColor }]}
+			style={[
+				styles.container,
+				{ backgroundColor, paddingHorizontal: isMobile ? 0 : 25 },
+			]}
 			contentContainerStyle={styles.contentContainer}
 		>
 			{/* Header con icono de usuario a la derecha */}
@@ -96,7 +106,7 @@ export default function HomeScreen() {
 				</View>
 			</View>
 
-			{/* Widget mejorado de días para recibir el coche */}
+			{/* Widget de días para recibir el coche */}
 			<View style={styles.deliveryCountdownContainer}>
 				<View
 					style={[
@@ -135,49 +145,93 @@ export default function HomeScreen() {
 			</View>
 
 			{/* Daily Feature en la parte superior */}
-			<View style={styles.dailyFeatureContainer}>
+			<View
+				style={[
+					styles.dailyFeatureContainer,
+					{
+						alignItems: "center", // Centrar el contenido horizontalmente
+						width: "100%",
+					},
+				]}
+			>
 				<Text
 					style={[
 						styles.sectionTitle,
-						{ color: textColor, fontFamily: Typography.fonts.title },
+						{
+							color: textColor,
+							fontFamily: Typography.fonts.title,
+							textAlign: "center", // Centrar el texto
+						},
 					]}
 				>
 					Característica del día
 				</Text>
 				{dailyFeature && (
-					<FeatureCard
-						id={dailyFeature.id}
-						title={dailyFeature.title}
-						description={dailyFeature.description}
-						image={dailyFeature.image}
-						category={dailyFeature.category}
-						onPress={handleFeaturePress}
-						isFeatured={true}
-					/>
+					<View
+						style={{
+							width: isMobile ? "100%" : "60%", // Menos ancho en escritorio
+							height: "auto", // Más alto
+							overflow: "hidden", // Evitar que el contenido desborde
+						}}
+					>
+						<FeatureCard
+							id={dailyFeature.id}
+							title={dailyFeature.title}
+							description={dailyFeature.description}
+							image={dailyFeature.image}
+							category={dailyFeature.category}
+							onPress={handleFeaturePress}
+							isFeatured={true}
+						/>
+					</View>
 				)}
 			</View>
 
 			{/* Resto de características */}
-			<View style={styles.otherFeaturesContainer}>
+			<View
+				style={[
+					styles.otherFeaturesContainer,
+					isMobile
+						? { width: "100%" }
+						: {
+								width: "100%",
+								maxWidth: 2000,
+								minWidth: 320,
+								alignSelf: "center",
+							},
+				]}
+			>
 				<Text
 					style={[
 						styles.sectionTitle,
-						{ color: textColor, fontFamily: Typography.fonts.title },
+						{
+							color: textColor,
+							fontFamily: Typography.fonts.title,
+						},
 					]}
 				>
 					Otras características
 				</Text>
-				{otherFeatures.map((feature) => (
-					<FeatureCard
-						key={feature.id}
-						id={feature.id}
-						title={feature.title}
-						description={feature.description}
-						image={feature.image}
-						category={feature.category}
-						onPress={handleFeaturePress}
-					/>
-				))}
+				<View style={styles.featuresGrid}>
+					{otherFeatures.map((feature) => (
+						<View
+							key={feature.id}
+							style={[
+								styles.featureCardWrapper,
+								{ width: getItemWidth(width) }, // 48% para dejar un pequeño espacio entre tarjetas
+							]}
+						>
+							<FeatureCard
+								id={feature.id}
+								title={feature.title}
+								description={feature.description}
+								image={feature.image}
+								category={feature.category}
+								onPress={handleFeaturePress}
+							/>
+						</View>
+					))}
+				</View>
 			</View>
 		</ScrollView>
 	);
@@ -189,6 +243,15 @@ const styles = StyleSheet.create({
 	},
 	contentContainer: {
 		padding: 16,
+	},
+	featuresGrid: {
+		flexDirection: "row",
+		flexWrap: "wrap",
+		justifyContent: "space-between",
+		width: "100%",
+	},
+	featureCardWrapper: {
+		marginBottom: 16,
 	},
 	loadingContainer: {
 		flex: 1,
@@ -276,9 +339,13 @@ const styles = StyleSheet.create({
 		marginBottom: 16,
 	},
 	dailyFeatureContainer: {
-		marginBottom: 24,
+		marginBottom: 5, // Aumentar el margen inferior
+		paddingVertical: 20, // Añadir padding vertical
+		alignItems: "center", // Centrar el contenido
+		width: "100%",
 	},
 	otherFeaturesContainer: {
 		marginBottom: 16,
+		flexGrow: 1,
 	},
 });
