@@ -1,7 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { useThemeColor } from "../hooks/useThemeColor";
-
 
 interface ProgressSectionProps {
     completedTasks: number;
@@ -20,29 +19,24 @@ const ProgressSection: React.FC<ProgressSectionProps> = ({
     accentColor,
     textColor,
 }) => {
+    const backgroundColor = useThemeColor({}, "background");
+    const cardColor = useThemeColor({}, "card");
+    const backgroundVariant = useThemeColor({}, "backgroundVariant");
+    const taskColor = useThemeColor({}, "lightText");
 
-    // Agrupa todos los colores del tema al inicio del componente
-            const backgroundColor = useThemeColor({}, "background");
-            const cardColor = useThemeColor({}, "card");
-            const cardBackgroundColor = useThemeColor({}, "cardBackground");
-            const cardAccentColor = useThemeColor({}, "cardAccent");
-            const taskColor = useThemeColor({}, "lightText");
-            const taskCompletedColor = useThemeColor({}, "taskCompleted");
-            const taskDisabledColor = useThemeColor({}, "taskDisabled");
-            const contrastHighlight = useThemeColor({}, "contrastHighlight");
-            const contrastText = useThemeColor({}, "plus");
-            const backgroundVariant = useThemeColor({}, "backgroundVariant")
+    const { width } = useWindowDimensions();
+    const isMobile = width <= 850;
 
     return (
-        <View style={[styles.container, {backgroundColor : taskDisabledColor}]}>
-            <Text style={[styles.title, {color: textColor}]}>Tu Progreso</Text>
+        <View style={[styles.container, { backgroundColor, paddingHorizontal: isMobile ? 0 : 16 }]}>
+            <Text style={[styles.title, { color: textColor }]}>Tu Progreso</Text>
 
-            <View style={[styles.card, { backgroundColor: cardColor}]}>
+            <View style={[styles.card, { backgroundColor: cardColor }]}>
                 {/* Progress Section */}
                 <View style={styles.progressSection}>
                     <View style={styles.progressHeader}>
-                        <Text style={[styles.label, {color : taskColor}]}>Tareas</Text>
-                        <Text style={[styles.taskCount, , {color : textColor}]}>
+                        <Text style={[styles.label, { color: taskColor }]}>Tareas</Text>
+                        <Text style={[styles.taskCount, { color: textColor }]}>
                             <Text style={[styles.highlight, { color: accentColor }]}>
                                 {completedTasks}
                             </Text>
@@ -50,7 +44,7 @@ const ProgressSection: React.FC<ProgressSectionProps> = ({
                         </Text>
                     </View>
 
-                    <View style={[styles.progressBar, {backgroundColor: backgroundVariant}]}>
+                    <View style={[styles.progressBar, { backgroundColor: backgroundVariant }]}>
                         <View
                             style={[
                                 styles.progressBarFill,
@@ -58,17 +52,17 @@ const ProgressSection: React.FC<ProgressSectionProps> = ({
                             ]}
                         />
                     </View>
-                    <Text style={[styles.percentage, {color : taskColor}]}>{Math.round(progress * 100)}%</Text>
+                    <Text style={[styles.percentage, { color: taskColor }]}>
+                        {Math.round(progress * 100)}%
+                    </Text>
                 </View>
 
                 {/* XP Section */}
                 <View style={styles.xpSection}>
-                    <View style={[styles.xpIcon, {backgroundColor: backgroundVariant}]}>
+                    <View style={[styles.xpIcon, { backgroundColor: backgroundVariant }]}>
                         <Text style={[styles.xpText, { color: accentColor }]}>XP</Text>
                     </View>
-                    <View style={styles.xpDetails}>
-                        <Text style={[styles.xpValue, { color: accentColor }]}>{xpEarned}</Text>
-                    </View>
+                    <Text style={[styles.xpValue, { color: accentColor }]}>{xpEarned}</Text>
                 </View>
             </View>
         </View>
@@ -77,8 +71,8 @@ const ProgressSection: React.FC<ProgressSectionProps> = ({
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#1a1a1a", 
-        padding: 16,
+        backgroundColor: "#1a1a1a",
+        paddingVertical: 16,
         borderRadius: 12,
         shadowColor: "#000",
         shadowOpacity: 0.2,
@@ -91,13 +85,14 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     card: {
+        flexDirection: "row", // Ensure XP section is on the right
         padding: 16,
         borderRadius: 12,
-        flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "center",
     },
     progressSection: {
-        flex: 1,
+        flex: 1, // Take up remaining space
         marginRight: 16,
     },
     progressHeader: {
@@ -132,38 +127,24 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
     xpSection: {
-        flex: 0.1, // Occupy one-third of the parent container
         flexDirection: "row",
         alignItems: "center",
-        borderLeftWidth: 1,
-        borderLeftColor: "#444",
-        paddingLeft: 16,
     },
     xpIcon: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
         justifyContent: "center",
         alignItems: "center",
-        marginRight: 16,
+        marginRight: 8,
     },
     xpText: {
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: "bold",
-    },
-    xpLabel: {
-        fontSize: 24,
-        color: "#aaa",
     },
     xpValue: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: "bold",
-    },
-    xpDetails: {
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
     },
 });
 

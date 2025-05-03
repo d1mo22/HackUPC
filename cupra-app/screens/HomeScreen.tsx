@@ -40,13 +40,7 @@ export default function HomeScreen() {
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const [otherFeatures, setOtherFeatures] = useState<any[]>([]);
 	const [daysRemaining] = useState(30); // Número fijo de días restantes para recibir el coche
-	const [data, setData] = useState({
-		todaysTasks: [
-			{ id: 1, title: "Task 1", points: 10, completed: false, icon: "📌" },
-			{ id: 2, title: "Task 2", points: 20, completed: true, icon: "✅" },
-		],
-		completedTasks: 1,
-	});
+
 
 	// Obtenemos las dimensiones de la pantalla
 	const { width } = useWindowDimensions();

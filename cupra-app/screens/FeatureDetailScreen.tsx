@@ -11,7 +11,7 @@ import {
 	View,
 	useWindowDimensions,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Typography } from "../constants/Typography";
 import { useThemeColor } from "../hooks/useThemeColor";
 
@@ -49,6 +49,13 @@ export default function FeatureDetailScreen({
 	const cardColor = useThemeColor({}, "card");
 	const cardBackgroundColor = useThemeColor({}, "cardBackground");
 	const cardAccentColor = useThemeColor({}, "cardAccent");
+
+	const insets = useSafeAreaInsets();
+	
+	const top = typeof insets.top === 'number' ? insets.top : 0;
+	const bottom = typeof insets.bottom === 'number' ? insets.bottom : 0;
+	const left = typeof insets.left === 'number' ? insets.left : 0;
+	const right = typeof insets.right === 'number' ? insets.right : 0;
 
 	useEffect(() => {
 		// Simular carga de datos
@@ -91,7 +98,14 @@ export default function FeatureDetailScreen({
 	}
 
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor }}>
+		<View style={[
+			{
+			paddingTop: top,
+			paddingBottom: bottom,
+			paddingLeft: left,
+			paddingRight: right,
+			},
+			]}>
 			<ScrollView
 				style={[styles.container, { backgroundColor }]}
 				contentContainerStyle={styles.contentContainer}
@@ -190,7 +204,7 @@ export default function FeatureDetailScreen({
 					)}
 				</View>
 			</ScrollView>
-		</SafeAreaView>
+		</View>
 	);
 }
 
