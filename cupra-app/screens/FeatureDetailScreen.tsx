@@ -11,6 +11,7 @@ import {
 	View,
 	useWindowDimensions,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Typography } from "../constants/Typography";
 import { useThemeColor } from "../hooks/useThemeColor";
 
@@ -90,104 +91,106 @@ export default function FeatureDetailScreen({
 	}
 
 	return (
-		<ScrollView
-			style={[styles.container, { backgroundColor }]}
-			contentContainerStyle={styles.contentContainer}
-		>
-			{/* Header con botón de retroceso */}
-			<View style={styles.header}>
-				<TouchableOpacity
-					onPress={handleGoBack}
-					style={styles.backButtonContainer}
-				>
-					<Ionicons name="arrow-back" size={24} color={textColor} />
-				</TouchableOpacity>
-				<Text
-					style={[
-						styles.headerTitle,
-						{ color: textColor, fontFamily: Typography.fonts.title },
-					]}
-				>
-					{feature.category}
-				</Text>
-			</View>
-
-			{/* Imagen principal */}
-			<View
-				style={[
-					styles.imageContainer,
-					isMobile && {
-						height: 350, // Altura específica para móvil
-						backgroundColor,
-					},
-				]}
+		<SafeAreaView style={{ flex: 1, backgroundColor }}>
+			<ScrollView
+				style={[styles.container, { backgroundColor }]}
+				contentContainerStyle={styles.contentContainer}
 			>
-				<Image
-					source={{ uri: feature.image }}
-					style={styles.featureImage}
-					resizeMode={isMobile ? "contain" : "cover"} // Cambiar el modo según dispositivo
-				/>
-			</View>
-
-			{/* Título y descripción */}
-			<View style={[styles.detailsContainer, { backgroundColor: cardColor }]}>
-				<Text
-					style={[
-						styles.featureTitle,
-						{ color: textColor, fontFamily: Typography.fonts.title },
-					]}
-				>
-					{feature.title}
-				</Text>
-
-				<View style={styles.categoryBadge}>
-					<Text style={[styles.categoryText, { color: accentColor }]}>
+				{/* Header con botón de retroceso */}
+				<View style={styles.header}>
+					<TouchableOpacity
+						onPress={handleGoBack}
+						style={styles.backButtonContainer}
+					>
+						<Ionicons name="arrow-back" size={24} color={textColor} />
+					</TouchableOpacity>
+					<Text
+						style={[
+							styles.headerTitle,
+							{ color: textColor, fontFamily: Typography.fonts.title },
+						]}
+					>
 						{feature.category}
 					</Text>
 				</View>
 
-				<Text
+				{/* Imagen principal */}
+				<View
 					style={[
-						styles.featureDescription,
-						{ color: textColor, fontFamily: Typography.fonts.regular },
+						styles.imageContainer,
+						isMobile && {
+							height: 350, // Altura específica para móvil
+							backgroundColor,
+						},
 					]}
 				>
-					{feature.fullDescription || feature.description}
-				</Text>
+					<Image
+						source={{ uri: feature.image }}
+						style={styles.featureImage}
+						resizeMode={isMobile ? "contain" : "cover"} // Cambiar el modo según dispositivo
+					/>
+				</View>
 
-				{/* Especificaciones técnicas (si existen) */}
-				{feature.specs && feature.specs.length > 0 && (
-					<>
-						<Text
-							style={[
-								styles.specsSectionTitle,
-								{ color: textColor, fontFamily: Typography.fonts.title },
-							]}
-						>
-							Especificaciones
+				{/* Título y descripción */}
+				<View style={[styles.detailsContainer, { backgroundColor: cardColor }]}>
+					<Text
+						style={[
+							styles.featureTitle,
+							{ color: textColor, fontFamily: Typography.fonts.title },
+						]}
+					>
+						{feature.title}
+					</Text>
+
+					<View style={styles.categoryBadge}>
+						<Text style={[styles.categoryText, { color: accentColor }]}>
+							{feature.category}
 						</Text>
-						<View style={styles.specsContainer}>
-							{feature.specs.map((spec) => (
-								<View
-									key={spec.name}
-									style={[
-										styles.specItem,
-										{ backgroundColor: cardBackgroundColor },
-									]}
-								>
-									<Text style={[styles.specName, { color: textColor }]}>
-										{spec.name}
-									</Text>
-									<Text style={[styles.specValue, { color: accentColor }]}>
-										{spec.value}
-									</Text>
-								</View>
-							))}
-						</View>
-					</>
-				)}
-			</View>
-		</ScrollView>
+					</View>
+
+					<Text
+						style={[
+							styles.featureDescription,
+							{ color: textColor, fontFamily: Typography.fonts.regular },
+						]}
+					>
+						{feature.fullDescription || feature.description}
+					</Text>
+
+					{/* Especificaciones técnicas (si existen) */}
+					{feature.specs && feature.specs.length > 0 && (
+						<>
+							<Text
+								style={[
+									styles.specsSectionTitle,
+									{ color: textColor, fontFamily: Typography.fonts.title },
+								]}
+							>
+								Especificaciones
+							</Text>
+							<View style={styles.specsContainer}>
+								{feature.specs.map((spec) => (
+									<View
+										key={spec.name}
+										style={[
+											styles.specItem,
+											{ backgroundColor: cardBackgroundColor },
+										]}
+									>
+										<Text style={[styles.specName, { color: textColor }]}>
+											{spec.name}
+										</Text>
+										<Text style={[styles.specValue, { color: accentColor }]}>
+											{spec.value}
+										</Text>
+									</View>
+								))}
+							</View>
+						</>
+					)}
+				</View>
+			</ScrollView>
+		</SafeAreaView>
 	);
 }
 

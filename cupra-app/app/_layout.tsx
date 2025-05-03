@@ -40,6 +40,7 @@ export default function RootLayout() {
 				name="auth"
 				options={{ headerShown: false, presentation: "modal" }}
 			/>
+			<Stack.Screen name="feature-detail" options={{ headerShown: false }} />
 
 			{/* Navegación principal después de autenticación */}
 			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />

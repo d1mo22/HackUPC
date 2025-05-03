@@ -10,27 +10,27 @@
 	},
 	{
 		"id": "f2",
-		"title": "Portaesquís CUPRA",
-		"description": "Transporta tus esquís o snowboards con estilo y seguridad con el portaesquís especialmente diseñado para tu CUPRA Tavascan.",
-		"image": "https://placehold.co/800x600.png",
-		"category": "Accesorios",
+		"title": "Cockpit moderno y espacioso",
+		"description": "Disfruta de un interior premium con un diseño vanguardista que combina espacio y tecnología en tu CUPRA Tavascan.",
+		"image": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//CUPRA%20TAVASCAN%20096.webp",
+		"category": "Interior",
 		"isFeatured": true,
-		"details": "El portaesquís CUPRA tiene capacidad para hasta 6 pares de esquís o 4 snowboards. Su sistema de fijación rápida permite un montaje sencillo, y los botones extra grandes facilitan la apertura incluso con guantes. Incluye protección antirrobo."
+		"details": "El cockpit del CUPRA Tavascan ofrece una experiencia inmersiva con materiales de alta calidad y acabados deportivos. Su diseño ergonómico maximiza el espacio interior mientras mantiene todos los controles al alcance del conductor. Incluye iluminación ambiental personalizable y almacenamiento inteligente."
 	},
 	{
 		"id": "f3",
-		"title": "Portabicicletas CUPRA",
-		"description": "Lleva tus bicicletas de forma segura y sin esfuerzo con el portabicicletas integrado para tu CUPRA Tavascan.",
-		"image": "https://placehold.co/800x600.png",
-		"category": "Accesorios",
+		"title": "Techo panorámico CUPRA",
+		"description": "Disfruta de una experiencia única con el techo panorámico transparente que inunda de luz natural el interior de tu CUPRA Tavascan.",
+		"image": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//CUPRA%20TAVASCAN%20031.webp",
+		"category": "Interior",
 		"isFeatured": true,
-		"details": "El portabicicletas CUPRA puede transportar hasta 2 bicicletas con un peso máximo de 20 kg cada una. Su sistema de fijación rápida no requiere herramientas y es compatible con cuadros de hasta 80mm. Incluye luces LED traseras integradas."
+		"details": "El techo panorámico CUPRA ofrece una superficie acristalada de más de 1.4 metros cuadrados con filtro solar UV. Incluye cortina eléctrica para regular la entrada de luz y sistema de apertura parcial para ventilación. Su cristal laminado de alta resistencia proporciona aislamiento acústico y térmico superior."
 	},
 	{
 		"id": "f4",
 		"title": "Sistema de infoentretenimiento de 15\"",
 		"description": "Disfruta de una experiencia digital inmersiva con la pantalla de 15 pulgadas con alta resolución y respuesta táctil precisa.",
-		"image": "https://placehold.co/800x600.png",
+		"image": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//CUPRA%20TAVASCAN%20099.webp",
 		"category": "Tecnología",
 		"isFeatured": false,
 		"details": "La pantalla flotante de 15 pulgadas con resolución 4K proporciona una experiencia visual excepcional. El sistema es compatible con Apple CarPlay y Android Auto inalámbricos, y cuenta con actualización automática de mapas y navegación predictiva."
@@ -39,7 +39,7 @@
 		"id": "f5",
 		"title": "Carga rápida de 135 kW",
 		"description": "Recarga la batería de tu CUPRA Tavascan del 10% al 80% en solo 30 minutos gracias a su tecnología de carga ultrarrápida.",
-		"image": "https://placehold.co/800x600.png",
+		"image": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//cupra-tavascan-vz-trim-t.webp",
 		"category": "Rendimiento",
 		"isFeatured": false,
 		"details": "El sistema de carga rápida de 135 kW permite recargar hasta 100 km de autonomía en solo 7 minutos. Compatible con la mayoría de las redes de carga rápida europeas, incluye planificador de rutas inteligente que optimiza las paradas de carga."
@@ -48,7 +48,7 @@
 		"id": "f6",
 		"title": "Head-up Display con Realidad Aumentada",
 		"description": "Visualiza información esencial directamente en tu campo de visión sin apartar la vista de la carretera.",
-		"image": "https://placehold.co/800x600.png",
+		"image": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//CUPRA%20TAVASCAN%20100.webp",
 		"category": "Tecnología",
 		"isFeatured": false,
 		"details": "El sistema Head-up Display con realidad aumentada proyecta información crítica como velocidad, navegación e indicaciones de seguridad directamente sobre el parabrisas. Las flechas de navegación se superponen sobre la carretera real para una orientación intuitiva."
@@ -57,7 +57,7 @@
 		"id": "f7",
 		"title": "Asientos deportivos CUPRA",
 		"description": "Experimenta el máximo confort y sujeción con los asientos deportivos ergonómicos con acabados premium.",
-		"image": "https://placehold.co/800x600.png",
+		"image": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//CAR_SEAT.webp",
 		"category": "Interior",
 		"isFeatured": true,
 		"details": "Los asientos deportivos CUPRA combinan confort y soporte lateral para una conducción dinámica. Fabricados con materiales sostenibles y microfibra Dinamica®, incluyen función de masaje y memoria de posición con hasta 3 perfiles diferentes."

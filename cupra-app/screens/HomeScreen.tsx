@@ -367,8 +367,8 @@ export default function HomeScreen() {
 				style={[
 					styles.dailyFeatureContainer,
 					{
-						alignItems: "center", // Centrar el contenido horizontalmente
-						width: "100%",
+						alignSelf: "center", // Centrar el contenido horizontalmente
+						width: isMobile ? "100%" : "60%",
 					},
 				]}
 			>
@@ -388,7 +388,6 @@ export default function HomeScreen() {
 					<View
 						style={{
 							width: isMobile ? "100%" : "60%", // Menos ancho en escritorio
-							height: "auto", // Más alto
 							overflow: "hidden", // Evitar que el contenido desborde
 						}}
 					>
