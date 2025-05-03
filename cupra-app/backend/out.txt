@@ -1,0 +1,98 @@
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2mtests/[22m[1mcaracteristicas.test.js[22m
+  Rutas de Características
+    [31m✕[39m [2mGET /api/caracteristicas debería devolver todas las características (1 ms)[22m
+    [31m✕[39m [2mGET /api/caracteristicas/destacadas debería devolver solo características destacadas (1 ms)[22m
+    [31m✕[39m [2mGET /api/caracteristicas/categoria/rendimiento debería filtrar por categoría[22m
+    [31m✕[39m [2mGET /api/caracteristicas/car-001 debería devolver una característica específica[22m
+    [31m✕[39m [2mGET /api/caracteristicas/nonexistent debería devolver 404[22m
+
+[1m[31m  [1m● [22m[1mRutas de Características › GET /api/caracteristicas debería devolver todas las características[39m[22m
+
+    MongooseError: Can't call `openUri()` on an active connection with different connection strings. Make sure you aren't calling `mongoose.connect()` multiple times. See: https://mongoosejs.com/docs/connections.html#multiple_connections
+[2m[22m
+[2m    [0m [90m 11 |[39m 	mongoServer [33m=[39m [36mawait[39m [33mMongoMemoryServer[39m[33m.[39mcreate()[33m;[39m[22m
+[2m     [90m 12 |[39m 	[36mconst[39m uri [33m=[39m mongoServer[33m.[39mgetUri()[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 13 |[39m 	[36mawait[39m mongoose[33m.[39mconnect(uri)[33m;[39m[22m
+[2m     [90m    |[39m 	               [31m[1m^[22m[2m[39m[22m
+[2m     [90m 14 |[39m })[33m;[39m[22m
+[2m     [90m 15 |[39m[22m
+[2m     [90m 16 |[39m afterAll([36masync[39m () [33m=>[39m {[0m[22m
+[2m[22m
+[2m      [2mat NativeConnection.createClient ([22m[2mnode_modules/mongoose/lib/drivers/node-mongodb-native/connection.js[2m:250:13)[22m[2m[22m
+[2m      [2mat NativeConnection.openUri ([22m[2mnode_modules/mongoose/lib/connection.js[2m:1071:34)[22m[2m[22m
+[2m      [2mat Mongoose.connect ([22m[2mnode_modules/mongoose/lib/mongoose.js[2m:450:15)[22m[2m[22m
+[2m      [2mat Object.connect ([22m[2m[0m[36mtests/caracteristicas.test.js[39m[0m[2m:13:17)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mRutas de Características › GET /api/caracteristicas/destacadas debería devolver solo características destacadas[39m[22m
+
+    MongooseError: Can't call `openUri()` on an active connection with different connection strings. Make sure you aren't calling `mongoose.connect()` multiple times. See: https://mongoosejs.com/docs/connections.html#multiple_connections
+[2m[22m
+[2m    [0m [90m 11 |[39m 	mongoServer [33m=[39m [36mawait[39m [33mMongoMemoryServer[39m[33m.[39mcreate()[33m;[39m[22m
+[2m     [90m 12 |[39m 	[36mconst[39m uri [33m=[39m mongoServer[33m.[39mgetUri()[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 13 |[39m 	[36mawait[39m mongoose[33m.[39mconnect(uri)[33m;[39m[22m
+[2m     [90m    |[39m 	               [31m[1m^[22m[2m[39m[22m
+[2m     [90m 14 |[39m })[33m;[39m[22m
+[2m     [90m 15 |[39m[22m
+[2m     [90m 16 |[39m afterAll([36masync[39m () [33m=>[39m {[0m[22m
+[2m[22m
+[2m      [2mat NativeConnection.createClient ([22m[2mnode_modules/mongoose/lib/drivers/node-mongodb-native/connection.js[2m:250:13)[22m[2m[22m
+[2m      [2mat NativeConnection.openUri ([22m[2mnode_modules/mongoose/lib/connection.js[2m:1071:34)[22m[2m[22m
+[2m      [2mat Mongoose.connect ([22m[2mnode_modules/mongoose/lib/mongoose.js[2m:450:15)[22m[2m[22m
+[2m      [2mat Object.connect ([22m[2m[0m[36mtests/caracteristicas.test.js[39m[0m[2m:13:17)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mRutas de Características › GET /api/caracteristicas/categoria/rendimiento debería filtrar por categoría[39m[22m
+
+    MongooseError: Can't call `openUri()` on an active connection with different connection strings. Make sure you aren't calling `mongoose.connect()` multiple times. See: https://mongoosejs.com/docs/connections.html#multiple_connections
+[2m[22m
+[2m    [0m [90m 11 |[39m 	mongoServer [33m=[39m [36mawait[39m [33mMongoMemoryServer[39m[33m.[39mcreate()[33m;[39m[22m
+[2m     [90m 12 |[39m 	[36mconst[39m uri [33m=[39m mongoServer[33m.[39mgetUri()[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 13 |[39m 	[36mawait[39m mongoose[33m.[39mconnect(uri)[33m;[39m[22m
+[2m     [90m    |[39m 	               [31m[1m^[22m[2m[39m[22m
+[2m     [90m 14 |[39m })[33m;[39m[22m
+[2m     [90m 15 |[39m[22m
+[2m     [90m 16 |[39m afterAll([36masync[39m () [33m=>[39m {[0m[22m
+[2m[22m
+[2m      [2mat NativeConnection.createClient ([22m[2mnode_modules/mongoose/lib/drivers/node-mongodb-native/connection.js[2m:250:13)[22m[2m[22m
+[2m      [2mat NativeConnection.openUri ([22m[2mnode_modules/mongoose/lib/connection.js[2m:1071:34)[22m[2m[22m
+[2m      [2mat Mongoose.connect ([22m[2mnode_modules/mongoose/lib/mongoose.js[2m:450:15)[22m[2m[22m
+[2m      [2mat Object.connect ([22m[2m[0m[36mtests/caracteristicas.test.js[39m[0m[2m:13:17)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mRutas de Características › GET /api/caracteristicas/car-001 debería devolver una característica específica[39m[22m
+
+    MongooseError: Can't call `openUri()` on an active connection with different connection strings. Make sure you aren't calling `mongoose.connect()` multiple times. See: https://mongoosejs.com/docs/connections.html#multiple_connections
+[2m[22m
+[2m    [0m [90m 11 |[39m 	mongoServer [33m=[39m [36mawait[39m [33mMongoMemoryServer[39m[33m.[39mcreate()[33m;[39m[22m
+[2m     [90m 12 |[39m 	[36mconst[39m uri [33m=[39m mongoServer[33m.[39mgetUri()[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 13 |[39m 	[36mawait[39m mongoose[33m.[39mconnect(uri)[33m;[39m[22m
+[2m     [90m    |[39m 	               [31m[1m^[22m[2m[39m[22m
+[2m     [90m 14 |[39m })[33m;[39m[22m
+[2m     [90m 15 |[39m[22m
+[2m     [90m 16 |[39m afterAll([36masync[39m () [33m=>[39m {[0m[22m
+[2m[22m
+[2m      [2mat NativeConnection.createClient ([22m[2mnode_modules/mongoose/lib/drivers/node-mongodb-native/connection.js[2m:250:13)[22m[2m[22m
+[2m      [2mat NativeConnection.openUri ([22m[2mnode_modules/mongoose/lib/connection.js[2m:1071:34)[22m[2m[22m
+[2m      [2mat Mongoose.connect ([22m[2mnode_modules/mongoose/lib/mongoose.js[2m:450:15)[22m[2m[22m
+[2m      [2mat Object.connect ([22m[2m[0m[36mtests/caracteristicas.test.js[39m[0m[2m:13:17)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mRutas de Características › GET /api/caracteristicas/nonexistent debería devolver 404[39m[22m
+
+    MongooseError: Can't call `openUri()` on an active connection with different connection strings. Make sure you aren't calling `mongoose.connect()` multiple times. See: https://mongoosejs.com/docs/connections.html#multiple_connections
+[2m[22m
+[2m    [0m [90m 11 |[39m 	mongoServer [33m=[39m [36mawait[39m [33mMongoMemoryServer[39m[33m.[39mcreate()[33m;[39m[22m
+[2m     [90m 12 |[39m 	[36mconst[39m uri [33m=[39m mongoServer[33m.[39mgetUri()[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 13 |[39m 	[36mawait[39m mongoose[33m.[39mconnect(uri)[33m;[39m[22m
+[2m     [90m    |[39m 	               [31m[1m^[22m[2m[39m[22m
+[2m     [90m 14 |[39m })[33m;[39m[22m
+[2m     [90m 15 |[39m[22m
+[2m     [90m 16 |[39m afterAll([36masync[39m () [33m=>[39m {[0m[22m
+[2m[22m
+[2m      [2mat NativeConnection.createClient ([22m[2mnode_modules/mongoose/lib/drivers/node-mongodb-native/connection.js[2m:250:13)[22m[2m[22m
+[2m      [2mat NativeConnection.openUri ([22m[2mnode_modules/mongoose/lib/connection.js[2m:1071:34)[22m[2m[22m
+[2m      [2mat Mongoose.connect ([22m[2mnode_modules/mongoose/lib/mongoose.js[2m:450:15)[22m[2m[22m
+[2m      [2mat Object.connect ([22m[2m[0m[36mtests/caracteristicas.test.js[39m[0m[2m:13:17)[22m[2m[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m[1m[31m5 failed[39m[22m, 5 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        3.714 s, estimated 4 s
+[2mRan all test suites[22m[2m.[22m

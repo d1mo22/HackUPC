@@ -16,10 +16,17 @@ const LEVELS = [
   {
     id: 1,
     title: "Piloto Novato",
-    mission: "Enciende la bestia",
-    image: { uri: "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//WhatsApp%20Image%202025-05-03%20at%2004.52.15.webp" },
+    mission: "¿En que zona aproximada está el botón de arranque?",
+    secondMission: "Enciende la bestia", // Nueva misión para la segunda parte
+    image: { uri: "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//CUPRA%20TAVASCAN%20096.webp" },
+    secondImage: { uri: "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//WhatsApp%20Image%202025-05-03%20at%2004.52.15.webp" },
     message: "¡Excelente! Has completado tu primera misión. El Tavascan responde a tu comando 🚀",
     touchableArea: {
+      x: 0.55,
+      y: 0.4,
+      radius: 40,
+    },
+    secondTouchableArea: {
       x: 0.79,
       y: 0.67,
       radius: 20,
@@ -28,10 +35,17 @@ const LEVELS = [
   {
     id: 2,
     title: "Conductor Intermedio",
-    mission: "Activa el modo de conducción Sport",
-    image: { uri: "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//Info_panel.webp" },
+    mission: "¿Dónde se cambia el modo de conducción?",
+    secondMission: "Activa el modo Performance", // Nueva misión para la segunda parte
+    image: { uri: "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//CUPRA%20TAVASCAN%20099.webp" },
+    secondImage: { uri: "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//Info_panel.webp" },
     message: "¡Perfecto! Has activado el modo Sport. Siente la potencia y precisión del Tavascan ⚡",
     touchableArea: {
+      x: 0.55,
+      y: 0.1,
+      radius: 30,
+    },
+    secondTouchableArea: {
       x: 0.67,
       y: 0.73,
       radius: 34,
@@ -42,6 +56,7 @@ const LEVELS = [
     id: 3,
     title: "Experto Tavascan",
     mission: "Personaliza la iluminación ambiental",
+    secondMission: "Electrifica el ambiente", // Nueva misión para la segunda parte
     image: { uri: "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//multipanel.webp" },
     message: "¡Magnífico! Has electrificado el ambiente del Tavascan 🏆",
     touchableArea: {
@@ -57,6 +72,8 @@ export default function LearningGameScreen() {
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const [completed, setCompleted] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showLevel1Part2, setShowLevel1Part2] = useState(false); // Estado para la parte 2 del nivel 1
+  const [showLevel2Part2, setShowLevel2Part2] = useState(false); // Estado para la parte 2 del nivel 2
   const [showLevel3Part2, setShowLevel3Part2] = useState(false); // Estado para la parte 2 del nivel 3
   
   const { width } = useWindowDimensions();
@@ -72,12 +89,39 @@ export default function LearningGameScreen() {
   const currentLevel = LEVELS[currentLevelIndex];
   
   // Verificar si estamos en un nivel específico
+  const isLevel1 = currentLevelIndex === 0;
   const isLevel2 = currentLevelIndex === 1;
   const isLevel3 = currentLevelIndex === 2;
   const isLastLevel = currentLevelIndex === LEVELS.length - 1;
 
+  // Obtener la misión actual basada en el nivel y la parte
+  const getCurrentMission = () => {
+    if (isLevel1 && showLevel1Part2 && currentLevel.secondMission) {
+      return currentLevel.secondMission;
+    }
+    if (isLevel2 && showLevel2Part2 && currentLevel.secondMission) {
+      return currentLevel.secondMission;
+    }
+    if (isLevel3 && showLevel3Part2 && currentLevel.secondMission) {
+      return currentLevel.secondMission;
+    }
+    return currentLevel.mission;
+  };
+
   const handleAreaPress = () => {
     if (showSuccess) return;
+
+    // Caso especial para nivel 1, parte 1
+    if (isLevel1 && !showLevel1Part2) {
+      setShowLevel1Part2(true); // Cambiar a la parte 2 en lugar de completar
+      return;
+    }
+
+    // Caso especial para nivel 2, parte 1
+    if (isLevel2 && !showLevel2Part2) {
+      setShowLevel2Part2(true); // Cambiar a la parte 2 en lugar de completar
+      return;
+    }
 
     // Caso especial para nivel 3, parte 1
     if (isLevel3 && !showLevel3Part2) {
@@ -85,7 +129,7 @@ export default function LearningGameScreen() {
       return;
     }
 
-    // Normal completion for other levels or level 3 part 2
+    // Normal completion for other levels or level 1/2/3 part 2
     setShowSuccess(true);
     setCompleted(true);
   };
@@ -98,6 +142,8 @@ export default function LearningGameScreen() {
       // Reseteamos los estados para la nueva misión
       setShowSuccess(false);
       setCompleted(false);
+      setShowLevel1Part2(false);
+      setShowLevel2Part2(false);
       setShowLevel3Part2(false);
     } else {
       // Estamos en el último nivel, podríamos mostrar un mensaje de finalización
@@ -106,12 +152,20 @@ export default function LearningGameScreen() {
       setCurrentLevelIndex(0);
       setShowSuccess(false);
       setCompleted(false);
+      setShowLevel1Part2(false);
+      setShowLevel2Part2(false);
       setShowLevel3Part2(false);
     }
   };
 
   // Determinar la imagen a mostrar según el nivel y parte
   const getImageSource = () => {
+    if (isLevel1 && showLevel1Part2 && currentLevel.secondImage) {
+      return currentLevel.secondImage;
+    }
+    if (isLevel2 && showLevel2Part2 && currentLevel.secondImage) {
+      return currentLevel.secondImage;
+    }
     if (isLevel3 && showLevel3Part2) {
       return { uri: "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//ambient_leds.webp" };
     }
@@ -120,9 +174,15 @@ export default function LearningGameScreen() {
 
   // Determinar la posición del área tocable según el nivel y parte
   const getTouchableAreaProps = () => {
+    if (isLevel1 && showLevel1Part2 && currentLevel.secondTouchableArea) {
+      return currentLevel.secondTouchableArea;
+    }
+    if (isLevel2 && showLevel2Part2 && currentLevel.secondTouchableArea) {
+      return currentLevel.secondTouchableArea;
+    }
     if (isLevel3 && showLevel3Part2) {
       return {
-        x: 0.75, // Ajusta según la posición correcta para la imagen de las luces ambientales
+        x: 0.75,
         y: 0.72,
         radius: 35,
       };
@@ -142,7 +202,7 @@ export default function LearningGameScreen() {
       </View>
       
       <Text style={[styles.missionText, { color: textColor, fontFamily: Typography.fonts.regular }]}>
-        Misión: "{currentLevel.mission}"
+        Misión: "{getCurrentMission()}"
       </Text>
       
       <View style={[
@@ -156,10 +216,10 @@ export default function LearningGameScreen() {
           source={getImageSource()}
           style={[
             styles.levelImage,
-            (isLevel2 || isLevel3) && {
+            (isLevel2 && showLevel2Part2) || isLevel3 ? {
               transform: [{ scale: currentLevel.imageScale || 1.0 }],
               marginTop: isLevel3 && !showLevel3Part2 ? -70 : -50,
-            }
+            } : {}
           ]}
           resizeMode="contain"
         />
@@ -211,13 +271,17 @@ export default function LearningGameScreen() {
       <View style={styles.instructionsContainer}>
         <Text style={[styles.instructions, { color: textColor, opacity: 0.7 }]}>
           {!showSuccess ? 
-            (currentLevelIndex === 0 ? 
+            (isLevel1 && !showLevel1Part2 ?
+              "Toca donde está ubicado el botón de arranque" :
+              isLevel1 && showLevel1Part2 ?
               "Toca el botón de encendido para arrancar el coche" : 
-              currentLevelIndex === 1 ?
-              "Toca el selector de modo de conducción" :
+              isLevel2 && !showLevel2Part2 ?
+              "Toca donde está el selector de modos de conducción" :
+              isLevel2 && showLevel2Part2 ?
+              "Activa el modo de conducción Sport para máximo rendimiento" :
               !showLevel3Part2 ?
               "Toca el botón de asistente de conducción" :
-              "Electrifica el ambiente"
+              "Haz que el ambiente sea electizante"
             ) 
             : "¡Misión completada!"}
         </Text>
