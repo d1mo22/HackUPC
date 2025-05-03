@@ -1,4 +1,5 @@
-import { type RouteProp, useRoute } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
 	ActivityIndicator,
@@ -6,37 +7,63 @@ import {
 	ScrollView,
 	StyleSheet,
 	Text,
+	TouchableOpacity,
 	View,
+	useWindowDimensions,
 } from "react-native";
+import { Typography } from "../constants/Typography";
 import { useThemeColor } from "../hooks/useThemeColor";
 
-// Importar datos
+// Importar los datos de características
 import features from "../data/features.json";
 
-type FeatureDetailRouteParams = {
-	featureId: string;
-};
+// Definir la interfaz para los datos de la característica
+interface Feature {
+	id: string;
+	title: string;
+	description: string;
+	image: string;
+	category: string;
+	fullDescription?: string;
+	specs?: { name: string; value: string }[];
+	isFeatured?: boolean;
+}
 
-export default function FeatureDetailScreen() {
+export default function FeatureDetailScreen({
+	featureId,
+}: { featureId: string }) {
 	const [loading, setLoading] = useState(true);
-	const [feature, setFeature] = useState<any>(null);
+	const [feature, setFeature] = useState<Feature | null>(null);
 
-	const route =
-		useRoute<RouteProp<Record<string, FeatureDetailRouteParams>, string>>();
-	const { featureId } = route.params;
+	// Obtenemos las dimensiones de la pantalla
+	const { width } = useWindowDimensions();
+	const isMobile = width <= 850;
 
+	const navigation = useNavigation();
+
+	// Colores del tema
 	const backgroundColor = useThemeColor({}, "background");
 	const textColor = useThemeColor({}, "text");
 	const accentColor = useThemeColor({}, "tint");
+	const cardColor = useThemeColor({}, "card");
+	const cardBackgroundColor = useThemeColor({}, "cardBackground");
+	const cardAccentColor = useThemeColor({}, "cardAccent");
 
 	useEffect(() => {
 		// Simular carga de datos
 		setTimeout(() => {
-			const selectedFeature = features.find((f) => f.id === featureId);
-			setFeature(selectedFeature);
+			// Buscar la característica por ID
+			const foundFeature = features.find((f) => f.id === featureId);
+			if (foundFeature) {
+				setFeature(foundFeature);
+			}
 			setLoading(false);
 		}, 500);
 	}, [featureId]);
+
+	const handleGoBack = () => {
+		navigation.goBack();
+	};
 
 	if (loading) {
 		return (
@@ -52,6 +79,12 @@ export default function FeatureDetailScreen() {
 				<Text style={[styles.errorText, { color: textColor }]}>
 					Característica no encontrada
 				</Text>
+				<TouchableOpacity
+					style={[styles.backButton, { backgroundColor: accentColor }]}
+					onPress={handleGoBack}
+				>
+					<Text style={styles.backButtonText}>Volver</Text>
+				</TouchableOpacity>
 			</View>
 		);
 	}
@@ -61,67 +94,98 @@ export default function FeatureDetailScreen() {
 			style={[styles.container, { backgroundColor }]}
 			contentContainerStyle={styles.contentContainer}
 		>
-			<Image
-				source={{ uri: feature.image }}
-				style={styles.image}
-				resizeMode="cover"
-			/>
-
-			<View style={styles.content}>
-				<Text style={[styles.category, { color: accentColor }]}>
-					{feature.category.toUpperCase()}
+			{/* Header con botón de retroceso */}
+			<View style={styles.header}>
+				<TouchableOpacity
+					onPress={handleGoBack}
+					style={styles.backButtonContainer}
+				>
+					<Ionicons name="arrow-back" size={24} color={textColor} />
+				</TouchableOpacity>
+				<Text
+					style={[
+						styles.headerTitle,
+						{ color: textColor, fontFamily: Typography.fonts.title },
+					]}
+				>
+					{feature.category}
 				</Text>
+			</View>
 
-				<Text style={[styles.title, { color: textColor }]}>
+			{/* Imagen principal */}
+			<View
+				style={[
+					styles.imageContainer,
+					isMobile && {
+						height: 350, // Altura específica para móvil
+						backgroundColor,
+					},
+				]}
+			>
+				<Image
+					source={{ uri: feature.image }}
+					style={styles.featureImage}
+					resizeMode={isMobile ? "contain" : "cover"} // Cambiar el modo según dispositivo
+				/>
+			</View>
+
+			{/* Título y descripción */}
+			<View style={[styles.detailsContainer, { backgroundColor: cardColor }]}>
+				<Text
+					style={[
+						styles.featureTitle,
+						{ color: textColor, fontFamily: Typography.fonts.title },
+					]}
+				>
 					{feature.title}
 				</Text>
 
-				<Text style={[styles.description, { color: textColor }]}>
-					{feature.description}
+				<View style={styles.categoryBadge}>
+					<Text style={[styles.categoryText, { color: accentColor }]}>
+						{feature.category}
+					</Text>
+				</View>
+
+				<Text
+					style={[
+						styles.featureDescription,
+						{ color: textColor, fontFamily: Typography.fonts.regular },
+					]}
+				>
+					{feature.fullDescription || feature.description}
 				</Text>
 
-				{/* Aquí se puede agregar contenido adicional específico de cada característica */}
-				<View style={styles.additionalInfoContainer}>
-					<Text style={[styles.sectionTitle, { color: textColor }]}>
-						Cómo utilizar esta característica
-					</Text>
-					<Text style={[styles.paragraph, { color: textColor }]}>
-						Esta característica está diseñada para mejorar tu experiencia de
-						conducción. Para activarla, simplemente navega a través del menú
-						principal del vehículo y selecciona la opción correspondiente.
-					</Text>
-					<Text style={[styles.paragraph, { color: textColor }]}>
-						Recuerda que puedes personalizar la configuración según tus
-						preferencias para obtener el máximo rendimiento de tu Cupra.
-					</Text>
-				</View>
-
-				<View style={styles.tipsContainer}>
-					<Text style={[styles.sectionTitle, { color: textColor }]}>
-						Consejos y recomendaciones
-					</Text>
-					<View style={styles.tipItem}>
-						<Text style={[styles.tipNumber, { color: accentColor }]}>1.</Text>
-						<Text style={[styles.tipText, { color: textColor }]}>
-							Utiliza esta característica en condiciones óptimas para maximizar
-							su eficiencia.
+				{/* Especificaciones técnicas (si existen) */}
+				{feature.specs && feature.specs.length > 0 && (
+					<>
+						<Text
+							style={[
+								styles.specsSectionTitle,
+								{ color: textColor, fontFamily: Typography.fonts.title },
+							]}
+						>
+							Especificaciones
 						</Text>
-					</View>
-					<View style={styles.tipItem}>
-						<Text style={[styles.tipNumber, { color: accentColor }]}>2.</Text>
-						<Text style={[styles.tipText, { color: textColor }]}>
-							Consulta el manual del usuario para obtener información más
-							detallada.
-						</Text>
-					</View>
-					<View style={styles.tipItem}>
-						<Text style={[styles.tipNumber, { color: accentColor }]}>3.</Text>
-						<Text style={[styles.tipText, { color: textColor }]}>
-							Mantén tu vehículo actualizado para disfrutar de las últimas
-							mejoras.
-						</Text>
-					</View>
-				</View>
+						<View style={styles.specsContainer}>
+							{feature.specs.map((spec) => (
+								<View
+									key={spec.name}
+									style={[
+										styles.specItem,
+										{ backgroundColor: cardBackgroundColor },
+									]}
+								>
+									<Text style={[styles.specName, { color: textColor }]}>
+										{spec.name}
+									</Text>
+									<Text style={[styles.specValue, { color: accentColor }]}>
+										{spec.value}
+									</Text>
+								</View>
+							))}
+						</View>
+					</>
+				)}
 			</View>
 		</ScrollView>
 	);
@@ -132,7 +196,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	contentContainer: {
-		paddingBottom: 24,
+		paddingBottom: 40,
 	},
 	loadingContainer: {
 		flex: 1,
@@ -143,60 +207,109 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
+		padding: 20,
 	},
 	errorText: {
 		fontSize: 18,
+		marginBottom: 20,
+		textAlign: "center",
+		fontFamily: Typography.fonts.regular,
 	},
-	image: {
+	header: {
+		flexDirection: "row",
+		alignItems: "center",
+		paddingHorizontal: 16,
+		paddingVertical: 12,
+	},
+	backButtonContainer: {
+		padding: 8,
+	},
+	headerTitle: {
+		fontSize: 18,
+		marginLeft: 12,
+		fontWeight: "bold",
+	},
+	imageContainer: {
 		width: "100%",
-		height: 250,
+		height: 550, // Altura base para escritorio
+		overflow: "hidden",
 	},
-	content: {
-		padding: 16,
+	featureImage: {
+		width: "100%",
+		height: "100%",
 	},
-	category: {
-		fontSize: 14,
+	detailsContainer: {
+		padding: 20,
+		margin: 16,
+		borderRadius: 12,
+	},
+	featureTitle: {
+		fontSize: 24,
 		fontWeight: "bold",
 		marginBottom: 8,
 	},
-	title: {
-		fontSize: 28,
-		fontWeight: "bold",
+	categoryBadge: {
 		marginBottom: 16,
 	},
-	description: {
+	categoryText: {
+		fontSize: 14,
+		fontWeight: "bold",
+	},
+	featureDescription: {
 		fontSize: 16,
 		lineHeight: 24,
-		marginBottom: 24,
+		marginBottom: 20,
 	},
-	additionalInfoContainer: {
-		marginBottom: 24,
-	},
-	sectionTitle: {
+	specsSectionTitle: {
 		fontSize: 20,
 		fontWeight: "bold",
+		marginTop: 16,
 		marginBottom: 12,
 	},
-	paragraph: {
-		fontSize: 16,
-		lineHeight: 24,
-		marginBottom: 12,
+	specsContainer: {
+		gap: 8,
 	},
-	tipsContainer: {
-		marginBottom: 16,
-	},
-	tipItem: {
+	specItem: {
 		flexDirection: "row",
-		marginBottom: 12,
+		justifyContent: "space-between",
+		padding: 12,
+		borderRadius: 8,
+		marginBottom: 8,
 	},
-	tipNumber: {
-		fontSize: 16,
+	specName: {
+		fontSize: 14,
+		fontFamily: Typography.fonts.regular,
+	},
+	specValue: {
+		fontSize: 14,
 		fontWeight: "bold",
-		marginRight: 8,
+		fontFamily: Typography.fonts.title,
 	},
-	tipText: {
-		flex: 1,
+	actionButton: {
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		marginHorizontal: 16,
+		paddingVertical: 16,
+		borderRadius: 12,
+		marginTop: 20,
+	},
+	actionButtonText: {
+		color: "white",
+		fontWeight: "bold",
 		fontSize: 16,
-		lineHeight: 24,
+		marginRight: 8,
+		fontFamily: Typography.fonts.title,
+	},
+	backButton: {
+		paddingHorizontal: 20,
+		paddingVertical: 12,
+		borderRadius: 8,
+	},
+	backButtonText: {
+		color: "white",
+		fontWeight: "bold",
+		fontSize: 16,
+		fontFamily: Typography.fonts.title,
 	},
 });
