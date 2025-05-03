@@ -1,0 +1,66 @@
+[
+    {
+        "id": "warning-1",
+        "name": "Luz de advertencia central",
+        "description": "Por favor, deje de conducir (página 19).",
+        "color": "red",
+        "severity": "alta",
+        "actionRequired": "Detenga el vehículo y contacte con el servicio",
+        "tags": ["advertencia", "seguridad", "servicio"]
+    },
+    {
+        "id": "warning-2",
+        "name": "Abrochar los cinturones de seguridad",
+        "description": "Por favor, no conduzca hasta que todos se hayan abrochado los cinturones de seguridad (página 41).",
+        "color": "red",
+        "severity": "alta",
+        "actionRequired": "Abrochar los cinturones de seguridad",
+        "tags": ["advertencia", "seguridad", "cinturón-de-seguridad"]
+    },
+    {
+        "id": "warning-3",
+        "name": "Descarga profunda de la batería de alto voltaje",
+        "description": "Descarga profunda de la batería de alto voltaje debido a un tiempo prolongado de estacionamiento (página 81).",
+        "color": "red",
+        "severity": "alta",
+        "actionRequired": "Cargue la batería de alto voltaje de inmediato",
+        "tags": ["advertencia", "batería", "alto voltaje"]
+    },
+    {
+        "id": "warning-4",
+        "name": "Fallo en el sistema de frenos",
+        "description": "- Fallo en el sistema de frenos (página 19).\n- Nivel bajo de líquido de frenos (página 322).\n- El servofreno electromecánico no funciona (página 175).",
+        "color": "red",
+        "severity": "alta",
+        "actionRequired": "¡Deje de conducir!",
+        "tags": ["advertencia", "frenos", "seguridad"]
+    },
+    {
+        "id": "warning-5",
+        "name": "Fallo en el sistema de refrigeración del motor",
+        "description": "La temperatura del refrigerante del motor es demasiado alta o el nivel de refrigerante es demasiado bajo (página 321).",
+        "color": "red",
+        "severity": "alta",
+        "actionRequired": "¡Deje de conducir!",
+        "tags": ["advertencia", "refrigerante", "seguridad"]
+    },
+    {
+        "id": "warning-6",
+        "name": "Fallo en el sistema de transmisión eléctrica",
+        "description": "Fallo en el sistema de transmisión eléctrica (página 152) (página 154).",
+        "color": "amber",
+        "severity": "media",
+        "actionRequired": "Acuda inmediatamente a un taller especializado y solicite revisar el sistema de transmisión eléctrica. Es posible continuar la marcha.",
+        "tags": ["advertencia", "eléctrico", "seguridad"]
+    },
+
+    { 
+        "id": "warning-7",
+        "name": "Vehiculo cargando",
+        "description": "El vehículo está cargando (página 80).",
+        "color": "green",
+        "severity": "baja",
+        "actionRequired": "No se requiere acción",
+        "tags": ["carga", "eléctrico", "aviso"]
+    }
+]
