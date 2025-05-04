@@ -11,7 +11,7 @@ import GlossaryScreen from "../screens/GlossaryScreen";
 import HomeScreen from "../screens/HomeScreen";
 import LearningGameScreen from "../screens/LearningGameScreen";
 import POIScreen from "../screens/POIScreen";
-import SearchScreen from "../screens/SearchScreen";
+import { default as RewardsScreen, default as SearchScreen } from "../screens/SearchScreen";
 import TaskScreen from "../screens/TaskScreen";
 
 // Importar tema
@@ -116,6 +116,18 @@ export default function AppNavigator() {
 						title: "Glosario",
 						tabBarIcon: ({ color, size }) => (
 							<Ionicons name="book" size={size} color={color} />
+						),
+					}}
+				/>
+
+				<Tab.Screen
+					name="Rewards"
+					component={RewardsScreen}
+					options={{
+						tabBarLabel: "Recompensas",
+						title: "Recompensas",
+						tabBarIcon: ({ color, size }) => (
+							<Ionicons name="star" size={size} color={color} />
 						),
 					}}
 				/>
