@@ -114,7 +114,6 @@ export const useUserData = () => {
       });
     } finally {
       setLoading(false);
-      console.log("🏁 useUserData: Finalizado fetchUserData");
     }
   };
 
