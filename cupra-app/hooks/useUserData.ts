@@ -15,6 +15,7 @@ export interface UserData {
   rachaActual?: number;
   puntos?: number;
   ultimoLogin?: string;
+  memberSince?: string;
 }
 
 /**
@@ -82,9 +83,13 @@ export const useUserData = () => {
         email: user.email || "",
         foto: profileImageUrl,
         phone: user.phone || "+34 XXX XXX XXX",
-        fechaCreacion: user.fechaCreacion || "Mayo 2023",
+        fechaCreacion: user.fechaCreacion,
+        vehicleModel: user.vehicleModel || "CUPRA Tavascan 2025",
+        vehicleYear: user.vehicleYear || "2025",
+        vehiclePlate: user.vehiclePlate || "1234 ABC",
         rachaActual: user.rachaActual || 0,
-        puntos: user.puntos || 0
+        puntos: user.puntos || 0,
+        memberSince: formatDate(user.fechaCreacion),
       };
       
       setUserData(formattedUserData);
@@ -100,7 +105,7 @@ export const useUserData = () => {
         email: "",
         phone: "+34 XXX XXX XXX",
         foto: "https://randomuser.me/api/portraits/lego/1.jpg",
-        memberSince: "Mayo 2023",
+        fechaCreacion: "Mayo 2023",
         vehicleModel: "CUPRA Tavascan 2025",
         vehicleYear: "2025",
         vehiclePlate: "1234 ABC",

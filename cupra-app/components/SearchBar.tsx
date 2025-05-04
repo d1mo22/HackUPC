@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
 		height: 44,
 	},
 	icon: {
-		marginRight: 8,
+		marginRight: 16,
 	},
 	clearIcon: {
 		marginLeft: 8,
