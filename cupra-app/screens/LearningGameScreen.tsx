@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useRef, useState } from "react";
+// Importar el servicio de tareas
 import {
   Animated,
   Image,
@@ -12,6 +13,7 @@ import {
   useWindowDimensions
 } from "react-native";
 import { Typography } from "../constants/Typography";
+import { useTareas } from '../context/TareasContext';
 import { useThemeColor } from "../hooks/useThemeColor";
 
 import levels from "../data/levels.json";
@@ -73,7 +75,7 @@ export default function LearningGameScreen({ levelId }: { levelId: string }) {
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const isMobile = windowWidth <= 850;
   const isTablet = windowWidth > 850 && windowWidth <= 1200;
@@ -86,6 +88,8 @@ export default function LearningGameScreen({ levelId }: { levelId: string }) {
 
   // Añade esta línea para crear una referencia al contenedor de la imagen
   const imageContainerRef = useRef(null);
+
+  const { completarTarea, isTareaCompletada } = useTareas();
 
   useEffect(() => {
     Animated.loop(
@@ -281,7 +285,6 @@ export default function LearningGameScreen({ levelId }: { levelId: string }) {
 
     // Verificar si estamos en un entorno web y las coordenadas de ubicación no están disponibles
     if (locationX === undefined || locationY === undefined) {
-      console.log("Detectado entorno web - calculando coordenadas relativas");
       
       // Obtener coordenadas de página
       const pageX = nativeEvent.pageX;
@@ -298,10 +301,7 @@ export default function LearningGameScreen({ levelId }: { levelId: string }) {
         locationX = pageX - rect.left;
         locationY = pageY - rect.top;
         
-        console.log(`Rect: left=${rect.left}, top=${rect.top}`);
-        console.log(`Coordenadas relativas calculadas: x=${locationX}, y=${locationY}`);
       } else {
-        console.error("No se pudo acceder a la referencia del contenedor de la imagen");
         return;
       }
     }
@@ -315,18 +315,18 @@ export default function LearningGameScreen({ levelId }: { levelId: string }) {
 
     setTimeout(() => setLastTouch((prev) => ({ ...prev, visible: false })), 2000);
 
-    console.log(`Toque en: x=${locationX}, y=${locationY}`);
-    console.log(`Área táctil: x=${level.touchableArea?.x}, y=${level.touchableArea?.y}, radio=${level.touchableArea?.radius}`);
 
     if (!showPart2 && level.touchableArea) {
       if (isPointInArea(locationX, locationY, level.touchableArea)) {
-        console.log("¡Has encontrado el área interactiva principal!");
         setShowPart2(true);
       }
     } else if (showPart2 && level.secondTouchableArea) {
       if (isPointInArea(locationX, locationY, level.secondTouchableArea)) {
-        console.log("¡Has completado el nivel!");
         setShowSuccess(true);
+        
+        if (level.id === "3") {
+          completarTarea(3);
+        }
       }
     }
   };
@@ -509,14 +509,28 @@ export default function LearningGameScreen({ levelId }: { levelId: string }) {
         {showSuccess && (
           <View style={[styles.messageContainer, { backgroundColor: accentColor }]}>
             <Ionicons name="trophy" size={24} color="white" />
-            <Text style={styles.successMessage}>{level.message}</Text>
+            <Text style={styles.successMessage}>
+              {level.message}
+            </Text>
+            {level.id === "3" && isTareaCompletada(3) && (
+              <Text style={[styles.successMessage, {marginTop: 8}]}>
+                ¡Tarea 3 completada correctamente!
+              </Text>
+            )}
           </View>
         )}
 
         {showSuccess && (
           <TouchableOpacity
             style={[styles.backButton, { backgroundColor: accentColor }]}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              // Opcional: Puedes pasar un parámetro para indicar que debe refrescar las tareas
+              navigation.navigate({
+                name: 'task-list',
+                params: { refresh: true },
+                merge: true,
+              });
+            }}
           >
             <Text style={styles.backButtonText}>Volver</Text>
           </TouchableOpacity>

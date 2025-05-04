@@ -47,7 +47,6 @@ export default function ProfileScreen() {
 
 	// Obtener imagen de perfil
 	const getProfileImage = () => {
-		console.log("userData", userData);
 		if (userData?.foto) {
 			return { uri: userData.foto };
 		}

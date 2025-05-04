@@ -29,9 +29,6 @@ class ApiClient {
 				headers: options.headers || DEFAULT_HEADERS,
 				signal: controller.signal,
 			};
-
-			console.log(`🔄 Petición API: ${options.method || "GET"} ${url}`);
-
 			const response = await fetch(url, config);
 			clearTimeout(timeoutId);
 

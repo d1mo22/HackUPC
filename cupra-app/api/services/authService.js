@@ -17,10 +17,8 @@ const authService = {
 	 */
 	login: async (email, password) => {
 		try {
-		  console.log('📱 Intentando login con:', { email, password: '********' });
 		  const data = await apiClient.post("/usuarios/login", { email, password });
 		  
-		  console.log("🔐 Respuesta de login:", JSON.stringify(data, null, 2));
 	  
 		  if (data?.token) {
 			await storeData(TOKEN_KEY, data.token);
@@ -29,11 +27,7 @@ const authService = {
 	  
 		  if (data?.usuario) {
 			// Log detallado para verificar qué campos contienen la imagen
-			console.log("👤 Campos de imagen en usuario:", {
-			  foto: data.usuario.foto,
-			});
 			
-			console.log("👤 Datos de usuario a almacenar:", JSON.stringify(data.usuario, null, 2));
 			
 			// Asegúrate de que data.usuario sea una cadena JSON
 			const userDataString = typeof data.usuario === 'string' 
@@ -41,7 +35,6 @@ const authService = {
 			  : JSON.stringify(data.usuario);
 			
 			await storeData(USER_KEY, userDataString);
-			console.log("💾 Datos de usuario almacenados con éxito");
 		  }
 	  
 		  return data;
@@ -58,23 +51,17 @@ const authService = {
 	 */
 	register: async (userData) => {
 		try {
-			console.log('📱 Intentando registro con:', { ...userData, password: '********' });
 			const data = await apiClient.post("/usuarios/registro", userData);
 			
-			console.log("🔐 Respuesta de registro:", JSON.stringify(data, null, 2));
 		
 			if (data?.token) {
 				await storeData(TOKEN_KEY, data.token);
-				console.log("🔑 Token almacenado con éxito");
 			}
 		
 			if (data?.usuario) {
 				// Log detallado para verificar qué campos contienen la imagen
-				console.log("👤 Campos de imagen en usuario:", {
-					foto: data.usuario.foto,
-				});
+
 				
-				console.log("👤 Datos de usuario a almacenar:", JSON.stringify(data.usuario, null, 2));
 				
 				// Asegúrate de que data.usuario sea una cadena JSON
 				const userDataString = typeof data.usuario === 'string' 
@@ -82,7 +69,6 @@ const authService = {
 					: JSON.stringify(data.usuario);
 				
 				await storeData(USER_KEY, userDataString);
-				console.log("💾 Datos de usuario almacenados con éxito");
 			}
 		
 			return data;
@@ -140,7 +126,6 @@ const authService = {
 			const userData = await getData(USER_KEY);
 			
 			// Añadir más información para depuración
-			console.log('📂 Datos brutos recuperados:', userData);
 			
 			if (!userData) return null;
 			
@@ -174,14 +159,6 @@ const authService = {
 			
 			// Verificar si hay datos de usuario almacenados
 			const userData = await getData(USER_KEY);
-			
-			console.log('--- Test de Storage ---');
-			console.log('Token existe:', !!token);
-			console.log('Datos de usuario existen:', !!userData);
-			
-			if (userData) {
-				console.log('Datos del usuario:', userData);
-			}
 			
 			return {
 				tokenExists: !!token,
