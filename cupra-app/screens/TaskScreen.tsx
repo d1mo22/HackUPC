@@ -20,10 +20,21 @@ export default function TaskScreen() {
     // Filter tasks based on the current day
     const todaysTasks = tasks.allTasks.filter((task) => task.day === currentDay);
 
+    // Map numeric levels to their corresponding names
+    const levelMapping = {
+        0: "Introductorio",
+        1: "Principiante",
+        2: "Intermedio",
+        3: "Avanzado",
+        4: "Maestro",
+        5: "Experto",
+    };
+
     // Group tasks by level
     const tasksByLevel = tasks.allTasks.reduce((acc, task) => {
-        if (!acc[task.level]) acc[task.level] = [];
-        acc[task.level].push(task);
+        const levelName = levelMapping[task.level] || `Nivel ${task.level}`;
+        if (!acc[levelName]) acc[levelName] = [];
+        acc[levelName].push(task);
         return acc;
     }, {});
 
@@ -97,7 +108,7 @@ export default function TaskScreen() {
             {Object.keys(tasksByLevel).map((level) => (
                 <View key={level} style={styles.section}>
                     <Text style={[styles.sectionTitle, { color: accentColor }]}>
-                        Tareas de nível {level}
+                        Tareas de {level}
                     </Text>
                     {tasksByLevel[level].map((task) => (
                         <TaskCard

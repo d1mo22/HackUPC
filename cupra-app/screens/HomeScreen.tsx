@@ -39,8 +39,9 @@ export default function HomeScreen() {
 	const [dailyFeature, setDailyFeature] = useState<any>(null);
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const [otherFeatures, setOtherFeatures] = useState<any[]>([]);
-	const [daysRemaining] = useState(30); // Número fijo de días restantes para recibir el coche
 
+	const currentDay = 3; // Arbitrary day variable
+	const daysRemaining = 30 - currentDay; // Calculate days remaining dynamically
 
 	// Obtenemos las dimensiones de la pantalla
 	const { width } = useWindowDimensions();
@@ -62,7 +63,6 @@ export default function HomeScreen() {
 		return "23%"; // 4 por fila en pantallas muy grandes
 	};
 
-	const currentDay = 3; // Arbitrary day variable
 	const todaysTasks = tasks.allTasks.filter((task) => task.day === currentDay);
 
 	// Calculate progress
@@ -240,6 +240,7 @@ export default function HomeScreen() {
 
 				{todaysTasks.map((task) => (
 									<TaskCard
+									key={task.id} // Add this line
 									id = {task.id}
 									title={task.title}
 									points={task.points}
@@ -267,7 +268,7 @@ export default function HomeScreen() {
 				>
 					Tienes una {" "}
 					<Text style={[styles.streakHighlight, { color: accentColor }]}>
-						racha de 5 días
+						racha de 2 días
 					</Text>
 					!
 				</Text>
@@ -355,7 +356,7 @@ export default function HomeScreen() {
 				<View style={styles.featuresGrid}>
 					{otherFeatures.map((feature) => (
 						<View
-							key={feature.id}
+							key={feature.id} // Add this line
 							style={[
 								styles.featureCardWrapper,
 								{ width: getItemWidth(width) }, // 48% para dejar un pequeño espacio entre tarjetas

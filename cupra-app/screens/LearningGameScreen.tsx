@@ -42,6 +42,7 @@ export default function LearningGameScreen({ levelId }: { levelId: string }) {
   const [loading, setLoading] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showPart2, setShowPart2] = useState(false);
+  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 
   const navigation = useNavigation(); // Initialize navigation
 
@@ -147,6 +148,11 @@ export default function LearningGameScreen({ levelId }: { levelId: string }) {
       : level.touchableArea;
   };
 
+  const onImageLayout = (event: any) => {
+    const { width, height } = event.nativeEvent.layout;
+    setImageDimensions({ width, height });
+  };
+
   return (
     <View style={[styles.container, { backgroundColor }]}>
       <View style={styles.header}>
@@ -167,14 +173,20 @@ export default function LearningGameScreen({ levelId }: { levelId: string }) {
           styles.imageContainer,
           {
             backgroundColor: cardColor,
-            height: 350,
+            height: isMobile ? 350 : 500, // Adjust height for desktop
           },
         ]}
       >
         <Image
           source={getImageSource()}
-          style={styles.levelImage}
+          style={[
+            styles.levelImage,
+            {
+              transform: [{ scale: isMobile ? 1 : 1.2 }], // Scale image for desktop
+            },
+          ]}
           resizeMode="contain"
+          onLayout={onImageLayout} // Capture image dimensions
         />
 
         {!showSuccess && (
@@ -182,11 +194,22 @@ export default function LearningGameScreen({ levelId }: { levelId: string }) {
             style={[
               styles.touchableArea,
               {
-                left: getTouchableAreaProps().x * width * (isMobile ? 0.9 : 0.7),
-                top: getTouchableAreaProps().y * 300,
-                width: getTouchableAreaProps().radius * 2,
-                height: getTouchableAreaProps().radius * 2,
-                borderRadius: getTouchableAreaProps().radius,
+                left: getTouchableAreaProps().x * imageDimensions.width,
+                top: getTouchableAreaProps().y * imageDimensions.height,
+                width:
+                  getTouchableAreaProps().radius *
+                  2 *
+                  (isMobile ? 0.8 : 1.2) *
+                  (imageDimensions.width / 500), // Scale width based on image size
+                height:
+                  getTouchableAreaProps().radius *
+                  2 *
+                  (isMobile ? 0.8 : 1.2) *
+                  (imageDimensions.height / 500), // Scale height based on image size
+                borderRadius:
+                  getTouchableAreaProps().radius *
+                  (isMobile ? 0.8 : 1.2) *
+                  (Math.min(imageDimensions.width, imageDimensions.height) / 500), // Adjust border radius
               },
             ]}
             onPress={handleAreaPress}
