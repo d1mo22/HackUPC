@@ -29,12 +29,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
     const navigation = useNavigation(); // Access navigation
 
     // Agrupa todos los colores del tema al inicio del componente
-        const backgroundColor = useThemeColor({}, "background");
         const textColor = useThemeColor({}, "text");
-        const accentColor = useThemeColor({}, "tint");
-        const cardColor = useThemeColor({}, "card");
-        const cardBackgroundColor = useThemeColor({}, "cardBackground");
-        const cardAccentColor = useThemeColor({}, "cardAccent");
         const taskColor = useThemeColor({}, "task");
         const taskCompletedColor = useThemeColor({}, "taskCompleted");
         const taskDisabledColor = useThemeColor({}, "taskDisabled");

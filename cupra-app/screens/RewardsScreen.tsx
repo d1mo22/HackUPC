@@ -47,6 +47,7 @@ export default function RewardsScreen() {
           const taskDisabledColor = useThemeColor({}, "taskDisabled");
           const contrastHighlight = useThemeColor({}, "contrastHighlight");
           const backgroundVariant = useThemeColor({}, "backgroundVariant")
+          const contrastText = useThemeColor({}, "contrastText");
           const xpEarned = tasks.allTasks
           .filter((task) => task.completed)
           .reduce((total, task) => total + task.points, 0);
@@ -134,7 +135,7 @@ export default function RewardsScreen() {
               <Text
                 style={[
                   styles.claimButtonText,
-                  { color: reward.claimed || xp < reward.xpRequired ? "#aaa" : accentColor },
+                  { color: reward.claimed || xp < reward.xpRequired ? "#aaa" : contrastText },
                 ]}
               >
                 {reward.claimed ? "Reclamada" : "Reclamar"}
