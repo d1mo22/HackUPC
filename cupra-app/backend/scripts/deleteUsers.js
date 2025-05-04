@@ -6,7 +6,6 @@ const Usuario = require('../models/Usuario');
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
-    console.log('Conectado a MongoDB');
   } catch (err) {
     console.error('Error al conectar a MongoDB:', err);
     process.exit(1);
@@ -17,7 +16,6 @@ const connectDB = async () => {
 const deleteUsers = async () => {
   try {
     const result = await Usuario.deleteMany({});
-    console.log(`${result.deletedCount} usuarios eliminados`);
   } catch (err) {
     console.error('Error al eliminar usuarios:', err);
   }

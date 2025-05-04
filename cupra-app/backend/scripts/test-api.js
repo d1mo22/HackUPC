@@ -4,7 +4,6 @@ const API_URL = "http://localhost:5000/api";
 let authToken = "";
 
 async function runTests() {
-	console.log("🧪 Iniciando pruebas de API CUPRA...");
 	const results = {
 		total: 0,
 		passed: 0,
