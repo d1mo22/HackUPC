@@ -5,6 +5,7 @@ import { Typography } from "../constants/Typography";
 import tasks from "../data/tasks.json"; // Import tasks from tasks.json
 import { useThemeColor } from "../hooks/useThemeColor";
 import { useUserData } from "../hooks/useUserData"; // Importar el hook de datos de usuario
+import { useTareas } from "../context/TareasContext"; // Añade esta importación
 
 interface Reward {
   id: string;
@@ -21,16 +22,17 @@ const initialRewards: Reward[] = [
 ];
 
 export default function RewardsScreen() {
-  const [xp, setXp] = useState(0); // Replace with actual XP from tasks
-  const [streak, setStreak] = useState(3); // Replace with actual streak data
+  const [xp, setXp] = useState(0);
+  const [streak, setStreak] = useState(3); 
   const [rewards, setRewards] = useState(initialRewards);
   const { userData } = useUserData();
+  const { xpTotal, racha } = useTareas(); // Usa el contexto de tareas
 
   const backgroundColor = useThemeColor({}, "background");
   const textColor = useThemeColor({}, "text");
   const accentColor = useThemeColor({}, "tint");
 
-// Obtenemos las dimensiones de la pantalla
+  // Obtenemos las dimensiones de la pantalla
   const { width } = useWindowDimensions();
   const isMobile = width <= 850; // Consideramos móvil cuando es menor o igual a 768px
 
@@ -43,42 +45,44 @@ export default function RewardsScreen() {
   };
 
   // Agrupa todos los colores del tema al inicio del componente
-          const taskCompletedColor = useThemeColor({}, "taskCompleted");
-          const taskDisabledColor = useThemeColor({}, "taskDisabled");
-          const contrastHighlight = useThemeColor({}, "contrastHighlight");
-          const backgroundVariant = useThemeColor({}, "backgroundVariant")
-          const xpEarned = tasks.allTasks
-          .filter((task) => task.completed)
-          .reduce((total, task) => total + task.points, 0);
+  const taskCompletedColor = useThemeColor({}, "taskCompleted");
+  const taskDisabledColor = useThemeColor({}, "taskDisabled");
+  const contrastHighlight = useThemeColor({}, "contrastHighlight");
+  const backgroundVariant = useThemeColor({}, "backgroundVariant");
+  
+  // Calcular XP ganada desde tasks
+  const xpEarned = tasks.allTasks
+    .filter((task) => task.completed)
+    .reduce((total, task) => total + task.points, 0);
+  
   useEffect(() => {
-    // Simulate fetching XP and streak data
-    setXp(xpEarned); // Replace with actual XP calculation
-    setStreak(userData?.rachaActual ?? 3); // Replace with actual streak calculation
-  }, []);
+    // Actualizar XP y racha desde el contexto o datos locales
+    setXp(xpTotal || xpEarned);
+    setStreak(racha || userData?.rachaActual || 3);
+  }, [xpTotal, racha, userData, xpEarned]);
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor, paddingHorizontal: isMobile ? 0 : 25  }]
-    } contentContainerStyle={styles.contentContainer}>
+    <ScrollView style={[styles.container, { backgroundColor, paddingHorizontal: isMobile ? 0 : 25 }]} contentContainerStyle={styles.contentContainer}>
       <View style={styles.header}>
-              <View style={styles.headerTitle}>
-                <Text
-                  style={[
-                    styles.greeting,
-                    { color: textColor, fontFamily: Typography.fonts.title },
-                  ]}
-                >
-                  ¡Recompensas!
-                </Text>
-                <Text
-                  style={[
-                    styles.subtitle,
-                    { color: textColor, fontFamily: Typography.fonts.regular },
-                  ]}
-                >
-                  Obtiene recompensas por completar tareas y mantener rachas.
-                </Text>
-              </View>
-            </View>
+        <View style={styles.headerTitle}>
+          <Text
+            style={[
+              styles.greeting,
+              { color: textColor, fontFamily: Typography.fonts.title },
+            ]}
+          >
+            ¡Recompensas!
+          </Text>
+          <Text
+            style={[
+              styles.subtitle,
+              { color: textColor, fontFamily: Typography.fonts.regular },
+            ]}
+          >
+            Obtiene recompensas por completar tareas y mantener rachas.
+          </Text>
+        </View>
+      </View>
 
       {/* XP and Streak Section */}
       <View style={styles.statsContainer}>
@@ -106,11 +110,11 @@ export default function RewardsScreen() {
               styles.rewardCard,
               reward.claimed ? styles.rewardCardClaimed: styles.rewardCardUnclaimed,
               reward.claimed
-                                            ? {backgroundColor : taskCompletedColor}
-                                            : {backgroundColor : taskDisabledColor},
+                ? {backgroundColor : taskCompletedColor}
+                : {backgroundColor : taskDisabledColor},
               reward.claimed
-                                            ? {borderColor : contrastHighlight}
-                                            : {borderColor : accentColor},
+                ? {borderColor : contrastHighlight}
+                : {borderColor : accentColor},
             ]}
           >
             <Text style={[styles.rewardTitle, { color: textColor }]}>
@@ -126,7 +130,6 @@ export default function RewardsScreen() {
               style={[
                 styles.claimButton,
                 { backgroundColor: reward.claimed ? backgroundVariant : contrastHighlight},
-                { color: reward.claimed || xp < reward.xpRequired ? "#aaa" : accentColor },
               ]}
               disabled={reward.claimed || xp < reward.xpRequired}
               onPress={() => claimReward(reward.id)}

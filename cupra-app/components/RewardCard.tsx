@@ -36,14 +36,14 @@ export default function RewardCard({
             {description}
           </Text>
           <Text style={[styles.xpRequired, { color: textColor }]}>
-            XP Required: {xpRequired}
+            XP Requerida: {xpRequired}
           </Text>
         </View>
       </View>
       <TouchableOpacity
         style={[
           styles.claimButton,
-          { backgroundColor: claimed ? "#666" : accentColor },
+          { backgroundColor: claimed ? "#666" : "#003e51" },
         ]}
         disabled={claimed}
         onPress={onClaim}
@@ -51,10 +51,10 @@ export default function RewardCard({
         <Text
           style={[
             styles.claimButtonText,
-            { color: claimed ? "#aaa" : "#fff" },
+            { color: claimed ? "#aaa" : "#FFFFFF" },
           ]}
         >
-          {claimed ? "Claimed" : "Claim"}
+          {claimed ? "Reclamada" : "Reclamar"}
         </Text>
       </TouchableOpacity>
     </View>
