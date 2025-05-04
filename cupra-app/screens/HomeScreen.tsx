@@ -279,7 +279,6 @@ export default function HomeScreen() {
 									title={task.title}
 									points={task.points}
 									completed={task.completed}
-									icon={task.icon}
 									day={task.day}
 									currentDay={currentDay}
 									targetLevel= {task.targetLevel}

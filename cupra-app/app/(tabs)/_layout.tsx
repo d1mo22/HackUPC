@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Stack, router, usePathname } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Image, Platform, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
+import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
 import CupraLogo from "../../components/CupraLogo";
 import { useThemeColor } from "../../hooks/useThemeColor";
 import { useUserData } from "../../hooks/useUserData";
@@ -220,11 +220,36 @@ export default function TabLayout() {
                     }}
                 />
                 <Stack.Screen
-                name="test-hook"
-                options={{
-                    title: "Test Hook",
-                    headerBackTitle: "Atrás",
-                }}
+                    name="search"
+                    options={{
+                        headerTitle: () => (
+                            <CupraLogo width={80} height={30} color={textColor} />
+                        ),
+                        headerBackVisible: false,
+                        headerLeft: () => null,
+                        headerRight: () => (
+                            <View style={styles.headerRightContainer}>
+                                {isDesktop && <DesktopNavigation />}
+                                <UserProfileButton />
+                            </View>
+                        )
+                        }}
+                />
+                <Stack.Screen
+                    name="explore"
+                    options={{
+                        headerTitle: () => (
+                            <CupraLogo width={80} height={30} color={textColor} />
+                        ),
+                        headerBackVisible: false,
+                        headerLeft: () => null,
+                        headerRight: () => (
+                            <View style={styles.headerRightContainer}>
+                                {isDesktop && <DesktopNavigation />}
+                                <UserProfileButton />
+                            </View>
+                        )
+                        }}
                 />
             </Stack>
 
