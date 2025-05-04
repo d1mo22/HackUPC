@@ -12,7 +12,6 @@ const Tarea = require("../models/Tarea");
 // Conexión a MongoDB
 mongoose
 	.connect(process.env.MONGODB_URI)
-	.then(() => console.log("Conectado a MongoDB para importación"))
 	.catch((err) => {
 		console.error("Error al conectar a MongoDB:", err);
 		process.exit(1);
@@ -50,7 +49,6 @@ const importCaracteristicas = async () => {
 
 		// Insertar nuevos datos
 		await Caracteristica.insertMany(caracteristicas);
-		console.log(`Características importadas: ${caracteristicas.length}`);
 	} catch (err) {
 		console.error("Error al importar características:", err);
 	}
@@ -129,9 +127,6 @@ const importNivelesMisiones = async () => {
 		// Insertar nuevos datos
 		await Nivel.insertMany(niveles);
 		await Mision.insertMany(misiones);
-
-		console.log(`Niveles importados: ${niveles.length}`);
-		console.log(`Misiones importadas: ${misiones.length}`);
 	} catch (err) {
 		console.error("Error al importar niveles y misiones:", err);
 	}
@@ -167,7 +162,6 @@ const importTareas = async () => {
 
 		// Insertar nuevos datos
 		await Tarea.insertMany(tareas);
-		console.log(`Tareas importadas: ${tareas.length}`);
 	} catch (err) {
 		console.error("Error al importar tareas:", err);
 	}
@@ -179,7 +173,6 @@ const importarTodo = async () => {
 		await importCaracteristicas();
 		await importNivelesMisiones();
 		await importTareas();
-		console.log("Importación completada con éxito");
 		mongoose.disconnect();
 	} catch (err) {
 		console.error("Error durante la importación:", err);

@@ -2,10 +2,10 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
 import { Typography } from "../constants/Typography";
+import { useTareas } from "../context/TareasContext"; // Añade esta importación
 import tasks from "../data/tasks.json"; // Import tasks from tasks.json
 import { useThemeColor } from "../hooks/useThemeColor";
 import { useUserData } from "../hooks/useUserData"; // Importar el hook de datos de usuario
-import { useTareas } from "../context/TareasContext"; // Añade esta importación
 
 interface Reward {
   id: string;
@@ -45,16 +45,14 @@ export default function RewardsScreen() {
   };
 
   // Agrupa todos los colores del tema al inicio del componente
-  const taskCompletedColor = useThemeColor({}, "taskCompleted");
-  const taskDisabledColor = useThemeColor({}, "taskDisabled");
-  const contrastHighlight = useThemeColor({}, "contrastHighlight");
-  const backgroundVariant = useThemeColor({}, "backgroundVariant");
-  
-  // Calcular XP ganada desde tasks
-  const xpEarned = tasks.allTasks
-    .filter((task) => task.completed)
-    .reduce((total, task) => total + task.points, 0);
-  
+          const taskCompletedColor = useThemeColor({}, "taskCompleted");
+          const taskDisabledColor = useThemeColor({}, "taskDisabled");
+          const contrastHighlight = useThemeColor({}, "contrastHighlight");
+          const backgroundVariant = useThemeColor({}, "backgroundVariant")
+          const contrastText = useThemeColor({}, "contrastText");
+          const xpEarned = tasks.allTasks
+          .filter((task) => task.completed)
+          .reduce((total, task) => total + task.points, 0);
   useEffect(() => {
     // Actualizar XP y racha desde el contexto o datos locales
     setXp(xpTotal || xpEarned);
@@ -137,7 +135,7 @@ export default function RewardsScreen() {
               <Text
                 style={[
                   styles.claimButtonText,
-                  { color: reward.claimed || xp < reward.xpRequired ? "#aaa" : accentColor },
+                  { color: reward.claimed || xp < reward.xpRequired ? "#aaa" : contrastText },
                 ]}
               >
                 {reward.claimed ? "Reclamada" : "Reclamar"}
