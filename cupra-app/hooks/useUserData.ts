@@ -83,6 +83,9 @@ export const useUserData = () => {
         foto: profileImageUrl,
         phone: user.phone || "+34 XXX XXX XXX",
         fechaCreacion: user.fechaCreacion || "Mayo 2023",
+        vehicleModel: user.vehicleModel || "CUPRA Tavascan 2025",
+        vehicleYear: user.vehicleYear || "2025",
+        vehiclePlate: user.vehiclePlate || "1234 ABC",
         rachaActual: user.rachaActual || 0,
         puntos: user.puntos || 0
       };
@@ -100,7 +103,7 @@ export const useUserData = () => {
         email: "",
         phone: "+34 XXX XXX XXX",
         foto: "https://randomuser.me/api/portraits/lego/1.jpg",
-        memberSince: "Mayo 2023",
+        fechaCreacion: "Mayo 2023",
         vehicleModel: "CUPRA Tavascan 2025",
         vehicleYear: "2025",
         vehiclePlate: "1234 ABC",
