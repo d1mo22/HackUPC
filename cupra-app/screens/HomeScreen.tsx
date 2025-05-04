@@ -247,6 +247,7 @@ export default function HomeScreen() {
 									icon={task.icon}
 									day={task.day}
 									currentDay={currentDay}
+									targetLevel= {task.targetLevel}
 								/>
 								))}
 			</View>

@@ -88,6 +88,7 @@ export default function TaskScreen() {
                         icon={task.icon}
                         day={task.day}
                         currentDay={currentDay}
+                        targetLevel={task.targetLevel}
                     />
                 ))}
             </View>
@@ -107,6 +108,7 @@ export default function TaskScreen() {
                             icon={task.icon}
                             day={task.day}
                             currentDay={currentDay}
+                            targetLevel={task.targetLevel}
                         />
                     ))}
                 </View>

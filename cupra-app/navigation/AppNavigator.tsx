@@ -9,6 +9,7 @@ import FeatureDetailScreen from "../screens/FeatureDetailScreen";
 import GlossaryScreen from "../screens/GlossaryScreen";
 // Importar pantallas
 import HomeScreen from "../screens/HomeScreen";
+import LearningGameScreen from "../screens/LearningGameScreen";
 import POIScreen from "../screens/POIScreen";
 import SearchScreen from "../screens/SearchScreen";
 import TaskScreen from "../screens/TaskScreen";
@@ -46,6 +47,11 @@ function HomeStack() {
 				name="TaskScreen"
 				component={TaskScreen}
 				options={{ title: "Tasks" }}
+			 />
+			<Stack.Screen
+				name="LearningGame"
+				component={LearningGameScreen}
+				options={{ title: "Learning Game" }}
 			/>
 		</Stack.Navigator>
 	);

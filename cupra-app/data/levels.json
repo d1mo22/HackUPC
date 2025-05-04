@@ -1,0 +1,58 @@
+[
+    {
+        "id": "1",
+        "index": 1,
+        "title": "Piloto Novato",
+        "mission": "¿En que zona aproximada está el botón de arranque?",
+        "secondMission": "Enciende la bestia", // Nueva misión para la segunda parte
+        "image": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//CUPRA%20TAVASCAN%20096.webp",
+        "secondImage": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//WhatsApp%20Image%202025-05-03%20at%2004.52.15.webp",
+        "message": "¡Excelente! Has completado tu primera misión. El Tavascan responde a tu comando 🚀",
+        "touchableArea": {
+          "x": 0.55,
+          "y": 0.4,
+          "radius": 40
+        },
+        "secondTouchableArea": {
+          "x": 0.79,
+          "y": 0.67,
+          "radius": 20
+        }
+      },
+      {
+        "id": "2",
+        "index": 2,
+        "title": "Conductor Intermedio",
+        "mission": "¿Dónde se cambia el modo de conducción?",
+        "secondMission": "Activa el modo Performance", // Nueva misión para la segunda parte
+        "image": { "uri": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//CUPRA%20TAVASCAN%20099.webp" },
+        "secondImage": { "uri": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//Info_panel.webp" },
+        "message": "¡Perfecto! Has activado el modo Sport. Siente la potencia y precisión del Tavascan ⚡",
+        "touchableArea": {
+          "x": 0.55,
+          "y": 0.1,
+          "radius": 30
+        },
+        "secondTouchableArea": {
+          "x": 0.67,
+          "y": 0.73,
+          "radius": 34
+        },
+        "imageScale": 1.2
+      },
+      {
+        "id": "3",
+        "index": 3,
+        "title": "Experto Tavascan",
+        "mission": "Personaliza la iluminación ambiental",
+        "secondMission": "Electrifica el ambiente", // Nueva misión para la segunda parte
+        "image": { "uri": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//multipanel.webp" },
+        "message": "¡Magnífico! Has electrificado el ambiente del Tavascan 🏆",
+        "touchableArea": {
+          "x": 0.73,
+          "y": 0.57,
+          "radius": 30
+        },
+        "imageScale": 1.3
+      }
+]

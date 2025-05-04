@@ -1,112 +1,274 @@
 {
     "allTasks": [
-      {
-        "id": 1,
-        "title": "Task 1",
-        "day": 1,
-        "points": 10,
-        "completed": true,
-        "icon": "📌",
-        "level": 1
-      },
-      {
-        "id": 2,
-        "title": "Task 2",
-        "day": 2,
-        "points": 20,
-        "completed": true,
-        "icon": "✅",
-        "level": 1
-      },
-      {
-        "id": 3,
-        "title": "Task 3",
-        "day": 2,
-        "points": 15,
-        "completed": true,
-        "icon": "✅",
-        "level": 1
-      },
-      {
-        "id": 4,
-        "title": "Task 1",
-        "day": 3,
-        "points": 10,
-        "completed": false,
-        "icon": "📌",
-        "level": 2
-      },
-      {
-        "id": 5,
-        "title": "Task 2",
-        "day": 4,
-        "points": 20,
-        "completed": false,
-        "icon": "✅",
-        "level": 2
-      },
-      {
-        "id": 6,
-        "title": "Task 3",
-        "day": 5,
-        "points": 15,
-        "completed": false,
-        "icon": "✅",
-        "level": 3
-      },
         {
-        "id": 7,
-        "title": "Task 1",
-        "day": 6,
-        "points": 10,
-        "completed": false,
-        "icon": "📌",
-        "level": 3
-      },
-      {
-        "id": 8,
-        "title": "Task 2",
-        "day": 7,
-        "points": 20,
-        "completed": false,
-        "icon": "✅",
-        "level": 4
-      },
-      {
-        "id": 9,
-        "title": "Task 3",
-        "day": 8,
-        "points": 15,
-        "completed": false,
-        "icon": "✅",
-        "level": 4
-      },
-      {
-        "id": 10,
-        "title": "Task 1",
-        "day": 9,
-        "points": 10,
-        "completed": false,
-        "icon": "📌",
-        "level": 5
-      },
-      {
-        "id": 11,
-        "title": "Task 2",
-        "day": 10,
-        "points": 20,
-        "completed": false,
-        "icon": "✅",
-        "level": 5
-      },
-      {
-        "id": 12,
-        "title": "Task 3",
-        "day": 11,
-        "points": 15,
-        "completed": false,
-        "icon": "✅",
-        "level": 5
-      }
+            "id": 1,
+            "title": "Piloto Novato", // From levels.json
+            "day": 1,
+            "points": 10,
+            "completed": true,
+            "level": 0,
+            "targetLevel": "1"
+        },
+        {
+            "id": 2,
+            "title": "Conductor Intermedio", // From levels.json
+            "day": 2,
+            "points": 20,
+            "completed": true,
+            "level": 0,
+            "targetLevel": "2"
+        },
+        {
+            "id": 3,
+            "title": "Experto Tavascan", // From levels.json
+            "day": 3,
+            "points": 15,
+            "completed": false,
+            "level": 1,
+            "targetLevel": "3"
+        },
+        {
+            "id": 4,
+            "title": "Nivel 4", // No matching level in levels.json
+            "day": 4,
+            "points": 10,
+            "completed": false,
+            "level": 1,
+            "targetLevel": "4"
+        },
+        {
+            "id": 5,
+            "title": "Nivel 5", // No matching level in levels.json
+            "day": 5,
+            "points": 20,
+            "completed": false,
+            "level": 1,
+            "targetLevel": "5"
+        },
+        {
+            "id": 6,
+            "title": "Nivel 6", // No matching level in levels.json
+            "day": 6,
+            "points": 15,
+            "completed": false,
+            "level": 2,
+            "targetLevel": "6"
+        },
+        {
+            "id": 7,
+            "title": "Nivel 7", // No matching level in levels.json
+            "day": 7,
+            "points": 10,
+            "completed": false,
+            "level": 2,
+            "targetLevel": "7"
+        },
+        {
+            "id": 8,
+            "title": "Nivel 8", // No matching level in levels.json
+            "day": 8,
+            "points": 20,
+            "completed": false,
+            "level": 2,
+            "targetLevel": "8"
+        },
+        {
+            "id": 9,
+            "title": "Nivel 9", // No matching level in levels.json
+            "day": 9,
+            "points": 15,
+            "completed": false,
+            "level": 3,
+            "targetLevel": "9"
+        },
+        {
+            "id": 10,
+            "title": "Nivel 10", // No matching level in levels.json
+            "day": 10,
+            "points": 10,
+            "completed": false,
+            "level": 3,
+            "targetLevel": "10"
+        },
+        {
+            "id": 11,
+            "title": "Nivel 11",
+            "day": 11,
+            "points": 20,
+            "completed": false,
+            "level": 3,
+            "targetLevel": "11"
+        },
+        {
+            "id": 12,
+            "title": "Nivel 12",
+            "day": 12,
+            "points": 15,
+            "completed": false,
+            "level": 4,
+            "targetLevel": "12"
+        },
+        {
+            "id": 13,
+            "title": "Nivel 13",
+            "day": 13,
+            "points": 10,
+            "completed": false,
+            "level": 4,
+            "targetLevel": "13"
+        },
+        {
+            "id": 14,
+            "title": "Nivel 14",
+            "day": 14,
+            "points": 20,
+            "completed": false,
+            "level": 4,
+            "targetLevel": "14"
+        },
+        {
+            "id": 15,
+            "title": "Nivel 15",
+            "day": 15,
+            "points": 15,
+            "completed": false,
+            "level": 5,
+            "targetLevel": "15"
+        },
+        {
+            "id": 16,
+            "title": "Nivel 16",
+            "day": 16,
+            "points": 10,
+            "completed": false,
+            "level": 5,
+            "targetLevel": "16"
+        },
+        {
+            "id": 17,
+            "title": "Nivel 17",
+            "day": 17,
+            "points": 20,
+            "completed": false,
+            "level": 5,
+            "targetLevel": "17"
+        },
+        {
+            "id": 18,
+            "title": "Nivel 18",
+            "day": 18,
+            "points": 15,
+            "completed": false,
+            "level": 1,
+            "targetLevel": "18"
+        },
+        {
+            "id": 19,
+            "title": "Nivel 19",
+            "day": 19,
+            "points": 10,
+            "completed": false,
+            "level": 1,
+            "targetLevel": "19"
+        },
+        {
+            "id": 20,
+            "title": "Nivel 20",
+            "day": 20,
+            "points": 20,
+            "completed": false,
+            "level": 1,
+            "targetLevel": "20"
+        },
+        {
+            "id": 21,
+            "title": "Nivel 21",
+            "day": 21,
+            "points": 15,
+            "completed": false,
+            "level": 2,
+            "targetLevel": "21"
+        },
+        {
+            "id": 22,
+            "title": "Nivel 22",
+            "day": 22,
+            "points": 10,
+            "completed": false,
+            "level": 2,
+            "targetLevel": "22"
+        },
+        {
+            "id": 23,
+            "title": "Nivel 23",
+            "day": 23,
+            "points": 20,
+            "completed": false,
+            "level": 2,
+            "targetLevel": "23"
+        },
+        {
+            "id": 24,
+            "title": "Nivel 24",
+            "day": 24,
+            "points": 15,
+            "completed": false,
+            "level": 3,
+            "targetLevel": "24"
+        },
+        {
+            "id": 25,
+            "title": "Nivel 25",
+            "day": 25,
+            "points": 10,
+            "completed": false,
+            "level": 3,
+            "targetLevel": "25"
+        },
+        {
+            "id": 26,
+            "title": "Nivel 26",
+            "day": 26,
+            "points": 20,
+            "completed": false,
+            "level": 3,
+            "targetLevel": "26"
+        },
+        {
+            "id": 27,
+            "title": "Nivel 27",
+            "day": 27,
+            "points": 15,
+            "completed": false,
+            "level": 4,
+            "targetLevel": "27"
+        },
+        {
+            "id": 28,
+            "title": "Nivel 28",
+            "day": 28,
+            "points": 10,
+            "completed": false,
+            "level": 4,
+            "targetLevel": "28"
+        },
+        {
+            "id": 29,
+            "title": "Nivel 29",
+            "day": 29,
+            "points": 20,
+            "completed": false,
+            "level": 4,
+            "targetLevel": "29"
+        },
+        {
+            "id": 30,
+            "title": "Nivel 30",
+            "day": 30,
+            "points": 15,
+            "completed": false,
+            "level": 5,
+            "targetLevel": "30"
+        }
     ]
-  }
+}

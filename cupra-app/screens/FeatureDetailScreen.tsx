@@ -51,10 +51,6 @@ export default function FeatureDetailScreen({
 
 	const insets = useSafeAreaInsets();
 	
-	const top = typeof insets.top === 'number' ? insets.top : 0;
-	const bottom = typeof insets.bottom === 'number' ? insets.bottom : 0;
-	const left = typeof insets.left === 'number' ? insets.left : 0;
-	const right = typeof insets.right === 'number' ? insets.right : 0;
 
 	useEffect(() => {
 		// Simular carga de datos

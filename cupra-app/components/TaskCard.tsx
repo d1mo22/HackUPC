@@ -1,8 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native"; // Import navigation hook
+import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useThemeColor } from "../hooks/useThemeColor";
-
 
 interface TaskCardProps {
     id: number;
@@ -12,6 +13,7 @@ interface TaskCardProps {
     icon: string;
     day: number;
     currentDay: number;
+    targetLevel: string;
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({
@@ -22,7 +24,9 @@ const TaskCard: React.FC<TaskCardProps> = ({
     icon,
     day,
     currentDay,
+    targetLevel,
 }) => {
+    const navigation = useNavigation(); // Access navigation
 
     // Agrupa todos los colores del tema al inicio del componente
         const backgroundColor = useThemeColor({}, "background");
@@ -37,6 +41,13 @@ const TaskCard: React.FC<TaskCardProps> = ({
         const contrastHighlight = useThemeColor({}, "contrastHighlight");
         const contrastText = useThemeColor({}, "contrastText");
         const backgroundVariant = useThemeColor({}, "backgroundVariant")
+
+    const handlePress = () => {
+        router.push({
+                pathname: "/(tabs)/learning-game",
+                params: { levelId: targetLevel },
+        }); // Navigate to LearningGameScreen
+    };
 
     return (
         <TouchableOpacity
@@ -56,7 +67,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
                                             ? {backgroundColor : taskColor}
                                             : {backgroundColor : taskDisabledColor},
                                     ]}
-                                    onPress={() => console.log(`Task ${id} pressed`)}
+                                    onPress={handlePress} // Use the new handler
                                     disabled={day > currentDay}
                                     activeOpacity={0.7}
                                 >
