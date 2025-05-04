@@ -36,8 +36,8 @@ export default function TabLayout() {
     let activeTab = "";
     if (path === "/") {
         activeTab = "home";
-    } else if (path === "/explore") {
-        activeTab = "explore";
+    } else if (path === "/rewards") {
+        activeTab = "rewards";
     } else if (path === "/search") {
         activeTab = "search";
     }
@@ -110,19 +110,19 @@ export default function TabLayout() {
             </TouchableOpacity>
             
             <TouchableOpacity 
-                style={[styles.desktopNavItem, activeTab === "explore" && styles.desktopNavItemActive]} 
-                onPress={() => navigateIfNeeded("/explore")}
+                style={[styles.desktopNavItem, activeTab === "rewards" && styles.desktopNavItemActive]} 
+                onPress={() => navigateIfNeeded("/rewards")}
             >
                 <Ionicons
-                    name="compass"
+                    name="star"
                     size={20}
-                    color={activeTab === "explore" ? accentColor : textColor}
+                    color={activeTab === "rewards" ? accentColor : textColor}
                 />
                 <Text style={[
                     styles.desktopNavText,
-                    { color: activeTab === "explore" ? accentColor : textColor }
+                    { color: activeTab === "rewards" ? accentColor : textColor }
                 ]}>
-                    Descubrir
+                    Recompensas
                 </Text>
             </TouchableOpacity>
             
@@ -181,6 +181,38 @@ export default function TabLayout() {
                 {/* Resto de definiciones de pantalla... */}
                 <Stack.Screen
                     name="task-list"
+                    options={{
+                        headerTitle: () => (
+                            <CupraLogo width={80} height={30} color={textColor} />
+                        ),
+                        headerBackVisible: false,
+                        headerLeft: () => null,
+                        headerRight: () => (
+                            <View style={styles.headerRightContainer}>
+                                {isDesktop && <DesktopNavigation />}
+                                <UserProfileButton />
+                            </View>
+                        )
+                    }}
+                />
+                <Stack.Screen
+                    name="search"
+                    options={{
+                        headerTitle: () => (
+                            <CupraLogo width={80} height={30} color={textColor} />
+                        ),
+                        headerBackVisible: false,
+                        headerLeft: () => null,
+                        headerRight: () => (
+                            <View style={styles.headerRightContainer}>
+                                {isDesktop && <DesktopNavigation />}
+                                <UserProfileButton />
+                            </View>
+                        )
+                    }}
+                />
+                <Stack.Screen
+                    name="rewards"
                     options={{
                         headerTitle: () => (
                             <CupraLogo width={80} height={30} color={textColor} />
@@ -286,32 +318,32 @@ export default function TabLayout() {
                             </Text>
                         </TouchableOpacity>
 
-                        {/* Botón Discover */}
+                        {/* Botón Recompensas */}
                         <TouchableOpacity
                             style={styles.footerItem}
-                            onPress={() => navigateIfNeeded("/explore")}
+                            onPress={() => navigateIfNeeded("/rewards")}
                         >
                             <View
                                 style={[
                                     styles.footerButton,
-                                    activeTab === "explore" && styles.activeButton,
+                                    activeTab === "rewards" && styles.activeButton,
                                 ]}
                             >
                                 <Ionicons
-                                    name="compass"
+                                    name="star"
                                     size={24}
-                                    color={activeTab === "explore" ? accentColor : textColor}
+                                    color={activeTab === "rewards" ? accentColor : textColor}
                                 />
                             </View>
                             <Text
                                 style={[
                                     styles.footerText,
-                                    activeTab === "explore"
+                                    activeTab === "rewards"
                                         ? { color: accentColor, fontWeight: "600" }
                                         : { color: textColor },
                                 ]}
                             >
-                                Descubrir
+                                Recompensas
                             </Text>
                         </TouchableOpacity>
 
