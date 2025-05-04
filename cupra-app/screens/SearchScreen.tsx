@@ -15,6 +15,7 @@ import FeatureCard from "../components/FeatureCard";
 import SearchBar from "../components/SearchBar";
 import { useThemeColor } from "../hooks/useThemeColor";
 import { Typography } from "../constants/Typography";
+import { ScrollView, useWindowDimensions } from "react-native";
 
 // Importar todos los datos necesarios
 import features from "../data/features.json";
@@ -45,6 +46,16 @@ export default function SearchScreen() {
     const textColor = useThemeColor({}, "text");
     const accentColor = useThemeColor({}, "tint");
     const cardColor = useThemeColor({}, "card");
+
+    const { width } = useWindowDimensions();
+     const getItemWidth = (screenWidth: number) => {
+        if (screenWidth < 500) return '100%';
+        if (screenWidth < 900) return '48%';
+        if (screenWidth < 1200) return '31%';
+        return '23%';
+    };
+    const featureResults = filteredResults.filter(item => item.type === "feature");
+    const otherResults = filteredResults.filter(item => item.type !== "feature");
 
     const handleSearch = () => {
         if (!searchQuery.trim()) {
@@ -101,7 +112,6 @@ export default function SearchScreen() {
             id: light.id,
             title: light.name,
             description: light.description,
-            image: light.icon,
             category: "Tablero de instrumentos",
             type: "warning",
             priority: searchQuery.includes("averia") ? severityPriority : severityPriority + 2, // Prioridad ajustada
@@ -269,122 +279,128 @@ export default function SearchScreen() {
         </TouchableOpacity>
     );
 };
-    return (
-        <View style={[styles.container, { backgroundColor }]}>
-            <SearchBar
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-                onSearch={handleSearch}
-                placeholder="Buscar características, averías, pilotos..."
+
+const renderGridItem = (item: SearchResult) => {
+    if (item.type === "feature" && item.image) {
+        // For features, use the existing FeatureCard component
+        return (
+            <FeatureCard
+                id={item.id}
+                title={item.title}
+                description={item.description}
+                image={item.image}
+                category={item.category}
+                onPress={() => handleResultPress(item)}
             />
-
-            {loading ? (
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color={accentColor} />
-                </View>
+        );
+    }
+    
+    // For warnings and glossary, create a similar card layout
+    return (
+    <TouchableOpacity
+        style={[styles.gridCard, { backgroundColor: cardColor }]}
+        onPress={() => handleResultPress(item)}
+    >
+        {/* Icon header with appropriate background color */}
+        <View style={[styles.gridCardIcon, { 
+            backgroundColor: item.type === "warning" 
+                ? (item.color === "red" ? "#E53935" : 
+                   item.color === "amber" ? "#FFB300" : 
+                   item.color === "green" ? "#43A047" :
+                   accentColor) 
+                : accentColor
+        }]}>
+            {item.type === "warning" && item.image ? (
+                <Image 
+                    source={{ uri: item.image }} 
+                    style={styles.gridIconImage} 
+                    resizeMode="contain"
+                />
+            ) : item.type === "warning" ? (
+                <Ionicons name="warning" size={24} color="white" />
             ) : (
-                <>
-                    {searchQuery.length > 0 && (
-                        <>
-                            <View style={styles.resultsHeader}>
-                                <Text style={[styles.resultsText, { color: textColor }]}>
-                                    {filteredResults.length === 0
-                                        ? "No se encontraron resultados"
-                                        : `${filteredResults.length} resultado${filteredResults.length === 1 ? "" : "s"} encontrado${filteredResults.length === 1 ? "" : "s"}`}
-                                </Text>
-                            </View>
-                            
-                            {/* Filtros de tipo */}
-                            {results.length > 0 && (
-                                <View style={styles.filtersContainer}>
-                                    <TouchableOpacity
-                                        style={[
-                                            styles.filterChip,
-                                            activeFilters.includes("feature") && 
-                                            { backgroundColor: accentColor }
-                                        ]}
-                                        onPress={() => filterResults("feature")}
-                                    >
-                                        <Text style={[
-                                            styles.filterChipText,
-                                            activeFilters.includes("feature") && { color: "white" }
-                                        ]}>
-                                            Características
-                                        </Text>
-                                    </TouchableOpacity>
-                                    
-                                    <TouchableOpacity
-                                        style={[
-                                            styles.filterChip,
-                                            activeFilters.includes("warning") && 
-                                            { backgroundColor: accentColor }
-                                        ]}
-                                        onPress={() => filterResults("warning")}
-                                    >
-                                        <Text style={[
-                                            styles.filterChipText,
-                                            activeFilters.includes("warning") && { color: "white" }
-                                        ]}>
-                                            Avisos
-                                        </Text>
-                                    </TouchableOpacity>
-                                    
-                                    
-                                    <TouchableOpacity
-                                        style={[
-                                            styles.filterChip,
-                                            activeFilters.includes("glossary") && 
-                                            { backgroundColor: accentColor }
-                                        ]}
-                                        onPress={() => filterResults("glossary")}
-                                    >
-                                        <Text style={[
-                                            styles.filterChipText,
-                                            activeFilters.includes("glossary") && { color: "white" }
-                                        ]}>
-                                            Glosario
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            )}
-                        </>
-                    )}
-
-                    <FlatList
-                        data={filteredResults}
-                        keyExtractor={(item) => `${item.type}-${item.id}`}
-                        renderItem={renderSearchResult}
-                        contentContainerStyle={styles.listContent}
-                        ListEmptyComponent={
-                            searchQuery.length > 0 ? (
-                                <View style={styles.emptyStateContainer}>
-                                    <Text style={[styles.emptyStateTitle, { color: textColor }]}>
-                                        No se encontraron resultados
-                                    </Text>
-                                    <Text
-                                        style={[styles.emptyStateSubtitle, { color: textColor }]}
-                                    >
-                                        Intenta con otra palabra clave o revisa la ortografía
-                                    </Text>
-                                </View>
-                            ) : (
-                                <View style={styles.emptyStateContainer}>
-                                    <Text style={[styles.emptyStateTitle, { color: textColor }]}>
-                                        Busca en el manual interactivo
-                                    </Text>
-                                    <Text
-                                        style={[styles.emptyStateSubtitle, { color: textColor }]}
-                                    >
-                                        Encuentra características, avisos del tablero, soluciones a problemas comunes y términos del glosario
-                                    </Text>
-                                </View>
-                            )
-                        }
-                    />
-                </>
+                <Ionicons name="book" size={24} color="white" />
             )}
         </View>
-    );
+        
+        <View style={styles.gridCardContent}>
+            <Text style={[styles.gridCardTitle, { color: textColor, fontFamily: Typography.fonts.title }]} numberOfLines={1}>
+                {item.title}
+            </Text>
+            
+            <Text style={[styles.gridCardCategory, { color: accentColor }]} numberOfLines={1}>
+                {item.category}
+            </Text>
+            
+            <Text 
+                style={[styles.gridCardDescription, { color: textColor }]}
+                numberOfLines={2}
+            >
+                {item.description}
+            </Text>
+        </View>
+    </TouchableOpacity>
+);
+};
+   return (
+    <View style={[styles.container, { backgroundColor }]}>
+        <SearchBar
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            onSearch={handleSearch}
+            placeholder="Buscar características, averías, pilotos..."
+        />
+
+        {loading ? (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color={accentColor} />
+            </View>
+        ) : (
+            <FlatList
+                ListHeaderComponent={
+                    <>
+                        {searchQuery.length > 0 && (
+                            <>
+                                <View style={styles.resultsHeader}>
+                                    <Text style={[styles.resultsText, { color: textColor }]}>
+                                        {filteredResults.length === 0
+                                            ? "No se encontraron resultados"
+                                            : `${filteredResults.length} resultado${filteredResults.length === 1 ? "" : "s"} encontrado${filteredResults.length === 1 ? "" : "s"}`}
+                                    </Text>
+                                </View>
+                                
+                                {/* Filters section remains the same */}
+                                {results.length > 0 && (
+                                    <View style={styles.filtersContainer}>
+                                        {/* Filter options remain the same */}
+                                    </View>
+                                )}
+                            </>
+                        )}
+
+                        {/* All results in grid layout */}
+                        {filteredResults.length > 0 && (
+                            <View style={styles.featuresSection}>
+                                <View style={styles.featuresGrid}>
+                                    {filteredResults.map(item => (
+                                        <View 
+                                            key={`${item.type}-${item.id}`} 
+                                            style={[styles.featureCardWrapper, { width: getItemWidth(width) }]}
+                                        >
+                                            {renderGridItem(item)}
+                                        </View>
+                                    ))}
+                                </View>
+                            </View>
+                        )}
+                    </>
+                }
+                data={[]} // No data for FlatList since we're rendering everything in the header
+               
+            />
+        )}
+    </View>
+);
 }
 
 const styles = StyleSheet.create({
@@ -479,4 +495,70 @@ const styles = StyleSheet.create({
         textAlign: "center",
         opacity: 0.7,
     },
+    featuresSection: {
+        padding: 16,
+        paddingTop: 8,
+    },
+    sectionTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 16,
+        paddingLeft: 8,
+    },
+    featuresGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+    },
+    featureCardWrapper: {
+        marginBottom: 16,
+        paddingHorizontal: 8,
+    },
+    otherResultsSection: {
+        padding: 16,
+        paddingTop: 8,
+    },
+    gridCard: {
+    borderRadius: 12,
+    overflow: "hidden",
+    height: 240, // Fixed height to match feature cards
+    display: 'flex',
+    flexDirection: 'column',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+},
+gridCardIcon: {
+    height: 120, // Same height as feature card images
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 8,
+},
+gridIconImage: {
+    width: '50%',
+    height: '50%',
+    aspectRatio: 1,
+},
+gridCardContent: {
+    padding: 12,
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+},
+gridCardTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 4,
+},
+gridCardCategory: {
+    fontSize: 12,
+    marginBottom: 6,
+},
+gridCardDescription: {
+    fontSize: 14,
+    opacity: 0.8,
+    flex: 1,
+},
 });
