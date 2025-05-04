@@ -200,15 +200,15 @@ export default function SearchScreen() {
                 break;
             case "warning":
                 router.push({
-                    pathname: "/(tabs)",
-                    params: { screen: "warning-detail", warningId: item.id }
+                    pathname: "/(tabs)/warning-detail",
+                    params: { warningId: item.id }
                 });
                 break;
             case "glossary":
                 router.push({
-                    pathname: "/(tabs)",
-                    params: { screen: "glossary", initialTerm: item.id }
-                });
+                pathname: "/(tabs)/glossary-detail",
+                params: { termId: item.id }
+            });
                 break;
         }
     };
