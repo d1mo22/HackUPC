@@ -59,8 +59,7 @@ export default function SearchScreen() {
 
     const handleSearch = () => {
         if (!searchQuery.trim()) {
-            setResults([]);
-            setFilteredResults([]);
+            loadAllItems(); // Cargar todos los elementos si no hay consulta de búsqueda
             return;
         }
 
@@ -157,6 +156,49 @@ export default function SearchScreen() {
 
         return () => clearTimeout(delaySearch);
     }, [searchQuery]);
+
+    const loadAllItems = () => {
+    const featureResults: SearchResult[] = features.map((feature) => ({
+        id: feature.id,
+        title: feature.title,
+        description: feature.description,
+        image: feature.image,
+        category: feature.category,
+        type: "feature",
+        priority: 2,
+    }));
+
+    const warningResults: SearchResult[] = warningLights.map((light) => {
+        let severityPriority = 3;
+        if (light.color === "red" || light.severity === "alta") {
+            severityPriority = 1;
+        } else if (light.color === "amber" || light.severity === "media") {
+            severityPriority = 2;
+        }
+
+        return {
+            id: light.id,
+            title: light.name,
+            description: light.description,
+            category: "Tablero de instrumentos",
+            type: "warning",
+            priority: severityPriority + 2,
+            severityLevel: light.severity || (light.color === "red" ? "high" : light.color === "amber" ? "medium" : "low"),
+            color: light.color || "unknown"
+        };
+    });
+    const glossaryResults: SearchResult[] = glossary.map((item) => ({
+        id: item.id,
+        title: item.term,
+        description: item.definition,
+        category: item.category,
+        type: "glossary",
+        priority: 4,
+    }));
+    const allResults = [...featureResults, ...warningResults, ...glossaryResults];
+    setResults(allResults);
+    setFilteredResults(allResults);
+};
 
     // Filtrar resultados por tipo
     const filterResults = (type: string | null) => {

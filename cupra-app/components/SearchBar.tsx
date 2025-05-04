@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		fontSize: 16,
 		height: "100%",
+		paddingHorizontal: 12,
 	},
 	searchButton: {
 		width: 44,
