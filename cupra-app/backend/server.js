@@ -15,7 +15,6 @@ app.use(compression());
 
 // Ruta de verificación (colocarla antes de las otras rutas)
 app.get("/", (req, res) => {
-	console.log("Solicitud recibida en la ruta principal");
 	res.send("API de CUPRA App funcionando correctamente");
 });
 

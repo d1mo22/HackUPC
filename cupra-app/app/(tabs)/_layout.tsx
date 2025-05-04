@@ -5,6 +5,7 @@ import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View, use
 import CupraLogo from "../../components/CupraLogo";
 import { useThemeColor } from "../../hooks/useThemeColor";
 import { useUserData } from "../../hooks/useUserData";
+import { TareasProvider } from '../../context/TareasContext';
 
 // Definir la altura del footer como una constante que podamos reutilizar
 const FOOTER_HEIGHT = 80;
@@ -146,223 +147,225 @@ export default function TabLayout() {
     );
 
     return (
-        <View style={styles.container}>
-            <Stack
-                screenOptions={{
-                    headerStyle: {
-                        backgroundColor: backgroundColor,
-                    },
-                    headerTintColor: textColor,
-                    headerShadowVisible: false,
-                    headerBackVisible: false,
-                    headerLeft: () => null,
-                    // Ajustar el padding según si es desktop o móvil
-                    contentStyle: { 
-                        paddingBottom: isDesktop ? 0 : FOOTER_HEIGHT 
-                    },
-                }}
-            >
-                <Stack.Screen
-                    name="index"
-                    options={{
-                        headerTitle: () => (
-                            <CupraLogo width={80} height={30} color={textColor} />
-                        ),
+        <TareasProvider>
+            <View style={styles.container}>
+                <Stack
+                    screenOptions={{
+                        headerStyle: {
+                            backgroundColor: backgroundColor,
+                        },
+                        headerTintColor: textColor,
+                        headerShadowVisible: false,
                         headerBackVisible: false,
                         headerLeft: () => null,
-                        headerRight: () => (
-                            <View style={styles.headerRightContainer}>
-                                {isDesktop && <DesktopNavigation />}
-                                <UserProfileButton />
-                            </View>
-                        )
-                    }}
-                />
-                {/* Resto de definiciones de pantalla... */}
-                <Stack.Screen
-                    name="task-list"
-                    options={{
-                        headerTitle: () => (
-                            <CupraLogo width={80} height={30} color={textColor} />
-                        ),
-                        headerBackVisible: false,
-                        headerLeft: () => null,
-                        headerRight: () => (
-                            <View style={styles.headerRightContainer}>
-                                {isDesktop && <DesktopNavigation />}
-                                <UserProfileButton />
-                            </View>
-                        )
-                    }}
-                />
-                <Stack.Screen
-                    name="rewards"
-                    options={{
-                        headerTitle: () => (
-                            <CupraLogo width={80} height={30} color={textColor} />
-                        ),
-                        headerBackVisible: false,
-                        headerLeft: () => null,
-                        headerRight: () => (
-                            <View style={styles.headerRightContainer}>
-                                {isDesktop && <DesktopNavigation />}
-                                <UserProfileButton />
-                            </View>
-                        )
-                    }}
-                />
-                <Stack.Screen
-                    name="profile"
-                    options={{
-                        title: "Mi Perfil",
-                        headerBackTitle: "Atrás",
-                        headerBackVisible: true,
-                        headerLeft: undefined,
-                        headerTitleStyle: {
-                            fontFamily: "CupraBook",
+                        // Ajustar el padding según si es desktop o móvil
+                        contentStyle: { 
+                            paddingBottom: isDesktop ? 0 : FOOTER_HEIGHT 
                         },
                     }}
-                />
-                <Stack.Screen
-                    name="feature-detail"
-                    options={{
-                        title: "",
-                        headerBackTitle: "Atrás",
-                        headerBackVisible: true,
-                        headerLeft: undefined,
-                        headerTitleStyle: {
-                            fontFamily: "CupraBook",
-                        },
-                    }}
-                />
-                <Stack.Screen
-                    name="search"
-                    options={{
-                        headerTitle: () => (
-                            <CupraLogo width={80} height={30} color={textColor} />
-                        ),
-                        headerBackVisible: false,
-                        headerLeft: () => null,
-                        headerRight: () => (
-                            <View style={styles.headerRightContainer}>
-                                {isDesktop && <DesktopNavigation />}
-                                <UserProfileButton />
-                            </View>
-                        )
+                >
+                    <Stack.Screen
+                        name="index"
+                        options={{
+                            headerTitle: () => (
+                                <CupraLogo width={80} height={30} color={textColor} />
+                            ),
+                            headerBackVisible: false,
+                            headerLeft: () => null,
+                            headerRight: () => (
+                                <View style={styles.headerRightContainer}>
+                                    {isDesktop && <DesktopNavigation />}
+                                    <UserProfileButton />
+                                </View>
+                            )
                         }}
-                />
-                <Stack.Screen
-                    name="explore"
-                    options={{
-                        headerTitle: () => (
-                            <CupraLogo width={80} height={30} color={textColor} />
-                        ),
-                        headerBackVisible: false,
-                        headerLeft: () => null,
-                        headerRight: () => (
-                            <View style={styles.headerRightContainer}>
-                                {isDesktop && <DesktopNavigation />}
-                                <UserProfileButton />
-                            </View>
-                        )
+                    />
+                    {/* Resto de definiciones de pantalla... */}
+                    <Stack.Screen
+                        name="task-list"
+                        options={{
+                            headerTitle: () => (
+                                <CupraLogo width={80} height={30} color={textColor} />
+                            ),
+                            headerBackVisible: false,
+                            headerLeft: () => null,
+                            headerRight: () => (
+                                <View style={styles.headerRightContainer}>
+                                    {isDesktop && <DesktopNavigation />}
+                                    <UserProfileButton />
+                                </View>
+                            )
                         }}
-                />
-            </Stack>
+                    />
+                    <Stack.Screen
+                        name="rewards"
+                        options={{
+                            headerTitle: () => (
+                                <CupraLogo width={80} height={30} color={textColor} />
+                            ),
+                            headerBackVisible: false,
+                            headerLeft: () => null,
+                            headerRight: () => (
+                                <View style={styles.headerRightContainer}>
+                                    {isDesktop && <DesktopNavigation />}
+                                    <UserProfileButton />
+                                </View>
+                            )
+                        }}
+                    />
+                    <Stack.Screen
+                        name="profile"
+                        options={{
+                            title: "Mi Perfil",
+                            headerBackTitle: "Atrás",
+                            headerBackVisible: true,
+                            headerLeft: undefined,
+                            headerTitleStyle: {
+                                fontFamily: "CupraBook",
+                            },
+                        }}
+                    />
+                    <Stack.Screen
+                        name="feature-detail"
+                        options={{
+                            title: "",
+                            headerBackTitle: "Atrás",
+                            headerBackVisible: true,
+                            headerLeft: undefined,
+                            headerTitleStyle: {
+                                fontFamily: "CupraBook",
+                            },
+                        }}
+                    />
+                    <Stack.Screen
+                        name="search"
+                        options={{
+                            headerTitle: () => (
+                                <CupraLogo width={80} height={30} color={textColor} />
+                            ),
+                            headerBackVisible: false,
+                            headerLeft: () => null,
+                            headerRight: () => (
+                                <View style={styles.headerRightContainer}>
+                                    {isDesktop && <DesktopNavigation />}
+                                    <UserProfileButton />
+                                </View>
+                            )
+                            }}
+                    />
+                    <Stack.Screen
+                        name="explore"
+                        options={{
+                            headerTitle: () => (
+                                <CupraLogo width={80} height={30} color={textColor} />
+                            ),
+                            headerBackVisible: false,
+                            headerLeft: () => null,
+                            headerRight: () => (
+                                <View style={styles.headerRightContainer}>
+                                    {isDesktop && <DesktopNavigation />}
+                                    <UserProfileButton />
+                                </View>
+                            )
+                            }}
+                    />
+                </Stack>
 
-            {/* Footer solo para móviles */}
-            {!isDesktop && (
-                <View style={[styles.footer, { backgroundColor }]}>
-                    <View style={styles.footerContent}>
-                        {/* Botón Home */}
-                        <TouchableOpacity
-                            style={styles.footerItem}
-                            onPress={() => navigateIfNeeded("/")}
-                        >
-                            <View
-                                style={[
-                                    styles.footerButton,
-                                    activeTab === "home" && styles.activeButton,
-                                ]}
+                {/* Footer solo para móviles */}
+                {!isDesktop && (
+                    <View style={[styles.footer, { backgroundColor }]}>
+                        <View style={styles.footerContent}>
+                            {/* Botón Home */}
+                            <TouchableOpacity
+                                style={styles.footerItem}
+                                onPress={() => navigateIfNeeded("/")}
                             >
-                                <Ionicons
-                                    name="home"
-                                    size={24}
-                                    color={activeTab === "home" ? accentColor : textColor}
-                                />
-                            </View>
-                            <Text
-                                style={[
-                                    styles.footerText,
-                                    activeTab === "home"
-                                        ? { color: accentColor, fontWeight: "600" }
-                                        : { color: textColor },
-                                ]}
-                            >
-                                Inicio
-                            </Text>
-                        </TouchableOpacity>
+                                <View
+                                    style={[
+                                        styles.footerButton,
+                                        activeTab === "home" && styles.activeButton,
+                                    ]}
+                                >
+                                    <Ionicons
+                                        name="home"
+                                        size={24}
+                                        color={activeTab === "home" ? accentColor : textColor}
+                                    />
+                                </View>
+                                <Text
+                                    style={[
+                                        styles.footerText,
+                                        activeTab === "home"
+                                            ? { color: accentColor, fontWeight: "600" }
+                                            : { color: textColor },
+                                    ]}
+                                >
+                                    Inicio
+                                </Text>
+                            </TouchableOpacity>
 
-                        {/* Botón Recompensas */}
-                        <TouchableOpacity
-                            style={styles.footerItem}
-                            onPress={() => navigateIfNeeded("/rewards")}
-                        >
-                            <View
-                                style={[
-                                    styles.footerButton,
-                                    activeTab === "rewards" && styles.activeButton,
-                                ]}
+                            {/* Botón Recompensas */}
+                            <TouchableOpacity
+                                style={styles.footerItem}
+                                onPress={() => navigateIfNeeded("/rewards")}
                             >
-                                <Ionicons
-                                    name="star"
-                                    size={24}
-                                    color={activeTab === "rewards" ? accentColor : textColor}
-                                />
-                            </View>
-                            <Text
-                                style={[
-                                    styles.footerText,
-                                    activeTab === "rewards"
-                                        ? { color: accentColor, fontWeight: "600" }
-                                        : { color: textColor },
-                                ]}
-                            >
-                                Recompensas
-                            </Text>
-                        </TouchableOpacity>
+                                <View
+                                    style={[
+                                        styles.footerButton,
+                                        activeTab === "rewards" && styles.activeButton,
+                                    ]}
+                                >
+                                    <Ionicons
+                                        name="star"
+                                        size={24}
+                                        color={activeTab === "rewards" ? accentColor : textColor}
+                                    />
+                                </View>
+                                <Text
+                                    style={[
+                                        styles.footerText,
+                                        activeTab === "rewards"
+                                            ? { color: accentColor, fontWeight: "600" }
+                                            : { color: textColor },
+                                    ]}
+                                >
+                                    Recompensas
+                                </Text>
+                            </TouchableOpacity>
 
-                        {/* Botón Search */}
-                        <TouchableOpacity
-                            style={styles.footerItem}
-                            onPress={() => navigateIfNeeded("/search")}
-                        >
-                            <View
-                                style={[
-                                    styles.footerButton,
-                                    activeTab === "search" && styles.activeButton,
-                                ]}
+                            {/* Botón Search */}
+                            <TouchableOpacity
+                                style={styles.footerItem}
+                                onPress={() => navigateIfNeeded("/search")}
                             >
-                                <Ionicons
-                                    name="search"
-                                    size={24}
-                                    color={activeTab === "search" ? accentColor : textColor}
-                                />
-                            </View>
-                            <Text
-                                style={[
-                                    styles.footerText,
-                                    activeTab === "search"
-                                        ? { color: accentColor, fontWeight: "600" }
-                                        : { color: textColor },
-                                ]}
-                            >
-                                Buscar
-                            </Text>
-                        </TouchableOpacity>
+                                <View
+                                    style={[
+                                        styles.footerButton,
+                                        activeTab === "search" && styles.activeButton,
+                                    ]}
+                                >
+                                    <Ionicons
+                                        name="search"
+                                        size={24}
+                                        color={activeTab === "search" ? accentColor : textColor}
+                                    />
+                                </View>
+                                <Text
+                                    style={[
+                                        styles.footerText,
+                                        activeTab === "search"
+                                            ? { color: accentColor, fontWeight: "600" }
+                                            : { color: textColor },
+                                    ]}
+                                >
+                                    Buscar
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-            )}
-        </View>
+                )}
+            </View>
+        </TareasProvider>
     );
 }
 

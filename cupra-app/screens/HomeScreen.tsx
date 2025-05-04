@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import type { StackNavigationProp } from "@react-navigation/stack";
 import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
 	ActivityIndicator,
 	Image,
@@ -16,6 +16,7 @@ import FeatureCard from "../components/FeatureCard";
 import ProgressSection from "../components/ProgressSection";
 import TaskCard from "../components/TaskCard";
 import { Typography } from "../constants/Typography";
+import { useTareas } from "../context/TareasContext"; // Importar el contexto de tareas
 import tasks from "../data/tasks.json"; // Import tasks from tasks.json
 import { useThemeColor } from "../hooks/useThemeColor";
 import { useUserData } from "../hooks/useUserData"; // Importar el hook de datos de usuario
@@ -34,7 +35,9 @@ import features from "../data/features.json";
 export default function HomeScreen() {
 	// Obtener datos del usuario
 	const { userData } = useUserData();
-	console.log("userData", userData);
+
+	// Obtener el contexto de tareas con racha incluida
+	const { isTareaCompletada, racha } = useTareas();
 
 	// Especifica el tipo genérico en useNavigation
 	const navigation = useNavigation<NavigationProps>();
@@ -47,7 +50,6 @@ export default function HomeScreen() {
 
 	// Calcular días restantes basados en la fecha de creación
 	const calculateDaysRemaining = () => {
-		console.log("Fecha de creacion:", userData?.fechaCreacion);
 		if (!userData?.fechaCreacion) return 30; // Valor por defecto si no hay fecha
 
 		// Fecha desde la que empezamos a contar (fecha de creación)
@@ -92,15 +94,26 @@ export default function HomeScreen() {
 	};
 
 	const currentDay = 3; // Arbitrary day variable
-	const todaysTasks = tasks.allTasks.filter((task) => task.day === currentDay);
 
-	// Calculate progress
-	const totalTasks = tasks.allTasks.length;
-	const completedTasks = tasks.allTasks.filter((task) => task.completed).length;
-	const progress = completedTasks / totalTasks;
+	// Actualizar las tareas con el estado del contexto
+	const updatedTasks = useMemo(() => {
+		return tasks.allTasks.map(task => ({
+			...task,
+			// Si la tarea tiene id 3, usar isTareaCompletada para verificar su estado
+			completed: task.id === 3 ? isTareaCompletada(3) : task.completed
+		}));
+	}, [isTareaCompletada]);
 
-	// Calculate XP earned
-	const xpEarned = tasks.allTasks
+	// Filtrar tareas de hoy con el estado actualizado
+	const todaysTasks = updatedTasks.filter((task) => task.day === currentDay);
+
+	// Calculate progress con tareas actualizadas
+	const totalTasks = updatedTasks.length;
+	const completedTasks = updatedTasks.filter((task) => task.completed).length;
+	const progress = totalTasks > 0 ? completedTasks / totalTasks : 0;
+
+	// Calculate XP earned con tareas actualizadas
+	const xpEarned = updatedTasks
 		.filter((task) => task.completed)
 		.reduce((total, task) => total + task.points, 0);
 
@@ -144,19 +157,6 @@ export default function HomeScreen() {
 		router.push({
 			pathname: "/(tabs)/task-list"
 		});
-	};
-
-	const completeTask = (taskId) => {
-		setData((prevData) => ({
-			...prevData,
-			todaysTasks: prevData.todaysTasks.map((task) =>
-				task.id === taskId ? { ...task, completed: true } : task,
-			),
-			completedTasks: prevData.todaysTasks.find((t) => t.id === taskId)
-				?.completed
-				? prevData.completedTasks
-				: prevData.completedTasks + 1,
-		}));
 	};
 
 	if (loading) {
@@ -235,11 +235,11 @@ export default function HomeScreen() {
 				</View>
 			</View>
 
-			{/* TODAY'S TASKS Section */}
+			{/* TODAY'S TASKS Section - Usar todaysTasks actualizado */}
 			<View
 				style={[
 					styles.tasksContainer,
-					{ backgroundColor: cardColor }, // Usar la variable en lugar de la función
+					{ backgroundColor: cardColor },
 				]}
 			>
 				<View style={styles.tasksHeader}>
@@ -248,7 +248,7 @@ export default function HomeScreen() {
 						<Text
 							style={[
 								styles.tasksTitleText,
-								{ color: textColor }, // Usar el color de texto del tema
+								{ color: textColor },
 							]}
 						>
 							TAREAS DIARIAS
@@ -258,7 +258,7 @@ export default function HomeScreen() {
 						<Text
 							style={[
 								styles.tasksSeeAllText,
-								{ color: accentColor }, // Usar el color de acento del tema
+								{ color: accentColor },
 							]}
 							onPress={handleSeeAllPress}
 						>
@@ -272,18 +272,20 @@ export default function HomeScreen() {
 					</View>
 				</View>
 
+				{/* Renderizar las tareas con estado actualizado */}
 				{todaysTasks.map((task) => (
 					<TaskCard
 						key={task.id}
-									id = {task.id}
-									title={task.title}
-									points={task.points}
-									completed={task.completed}
-									day={task.day}
-									currentDay={currentDay}
-									targetLevel= {task.targetLevel}
-								/>
-								))}
+						id={task.id}
+						title={task.title}
+						points={task.points}
+						completed={task.completed}
+						day={task.day}
+						currentDay={currentDay}
+						targetLevel={task.targetLevel}
+						icon={task.icon}
+					/>
+				))}
 			</View>
 
 			<View
@@ -301,21 +303,21 @@ export default function HomeScreen() {
 				>
 					Tienes una {" "}
 					<Text style={[styles.streakHighlight, { color: accentColor }]}>
-						racha de {userData?.rachaActual} días
+						racha de {racha || userData?.rachaActual || 0} días
 					</Text>
 					!
 				</Text>
 			</View>
 
-			{/* Progress Section */}
-            <ProgressSection
-                completedTasks={completedTasks}
-                totalTasks={totalTasks}
-                progress={progress}
-                xpEarned={xpEarned}
-                accentColor={accentColor}
-                textColor={textColor}
-            />
+			{/* Progress Section - Con valores actualizados */}
+			<ProgressSection
+				completedTasks={completedTasks}
+				totalTasks={totalTasks}
+				progress={progress}
+				xpEarned={xpEarned}
+				accentColor={accentColor}
+				textColor={textColor}
+			/>
 
 			{/* Daily Feature en la parte superior */}
 			<View

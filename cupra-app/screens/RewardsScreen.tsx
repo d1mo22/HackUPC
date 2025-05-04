@@ -15,7 +15,7 @@ interface Reward {
 }
 
 const initialRewards: Reward[] = [
-  { id: "1", title: "Lavado de Coche Gratis", description: "consigue un lavado de coche gratuito!", xpRequired: 20, claimed: false },
+  { id: "1", title: "Lavado de Coche Gratis", description: "Consigue un lavado de coche gratuito!", xpRequired: 20, claimed: false },
   { id: "2", title: "Descuento de combustible", description: "5% de descuento en tu próxima compra de combustible.", xpRequired: 100, claimed: false },
   { id: "3", title: "Cubridores de Asiento Personalizables", description: "Mejora el interior de tu auto", xpRequired: 150, claimed: false },
 ];
@@ -53,7 +53,7 @@ export default function RewardsScreen() {
   useEffect(() => {
     // Simulate fetching XP and streak data
     setXp(xpEarned); // Replace with actual XP calculation
-    setStreak(userData?.rachaActual); // Replace with actual streak calculation
+    setStreak(userData?.rachaActual ?? 3); // Replace with actual streak calculation
   }, []);
 
   return (

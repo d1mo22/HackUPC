@@ -1,12 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useMemo } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ProgressSection from "../components/ProgressSection";
 import TaskCard from "../components/TaskCard";
 import { Typography } from "../constants/Typography";
-import tasks from "../data/tasks.json"; // Import tasks from tasks.json
+import tasks from "../data/tasks.json"; 
 import { useThemeColor } from "../hooks/useThemeColor";
+import { useTareas } from "../context/TareasContext";
 
 export default function TaskScreen() {
     const backgroundColor = useThemeColor({}, "background");
@@ -14,14 +15,20 @@ export default function TaskScreen() {
     const accentColor = useThemeColor({}, "tint");
 
     const currentDay = 3; // Arbitrary day variable
-
     const navigation = useNavigation();
+    const { isTareaCompletada } = useTareas();
 
-    // Filter tasks based on the current day
-    const todaysTasks = tasks.allTasks.filter((task) => task.day === currentDay);
+    // Crear una versión modificada de las tareas con el estado actualizado
+    const updatedTasks = useMemo(() => {
+        return tasks.allTasks.map(task => ({
+            ...task,
+            // Si la tarea tiene id 3, usar isTareaCompletada para verificar su estado
+            completed: task.id === 3 ? isTareaCompletada(3) : task.completed
+        }));
+    }, [isTareaCompletada]);
 
     // Map numeric levels to their corresponding names
-    const levelMapping = {
+    const levelMapping: { [key: number]: string } = {
         0: "Introductorio",
         1: "Principiante",
         2: "Intermedio",
@@ -30,37 +37,38 @@ export default function TaskScreen() {
         5: "Experto",
     };
 
-    // Group tasks by level
-    const tasksByLevel = tasks.allTasks.reduce((acc, task) => {
+    // Agrupar las tareas actualizadas por nivel
+    const tasksByLevel = updatedTasks.reduce<Record<string, typeof tasks.allTasks>>((acc, task) => {
         const levelName = levelMapping[task.level] || `Nivel ${task.level}`;
         if (!acc[levelName]) acc[levelName] = [];
         acc[levelName].push(task);
         return acc;
     }, {});
 
-    // Calculate progress
-    const totalTasks = tasks.allTasks.length;
-    const completedTasks = tasks.allTasks.filter((task) => task.completed).length;
-    const progress = completedTasks / totalTasks;
+    // Filtrar tareas de hoy con el estado actualizado
+    const todaysTasks = updatedTasks.filter((task) => task.day === currentDay);
 
-    // Calculate XP earned
-    const xpEarned = tasks.allTasks
+    // Calcular progreso con el estado actualizado
+    const totalTasks = updatedTasks.length;
+    const completedTasks = updatedTasks.filter((task) => task.completed).length;
+    const progress = totalTasks > 0 ? completedTasks / totalTasks : 0;
+
+    // Calcular XP ganada con el estado actualizado
+    const xpEarned = updatedTasks
         .filter((task) => task.completed)
         .reduce((total, task) => total + task.points, 0);
 
-    const handleGoBack = () => {
-        navigation.goBack();
-    };
+
 
     return (
         <ScrollView
             style={[styles.container, { backgroundColor }]}
             contentContainerStyle={styles.contentContainer}
         >
-            {/* Header with back button */}
+            {/* Header con botón atrás */}
             <View style={styles.header}>
                 <TouchableOpacity
-                    onPress={handleGoBack}
+                    onPress={() => navigation.goBack()}
                     style={styles.backButtonContainer}
                 >
                     <Ionicons name="arrow-back" size={24} color={textColor} />
@@ -75,7 +83,7 @@ export default function TaskScreen() {
                 </Text>
             </View>
 
-            {/* Progress Section */}
+            {/* Sección de progreso */}
             <ProgressSection
                 completedTasks={completedTasks}
                 totalTasks={totalTasks}
@@ -85,13 +93,14 @@ export default function TaskScreen() {
                 textColor={textColor}
             />
 
-            {/* Today's Tasks */}
+            {/* Tareas de hoy */}
             <View style={styles.section}>
                 <Text style={[styles.sectionTitle, { color: accentColor }]}>
                     Tareas Diarias
                 </Text>
                 {todaysTasks.map((task) => (
                     <TaskCard
+                        key={task.id}
                         id={task.id}
                         title={task.title}
                         points={task.points}
@@ -104,7 +113,7 @@ export default function TaskScreen() {
                 ))}
             </View>
 
-            {/* Tasks by Level */}
+            {/* Tareas por nivel */}
             {Object.keys(tasksByLevel).map((level) => (
                 <View key={level} style={styles.section}>
                     <Text style={[styles.sectionTitle, { color: accentColor }]}>
@@ -112,6 +121,7 @@ export default function TaskScreen() {
                     </Text>
                     {tasksByLevel[level].map((task) => (
                         <TaskCard
+                            key={task.id}
                             id={task.id}
                             title={task.title}
                             points={task.points}
