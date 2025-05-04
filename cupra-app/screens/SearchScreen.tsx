@@ -344,59 +344,125 @@ const renderGridItem = (item: SearchResult) => {
 };
    return (
     <View style={[styles.container, { backgroundColor }]}>
-        <SearchBar
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            onSearch={handleSearch}
-            placeholder="Buscar características, averías, pilotos..."
-        />
-
         {loading ? (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color={accentColor} />
             </View>
         ) : (
             <FlatList
-                ListHeaderComponent={
-                    <>
-                        {searchQuery.length > 0 && (
-                            <>
-                                <View style={styles.resultsHeader}>
-                                    <Text style={[styles.resultsText, { color: textColor }]}>
-                                        {filteredResults.length === 0
-                                            ? "No se encontraron resultados"
-                                            : `${filteredResults.length} resultado${filteredResults.length === 1 ? "" : "s"} encontrado${filteredResults.length === 1 ? "" : "s"}`}
-                                    </Text>
-                                </View>
-                                
-                                {/* Filters section remains the same */}
-                                {results.length > 0 && (
-                                    <View style={styles.filtersContainer}>
-                                        {/* Filter options remain the same */}
-                                    </View>
-                                )}
-                            </>
-                        )}
+                ListHeaderComponent={<>
+                    <SearchBar
+                        value={searchQuery}
+                        onChangeText={setSearchQuery}
+                        onSearch={handleSearch}
+                        placeholder="Buscar características, averías, pilotos..."
+                    />
+                           
+        {/* Filter type options */}
+        <View style={styles.typeFiltersContainer}>
+            <TouchableOpacity 
+                style={[
+                    styles.filterTypeChip, 
+                    activeFilters.includes("feature") ? { backgroundColor: accentColor } : null
+                ]}
+                onPress={() => filterResults("feature")}
+            >
+                <Ionicons 
+                    name="car" 
+                    size={16} 
+                    color={activeFilters.includes("feature") ? "white" : textColor} 
+                />
+                <Text 
+                    style={[
+                        styles.filterTypeText, 
+                        activeFilters.includes("feature") ? { color: "white" } : { color: textColor }
+                    ]}
+                >
+                    Características
+                </Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+                style={[
+                    styles.filterTypeChip, 
+                    activeFilters.includes("warning") ? { backgroundColor: accentColor } : null
+                ]}
+                onPress={() => filterResults("warning")}
+            >
+                <Ionicons 
+                    name="warning" 
+                    size={16} 
+                    color={activeFilters.includes("warning") ? "white" : textColor} 
+                />
+                <Text 
+                    style={[
+                        styles.filterTypeText, 
+                        activeFilters.includes("warning") ? { color: "white" } : { color: textColor }
+                    ]}
+                >
+                    Avisos
+                </Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+                style={[
+                    styles.filterTypeChip, 
+                    activeFilters.includes("glossary") ? { backgroundColor: accentColor } : null
+                ]}
+                onPress={() => filterResults("glossary")}
+            >
+                <Ionicons 
+                    name="book" 
+                    size={16}
+                    color={activeFilters.includes("glossary") ? "white" : textColor} 
+                />
+                <Text 
+                    style={[
+                        styles.filterTypeText, 
+                        activeFilters.includes("glossary") ? { color: "white" } : { color: textColor }
+                    ]}
+                >
+                    Glosario
+                </Text>
+            </TouchableOpacity>
+        </View>
+                           {searchQuery.length > 0 && (
+                               <>
+                                   <View style={styles.resultsHeader}>
+                                       <Text style={[styles.resultsText, { color: textColor }]}>
+                                           {filteredResults.length === 0
+                                               ? "No se encontraron resultados"
+                                               : `${filteredResults.length} resultado${filteredResults.length === 1 ? "" : "s"} encontrado${filteredResults.length === 1 ? "" : "s"}`}
+                                       </Text>
+                                   </View>
 
-                        {/* All results in grid layout */}
-                        {filteredResults.length > 0 && (
-                            <View style={styles.featuresSection}>
-                                <View style={styles.featuresGrid}>
-                                    {filteredResults.map(item => (
-                                        <View 
-                                            key={`${item.type}-${item.id}`} 
-                                            style={[styles.featureCardWrapper, { width: getItemWidth(width) }]}
-                                        >
-                                            {renderGridItem(item)}
-                                        </View>
-                                    ))}
-                                </View>
-                            </View>
-                        )}
-                    </>
-                }
-                data={[]} // No data for FlatList since we're rendering everything in the header
-               
+                                   {/* Filters section remains the same */}
+                                   {results.length > 0 && (
+                                       <View style={styles.filtersContainer}>
+                                           {/* Filter options remain the same */}
+                                       </View>
+                                   )}
+                               </>
+                           )}
+
+                           {/* All results in grid layout */}
+                           {filteredResults.length > 0 && (
+                               <View style={styles.featuresSection}>
+                                   <View style={styles.featuresGrid}>
+                                       {filteredResults.map(item => (
+                                           <View
+                                               key={`${item.type}-${item.id}`}
+                                               style={[styles.featureCardWrapper, { width: getItemWidth(width) }]}
+                                           >
+                                               {renderGridItem(item)}
+                                           </View>
+                                       ))}
+                                   </View>
+                               </View>
+                           )}
+                       </>}
+                       data={[]} // No data for FlatList since we're rendering everything in the header
+                       renderItem={undefined}               
             />
         )}
     </View>
@@ -560,5 +626,26 @@ gridCardDescription: {
     fontSize: 14,
     opacity: 0.8,
     flex: 1,
+},
+typeFiltersContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    gap: 8,
+},
+filterTypeChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+
+    marginHorizontal: 4,
+},
+filterTypeText: {
+    fontSize: 14,
+    marginLeft: 6,
+    fontWeight: '500',
 },
 });
