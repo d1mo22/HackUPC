@@ -335,7 +335,7 @@ export default function LearningGameScreen({ levelId }: { levelId: string }) {
     if (!area) return null;
 
     const position = calculatePointPosition(area);
-    const color = isSecondary ? "rgba(0, 255, 0, 0.3)" : "rgba(255, 0, 0, 0.3)";
+    const color = isSecondary ? "rgba(0, 255, 0, 0)" : "rgba(255, 0, 0, 0)";
 
     return (
       <Animated.View

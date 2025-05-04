@@ -196,22 +196,6 @@ export default function TabLayout() {
                     }}
                 />
                 <Stack.Screen
-                    name="search"
-                    options={{
-                        headerTitle: () => (
-                            <CupraLogo width={80} height={30} color={textColor} />
-                        ),
-                        headerBackVisible: false,
-                        headerLeft: () => null,
-                        headerRight: () => (
-                            <View style={styles.headerRightContainer}>
-                                {isDesktop && <DesktopNavigation />}
-                                <UserProfileButton />
-                            </View>
-                        )
-                    }}
-                />
-                <Stack.Screen
                     name="rewards"
                     options={{
                         headerTitle: () => (
