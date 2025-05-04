@@ -18,6 +18,7 @@ import TaskCard from "../components/TaskCard";
 import { Typography } from "../constants/Typography";
 import tasks from "../data/tasks.json"; // Import tasks from tasks.json
 import { useThemeColor } from "../hooks/useThemeColor";
+import { useUserData } from "../hooks/useUserData"; // Importar el hook de datos de usuario
 
 // Define el tipo de navegación
 type NavigationProps = StackNavigationProp<{
@@ -31,6 +32,10 @@ type NavigationProps = StackNavigationProp<{
 import features from "../data/features.json";
 
 export default function HomeScreen() {
+	// Obtener datos del usuario
+	const { userData } = useUserData();
+	console.log("userData", userData);
+
 	// Especifica el tipo genérico en useNavigation
 	const navigation = useNavigation<NavigationProps>();
 
@@ -39,14 +44,38 @@ export default function HomeScreen() {
 	const [dailyFeature, setDailyFeature] = useState<any>(null);
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const [otherFeatures, setOtherFeatures] = useState<any[]>([]);
-	const [daysRemaining] = useState(30); // Número fijo de días restantes para recibir el coche
 
+	// Calcular días restantes basados en la fecha de creación
+	const calculateDaysRemaining = () => {
+		console.log("Fecha de creacion:", userData?.fechaCreacion);
+		if (!userData?.fechaCreacion) return 30; // Valor por defecto si no hay fecha
+
+		// Fecha desde la que empezamos a contar (fecha de creación)
+		const startDate = new Date(userData.fechaCreacion);
+
+		// Fecha objetivo (30 días después de la fecha de creación)
+		const targetDate = new Date(startDate);
+		targetDate.setDate(targetDate.getDate() + 30);
+
+		// Fecha actual
+		const currentDate = new Date();
+
+		// Calcular diferencia en milisegundos
+		const timeDiff = targetDate.getTime() - currentDate.getTime();
+
+		// Convertir a días y redondear hacia abajo
+		const daysRemaining = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+		// Retornar máximo entre 0 y los días calculados
+		return Math.max(0, daysRemaining);
+	};
+
+	const [daysRemaining, setDaysRemaining] = useState(calculateDaysRemaining());
 
 	// Obtenemos las dimensiones de la pantalla
 	const { width } = useWindowDimensions();
 	const isMobile = width <= 850; // Consideramos móvil cuando es menor o igual a 768px
 
-	
 	// Agrupa todos los colores del tema al inicio del componente
 	const backgroundColor = useThemeColor({}, "background");
 	const textColor = useThemeColor({}, "text");
@@ -66,14 +95,14 @@ export default function HomeScreen() {
 	const todaysTasks = tasks.allTasks.filter((task) => task.day === currentDay);
 
 	// Calculate progress
-    const totalTasks = tasks.allTasks.length;
-    const completedTasks = tasks.allTasks.filter((task) => task.completed).length;
-    const progress = completedTasks / totalTasks;
+	const totalTasks = tasks.allTasks.length;
+	const completedTasks = tasks.allTasks.filter((task) => task.completed).length;
+	const progress = completedTasks / totalTasks;
 
-    // Calculate XP earned
-    const xpEarned = tasks.allTasks
-        .filter((task) => task.completed)
-        .reduce((total, task) => total + task.points, 0);
+	// Calculate XP earned
+	const xpEarned = tasks.allTasks
+		.filter((task) => task.completed)
+		.reduce((total, task) => total + task.points, 0);
 
 	useEffect(() => {
 		// Simular carga de datos
@@ -92,6 +121,11 @@ export default function HomeScreen() {
 			setLoading(false);
 		}, 1000);
 	}, []);
+
+	// Añadir un useEffect adicional para actualizar daysRemaining cuando cambie userData
+	useEffect(() => {
+		setDaysRemaining(calculateDaysRemaining());
+	}, [userData]);
 
 	const handleFeaturePress = (id: string) => {
 		// Usar el router de Expo en lugar de React Navigation
@@ -239,7 +273,8 @@ export default function HomeScreen() {
 				</View>
 
 				{todaysTasks.map((task) => (
-									<TaskCard
+					<TaskCard
+						key={task.id}
 									id = {task.id}
 									title={task.title}
 									points={task.points}
@@ -267,7 +302,7 @@ export default function HomeScreen() {
 				>
 					Tienes una {" "}
 					<Text style={[styles.streakHighlight, { color: accentColor }]}>
-						racha de 5 días
+						racha de {userData?.rachaActual} días
 					</Text>
 					!
 				</Text>

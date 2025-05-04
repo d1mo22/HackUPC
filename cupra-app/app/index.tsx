@@ -33,7 +33,7 @@ export default function WelcomeScreen() {
 
 	const handleContinue = () => {
 		// Navegar a la pantalla de autenticación
-		router.push("/(tabs)");
+		router.push("/auth");
 	};
 
 	// Componente de textos de bienvenida (reutilizable)

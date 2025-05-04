@@ -74,7 +74,7 @@ export default function TabLayout() {
         }
 
         // Obtener la imagen de perfil de userData o usar la imagen por defecto
-        const profileImage = userData?.profileImage || DEFAULT_PROFILE_IMAGE;
+        const profileImage = userData?.foto || DEFAULT_PROFILE_IMAGE;
 
         return (
             <TouchableOpacity
@@ -150,7 +150,6 @@ export default function TabLayout() {
             <Stack
                 screenOptions={{
                     headerStyle: {
-                        height: 80, // Default header height
                         backgroundColor: backgroundColor,
                     },
                     headerTintColor: textColor,

@@ -28,6 +28,7 @@ const listUsers = async (criteria = {}) => {
       console.log(`Puntos: ${usuario.puntos}`);
       console.log(`Último login: ${usuario.ultimoLogin}`);
       console.log(`Fecha creación: ${usuario.fechaCreacion}`);
+      console.log(`Foto de perfil: ${usuario.foto}`);
       console.log('------------------------');
     });
     

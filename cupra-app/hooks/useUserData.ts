@@ -8,13 +8,12 @@ export interface UserData {
   email: string;
   phone: string;
   foto: string;
-  memberSince: string;
+  fechaCreacion: string;
   vehicleModel: string;
   vehicleYear: string;
   vehiclePlate: string;
   rachaActual?: number;
   puntos?: number;
-  fechaCreacion?: string;
   ultimoLogin?: string;
 }
 
@@ -51,43 +50,29 @@ export const useUserData = () => {
     email?: string;
     phone?: string;
     foto?: string;
+    fechaCreacion: string;
     vehicleModel?: string;
     vehicleYear?: string;
     vehiclePlate?: string;
     rachaActual?: number;
     puntos?: number;
-    fechaCreacion?: string;
     ultimoLogin?: string;
   }
 
   const fetchUserData = async (): Promise<void> => {
     try {
-      console.log('🔍 useUserData: Iniciando fetchUserData');
       setLoading(true);
       setError(null);
       
       // Obtener datos del usuario desde el almacenamiento local
       const user = await authService.getCurrentUser() as StoredUser;
-      console.log('📱 useUserData: Datos obtenidos del storage:', user);
       
       if (!user) {
-        console.warn('⚠️ useUserData: No se encontraron datos de usuario');
         throw new Error("No se encontró información del usuario");
       }
       
-      // Verificar todos los posibles campos que puedan contener la foto
-      console.log('🖼️ Datos de imagen:', {
-        foto: user.foto,
-        profileImage: (user as any).profileImage,
-        image: (user as any).image,
-        avatar: (user as any).avatar
-      });
-      
       // Seleccionar la primera opción de imagen disponible
       const profileImageUrl = user.foto || 
-                            (user as any).profileImage || 
-                            (user as any).image || 
-                            (user as any).avatar || 
                             "https://randomuser.me/api/portraits/lego/1.jpg";
       
       // Configurar los datos del usuario
@@ -95,17 +80,13 @@ export const useUserData = () => {
         id: user.id || user._id || "guest",
         name: user.name || "Usuario CUPRA",
         email: user.email || "",
+        foto: profileImageUrl,
         phone: user.phone || "+34 XXX XXX XXX",
-        profileImage: profileImageUrl,
-        memberSince: formatDate(user.fechaCreacion) || "Mayo 2023",
-        vehicleModel: user.vehicleModel || "CUPRA Tavascan 2025",
-        vehicleYear: user.vehicleYear || "2025",
-        vehiclePlate: user.vehiclePlate || "1234 ABC",
+        fechaCreacion: user.fechaCreacion || "Mayo 2023",
         rachaActual: user.rachaActual || 0,
         puntos: user.puntos || 0
       };
       
-      console.log('✅ useUserData: Datos formateados:', formattedUserData);
       setUserData(formattedUserData);
     } catch (err: any) {
       const errorMessage = err?.message || "Error desconocido al cargar datos";
@@ -118,7 +99,7 @@ export const useUserData = () => {
         name: "Usuario CUPRA",
         email: "",
         phone: "+34 XXX XXX XXX",
-        profileImage: "https://randomuser.me/api/portraits/lego/1.jpg",
+        foto: "https://randomuser.me/api/portraits/lego/1.jpg",
         memberSince: "Mayo 2023",
         vehicleModel: "CUPRA Tavascan 2025",
         vehicleYear: "2025",

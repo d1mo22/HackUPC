@@ -8,17 +8,17 @@ const auth = require("../middleware/auth");
 // Registro de usuario
 router.post("/registro", async (req, res) => {
 	try {
-		const { username, email, password } = req.body;
+		const { name, email, password } = req.body;
 
 		// Verificar si ya existe el usuario
-		let usuario = await Usuario.findOne({ $or: [{ email }, { username }] });
+		let usuario = await Usuario.findOne({ email });
 		if (usuario) {
-			return res.status(400).json({ mensaje: "El usuario o email ya existe" });
+			return res.status(400).json({ mensaje: "El email ya existe" });
 		}
 
 		// Crear nuevo usuario
 		usuario = new Usuario({
-			username,
+			name,
 			email,
 			password,
 		});
@@ -27,26 +27,33 @@ router.post("/registro", async (req, res) => {
 		const salt = await bcrypt.genSalt(10);
 		usuario.password = await bcrypt.hash(password, salt);
 
+		// Después de guardar el usuario
 		await usuario.save();
 
-		// Crear y devolver JWT
-		const payload = {
-			usuario: {
-				id: usuario.id,
-			},
-		};
-
-		jwt.sign(
-			payload,
+		// Generar token
+		const token = jwt.sign(
+			{ id: usuario._id },
 			process.env.JWT_SECRET,
-			{ expiresIn: "7d" },
-			(err, token) => {
-				if (err) throw err;
-				res.json({ token });
-			},
+			{ expiresIn: "7d" }
 		);
-	} catch (err) {
-		console.error(err.message);
+
+		// Responder con los mismos campos que en login
+		return res.status(201).json({
+			exito: true,
+			token,
+			usuario: {
+				id: usuario._id,
+				email: usuario.email,
+				name: usuario.name,
+				rachaActual: usuario.rachaActual,
+				puntos: usuario.puntos,
+				fechaCreacion: usuario.fechaCreacion,
+				foto: usuario.foto,
+				ultimoLogin: usuario.ultimoLogin,
+			},
+		});
+	} catch (error) {
+		console.error(error.message);
 		res.status(500).send("Error en el servidor");
 	}
 });
@@ -77,16 +84,20 @@ router.post("/login", async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
-    
+
     // Preparar objeto de usuario para enviar (sin la contraseña)
     const usuarioResponse = {
       id: usuario._id,
-      email: usuario.email,
+	  email: usuario.email,
+	  name: usuario.name,
       rachaActual: usuario.rachaActual,
       puntos: usuario.puntos,
       fechaCreacion: usuario.fechaCreacion,
-      ultimoLogin: usuario.ultimoLogin
-    };
+	  foto: usuario.foto,
+	  ultimoLogin: usuario.ultimoLogin,
+	};
+	  
+	console.log("Usuario logueado:", usuarioResponse);
     
     // Enviar respuesta completa
     return res.status(200).json({

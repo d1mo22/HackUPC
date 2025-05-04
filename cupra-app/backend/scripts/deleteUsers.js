@@ -14,9 +14,9 @@ const connectDB = async () => {
 };
 
 // Función para eliminar usuarios según criterios
-const deleteUsers = async (criteria) => {
+const deleteUsers = async () => {
   try {
-    const result = await Usuario.deleteMany(criteria);
+    const result = await Usuario.deleteMany({});
     console.log(`${result.deletedCount} usuarios eliminados`);
   } catch (err) {
     console.error('Error al eliminar usuarios:', err);
@@ -31,7 +31,7 @@ const run = async () => {
   const sixMonthsAgo = new Date();
   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
   
-    await deleteUsers({email: "usuario@ejemplo.com"});
+    await deleteUsers();
   
   // Cerrar la conexión
   mongoose.connection.close();

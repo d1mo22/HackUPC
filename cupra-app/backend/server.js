@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const compression = require("compression");
 const { errorHandler } = require("./middleware/errorHandler");
-const performanceMonitor = require("./middleware/performance");
 require("dotenv").config();
 
 const app = express();
@@ -30,7 +29,7 @@ app.use("/api/progreso", require("./routes/progreso"));
 
 // Manejo de errores
 app.use(errorHandler);
-app.use(performanceMonitor);
+
 
 // Manejo de rechazos de promesas no capturados
 process.on("unhandledRejection", (reason, promise) => {

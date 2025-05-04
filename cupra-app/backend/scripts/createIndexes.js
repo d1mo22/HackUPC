@@ -23,9 +23,7 @@ async function createIndexes() {
     console.log('Índices para Características creados');
 
     // Índices para Usuarios
-    await Usuario.collection.createIndex({ username: 1 }, { unique: true });
     await Usuario.collection.createIndex({ email: 1 }, { unique: true });
-    await Usuario.collection.createIndex({ puntos: -1 }); // Para rankings
     console.log('Índices para Usuarios creados');
 
     // Índices para Progreso
