@@ -5,8 +5,8 @@
         "title": "Piloto Novato",
         "mission": "¿En que zona aproximada está el botón de arranque?",
         "secondMission": "Enciende la bestia", // Nueva misión para la segunda parte
-        "image": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//CUPRA%20TAVASCAN%20096.webp",
-        "secondImage": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//WhatsApp%20Image%202025-05-03%20at%2004.52.15.webp",
+        "image": { "uri": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//CUPRA%20TAVASCAN%20096.webp"},
+        "secondImage": { "uri": "https://xlelknonfenpcsdiyglf.supabase.co/storage/v1/object/public/images//WhatsApp%20Image%202025-05-03%20at%2004.52.15.webp"},
         "message": "¡Excelente! Has completado tu primera misión. El Tavascan responde a tu comando 🚀",
         "touchableArea": {
           "x": 0.55,
