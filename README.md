@@ -3,7 +3,7 @@
 ## 🚗 Visión General
 CUPRA App es una aplicación móvil y web desarrollada durante HackUPC 2024 que permite a los propietarios y entusiastas de vehículos CUPRA familiarizarse con su coche desde el momento en que realizan su pedido hasta la entrega del vehículo. La aplicación ofrece una interfaz intuitiva y moderna que refleja la identidad de la marca CUPRA.
 
-## 🏆 El Reto
+## 🏆 El Reto
 Know Your Cupra
 
 El objetivo es permitir a los clientes familiarizarse con las características del vehículo durante el período desde que realizan un pedido hasta que el vehículo es entregado. Nuestra solución propone una interfaz amigable que incorpora información de los temas principales a través de la gamificación del manual de usuario. La meta es que el cliente conozca su coche por dentro y por fuera antes incluso de ponerse al volante. "Just sit back and enjoy the ride."
